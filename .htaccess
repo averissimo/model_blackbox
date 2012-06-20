@@ -1,0 +1,8 @@
+SetEnv "LD_LIBRARY_PATH" "/opt/MATLAB/MATLAB_Compiler_Runtime/v713/runtime/glnx86"
+
+Options ExecCGI FollowSymLinks Indexes
+Allow from all
+Order allow,deny
+AddHandler cgi-script sh cgi
+
+

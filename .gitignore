@@ -1,0 +1,10 @@
+*.log
+*.txt
+*.c
+*.prj
+*.sh
+remote_gompertz
+*.cgi
+*~
+.*.swp
+/lib
