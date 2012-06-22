@@ -1,7 +1,10 @@
-function baranyi( )
+function TEMPLATE_sim( )
 %BARANYI Summary of this function goes here
 %   Detailed explanation goes here
 
+%
+% example:
+% setenv('QUERY_STRING','miu=1.266&lambda=3.78826&A=0.665752&end=23&x_0=0.146912');
 input = qs2struct(getenv('QUERY_STRING'));
 
 Gompertz('parameters');
@@ -22,7 +25,7 @@ try
     %
     simdata = SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);
     %
-    M = [ simdata.statevalues(:,1) simdata.statevalues(:,2) ];
+    M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];
     printJson(M) 
 catch
     fprintf(1,'{ "error": "error creating magic square" }\n')

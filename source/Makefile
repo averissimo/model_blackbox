@@ -1,13 +1,23 @@
-all: remote_estimation clean
+all: gompertz_est clean baranyi_est clean gompertz_sim clean baranyi_sim clean
 
-remote_estimation: remote_estimation.m
-	/usr/local/mathlab/bin/mcc -m -I /home/dev/work/pneumosys/matlab/standalone_estimation/models -I /home/dev/work/pneumosys/matlab/standalone_estimation/lib -R -nodisplay -R -nojvm remote_estimation.m
-#	/usr/local/mathlab/bin/mcc -m -v -R -nodisplay -R -nojvm remote_estimation.m
-	mv remote_estimation script.cgi
+gompertz_est: estimators/gompertz_est.m
+	/usr/local/mathlab/bin/mcc -m -I models -I lib -R -nodisplay -R -nojvm estimators/gompertz_est.m
+	mv gompertz_est ../estimators/gompertz.cgi
 
+baranyi_est: estimators/baranyi_est.m
+	/usr/local/mathlab/bin/mcc -m -I models -I lib -R -nodisplay -R -nojvm estimators/baranyi_est.m
+	mv baranyi_est ../estimators/baranyi.cgi
+
+gompertz_sim: simulators/gompertz_sim.m
+	/usr/local/mathlab/bin/mcc -m -I lib -R -nodisplay -R -nojvm simulators/gompertz_sim.m
+	mv gompertz_sim ../simulators/gompertz.cgi
+
+baranyi_sim: simulators/baranyi_sim.m
+	/usr/local/mathlab/bin/mcc -m -I lib -R -nodisplay -R -nojvm simulators/baranyi_sim.m
+	mv baranyi_sim ../simulators/baranyi.cgi
 
 full_clean: clean
 	rm script.cgi
 
 clean:
-	rm mccExcludedFiles.log remote_estimation_main.c run_remote_estimation.sh remote_estimation.prj remote_estimation_mcc_component_data.c readme.txt
+	rm *.log *.c *.sh *.prj readme.txt

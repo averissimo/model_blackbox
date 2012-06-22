@@ -1,4 +1,4 @@
-function remote_estimation()
+function TEMPLATE_est()
 %% declare functions that will be called
 %$function est_gompertz
 %#function mex
@@ -16,15 +16,15 @@ input = qs2struct(getenv('QUERY_STRING'));
 global MEXmodel_global  MEXmodelfullpath_global MEX_DO_NOT_CREATE;
 
 MEX_DO_NOT_CREATE = 1;
+Gompertz('parameters');
 MEXmodel_global = 'Gompertz';
-MEXmodelfullpath_global = strcat(pwd,'/lib/');
+MEXmodelfullpath_global = strcat( fileparts(mfilename('fullpath')) , '/../lib/');
+
 
 try
     %% html header
     printHeader( 0 );
-    cc = mex.getCompilerConfigurations();
     %%
-    Gompertz('parameters');
     %
     %% measurements
     time = str2num(input.time)';
