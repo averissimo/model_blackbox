@@ -1,4 +1,4 @@
-function remote_estimation()
+function remote_estimation('')
 %% declare functions that will be called
 %$function est_gompertz
 %#function mex
@@ -16,7 +16,7 @@ input = qs2struct(getenv('QUERY_STRING'));
 global MEXmodel_global  MEXmodelfullpath_global MEX_DO_NOT_CREATE;
 
 MEX_DO_NOT_CREATE = 1;
-MEXmodel_global = 'est_gompertz_2';
+MEXmodel_global = 'est_baranyi';
 MEXmodelfullpath_global = '/home/dev/work/pneumosys/matlab/standalone_estimation/lib/';
 
 try
@@ -26,8 +26,8 @@ try
     cc = mex.getCompilerConfigurations();
     %
     %% measurements
-    time = str2num(input.time)';
-    values = str2num(input.values)';
+    time=[0 1.167 2 3.167 4.083 5.333 6.333 7.250 8.250 9 9.917 11 11.833];
+    values=[0.051 0.074 0.104 0.155 0.205 0.283 0.380 0.447 0.618 0.715 0.792 1.923 1.953]
     str = SBstruct(SBmeasurement());
     str.name = 'estimation';
     str.notes = '';
@@ -37,11 +37,15 @@ try
     measurement = SBmeasurement( str );
     %
     %% model
-    text_model = '{"model":{"name":"Gompertz", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"miu", "value":[1]}, {"name":"lambda", "value":[1]}, {"name":"A", "value":[2]}], "reactions":{"name":"R", "formula":"miu*exp(1)*exp(-exp(miu*exp(1)*(lambda-t)/A+1))*exp(miu*exp(1)*(lambda-t)/A+1)", "reversible":[0], "fast":[0]}}}';
+    %Gompertz
+    text_model_gompertz = '{"model":{"name":"Gompertz", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"miu", "value":[1]}, {"name":"lambda", "value":[1]}, {"name":"A", "value":[2]}], "reactions":{"name":"R", "formula":"miu*exp(1)*exp(-exp(miu*exp(1)*(lambda-t)/A+1))*exp(miu*exp(1)*(lambda-t)/A+1)", "reversible":[0], "fast":[0]}}}';
+    %Baranyi
+    text_model_baranyi =  '{"model":{"name":"Baranyi", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"mu", "value":[1]},{"name":"v", "value":[1]},{"name":"m", "value":[1]},{"name":"h0", "value":[1]},{"name":"y0", "value":[0]},{"name":"ymax", "value":[5]}], "reactions":{"name":"R", "formula":"mu + (-exp(-t *v) *v +   exp(-h0 - t *v) *v)/((exp(-h0) + exp(-t *v) - exp(-h0 - t *v)) *mu) - ( exp(m *mu* t - m* (-y0 + ymax) + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/ mu) * (m* mu + (-exp(-t *v) *v + exp(-h0 - t *v)* v)/((exp(-h0) + exp(-t* v) - exp(-h0 - t* v))* mu)))/((1 + exp(-m * (-y0 + ymax)) * (-1 + exp( m *mu *t + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/mu))) * m)", "reversible":[0], "fast":[0]}}}';
+    text_model = text_model_baranyi;
     json=loadjson(text_model);
     j_model = json.model;
     %
-    model = SBmodel( build_model(j_model) );
+    model = SBmodel( 'models/baranyi.txt' );
     %% project
     experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , [SBexperiment], 'measurements' , '');
     experiments.measurements = { measurement };
@@ -52,7 +56,11 @@ try
     %
     project = SBPDproject(proj_s);
     %% estimation
-    estimation = build_estimation( loadjson( input.estimation ) );
+    estimat = strrep(input.estimation, '%22' , '"');
+    estimat = strrep(estimat, '%7B' , '{');
+    estimat = strrep(estimat, '%7C' , '}');
+    estimation = build_estimation( loadjson( estimat ) );
+
     % calls evalc and avoids verbose output
     [~,output] = evalc('SBPDparameterestimation(project,estimation,1);');
     %output= SBPDparameterestimation(project,estimation,1);
@@ -65,12 +73,14 @@ try
     len = length(output.icnames);
     for x = 1:len
         fprintf(1,'\t"%s": %f',output.icnames{x},output.ICopt(x));
-        if x ~= len
+%        if x ~= len
             fprintf(1,',\n');
-        end
+%        end
     end
+    fprintf(1,'\t"o": %f\n',output.FVALopt);
     fprintf(1,'\n');
     fprintf(1,'}\n');
+    close all;
     
 catch e
     fprintf(1,'{ "error": "%s" }\n',e.message);
@@ -180,7 +190,10 @@ estimation.experiments.weight = [1];
 
 % Optimization settings
 estimation.optimization.method = 'simplexSB';
-estimation.optimization.options.maxfunevals = 2000;
+estimation.optimization.options.maxfunevals = 50000;
+estimation.optimization.options.maxiter = 20000;
+estimation.optimization.options.tolfun = 1e-10;
+estimation.optimization.options.tolx = 1e-10;
 
 % Integrator settings
 estimation.integrator.options.abstol = 1e-006;
@@ -190,8 +203,8 @@ estimation.integrator.options.maxstep = Inf;
 estimation.integrator.options.maxnumsteps = 1000;
 
 % Flags
-estimation.displayFlag = 2; % show iterations and final message
-estimation.scalingFlag = 2; % scale by mean values
+estimation.displayFlag = 1; % show iterations and final message
+estimation.scalingFlag = 1; % scale by mean values
 estimation.timescalingFlag = 0; % do not apply time-scaling
 estimation.initialconditionsFlag = 1; % do use initial conditions from measurement data (if available)
 

@@ -20,7 +20,7 @@ global MEXmodel_global MEXmodelfullpath_global MEX_DO_NOT_CREATE;
 %MEXmodelfullpath_global = '/home/dev/work/pneumosys/matlab/standalone_estimation/lib/';
 
 MEX_DO_NOT_CREATE = 1;
-MEXmodel_global = 'est_gompertz_2';
+MEXmodel_global = 'est_baranyi';
 MEXmodelfullpath_global = '/home/dev/work/pneumosys/matlab/standalone_estimation/lib/';
 
 try
@@ -39,7 +39,8 @@ try
     measurement = SBmeasurement( str );
     %
     %% model
-    json=loadjson(input.model);
+    imodel = '{"model":{"name":"Baranyi", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"mu", "value":[1]},{"name":"v", "value":[1]},{"name":"m", "value":[1]},{"name":"h0", "value":[1]},{"name":"y0", "value":[0]},{"name":"ymax", "value":[5]}], "reactions":{"name":"R", "formula":"mu + (-exp(-t *v) *v +   exp(-h0 - t *v) *v)/((exp(-h0) + exp(-t *v) - exp(-h0 - t *v)) *mu) - ( exp(m *mu* t - m* (-y0 + ymax) + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/ mu) * (m* mu + (-exp(-t *v) *v + exp(-h0 - t *v)* v)/((exp(-h0) + exp(-t* v) - exp(-h0 - t* v))* mu)))/((1 + exp(-m * (-y0 + ymax)) * (-1 + exp( m *mu *t + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/mu))) * m)", "reversible":[0], "fast":[0]}}}';
+    json=loadjson(imodel);
     j_model = json.model;
     %
     model = SBmodel( build_model(j_model) );
