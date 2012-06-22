@@ -22,4 +22,9 @@ To create a new model blackbox you need to:
 
 5. in the simulators/Yourmodel_sim.m you must change the code to handle the model's parameters
 
+6. add the makefile target following the existing templates
+
+7. run
+ make yourmodel_est yourmodel_sim clean
+
 Done!

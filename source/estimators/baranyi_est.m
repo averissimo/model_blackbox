@@ -8,7 +8,7 @@ function baranyi_est()
 
 %
 % example:
-% setenv('QUERY_STRING','time=[0,1.167,2,3.167,4.083,5.333,6.333,7.250,8.250,9,9.917,11,11.833]&values=[0.051,0.074,0.104,0.155,0.205,0.283,0.380,0.447,0.618,0.715,0.792,1.923,1.953]&estimation=%7B"states":[%7B"name":"m","bottom":0,"top":5%7C,%7B"name":"y0","bottom":0,"top":5%7C,%7B"name":"ymax","bottom":0,"top":5%7C,%7B"name":"mu","bottom":0,"top":2%7C,%7B"name":"v","bottom":0,"top":5%7C],"initial":[%7B"name":"N","bottom":0,"top":1%7C,%7B"name":"t","bottom":0,"top":0%7C]%7C')
+% setenv('QUERY_STRING','time=[0,1.167,2,3.167,4.083,5.333,6.333,7.250,8.250,9,9.917,11,11.833]&values=[0.051,0.074,0.104,0.155,0.205,0.283,0.380,0.447,0.618,0.715,0.792,1.923,1.953]&estimation=%7B"states":[%7B"name":"m","bottom":0,"top":5%7C,%7B"name":"y0","bottom":0,"top":5%7C,%7B"name":"ymax","bottom":0,"top":5%7C,%7B"name":"mu","bottom":0,"top":2%7C,%7B"name":"v","bottom":0,"top":5%7C,%7B"name":"h0","bottom":0,"top":5%7C],"initial":[%7B"name":"N","bottom":0,"top":1%7C,%7B"name":"t","bottom":0,"top":0%7C]%7C')
 
 %% get inputs
 % input paramters are in the environment variable "QUERY_STRING"
