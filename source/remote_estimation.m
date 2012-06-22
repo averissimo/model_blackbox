@@ -1,4 +1,4 @@
-function remote_estimation('')
+function remote_estimation()
 %% declare functions that will be called
 %$function est_gompertz
 %#function mex
@@ -16,18 +16,19 @@ input = qs2struct(getenv('QUERY_STRING'));
 global MEXmodel_global  MEXmodelfullpath_global MEX_DO_NOT_CREATE;
 
 MEX_DO_NOT_CREATE = 1;
-MEXmodel_global = 'est_baranyi';
-MEXmodelfullpath_global = '/home/dev/work/pneumosys/matlab/standalone_estimation/lib/';
+MEXmodel_global = 'Gompertz';
+MEXmodelfullpath_global = strcat(pwd,'/lib/');
 
 try
-    est_gompertz_2('parameters');
     %% html header
     printHeader( 0 );
     cc = mex.getCompilerConfigurations();
+    %%
+    Gompertz('parameters');
     %
     %% measurements
-    time=[0 1.167 2 3.167 4.083 5.333 6.333 7.250 8.250 9 9.917 11 11.833];
-    values=[0.051 0.074 0.104 0.155 0.205 0.283 0.380 0.447 0.618 0.715 0.792 1.923 1.953]
+    time = str2num(input.time)';
+    values = str2num(input.values)';
     str = SBstruct(SBmeasurement());
     str.name = 'estimation';
     str.notes = '';
@@ -37,15 +38,7 @@ try
     measurement = SBmeasurement( str );
     %
     %% model
-    %Gompertz
-    text_model_gompertz = '{"model":{"name":"Gompertz", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"miu", "value":[1]}, {"name":"lambda", "value":[1]}, {"name":"A", "value":[2]}], "reactions":{"name":"R", "formula":"miu*exp(1)*exp(-exp(miu*exp(1)*(lambda-t)/A+1))*exp(miu*exp(1)*(lambda-t)/A+1)", "reversible":[0], "fast":[0]}}}';
-    %Baranyi
-    text_model_baranyi =  '{"model":{"name":"Baranyi", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"mu", "value":[1]},{"name":"v", "value":[1]},{"name":"m", "value":[1]},{"name":"h0", "value":[1]},{"name":"y0", "value":[0]},{"name":"ymax", "value":[5]}], "reactions":{"name":"R", "formula":"mu + (-exp(-t *v) *v +   exp(-h0 - t *v) *v)/((exp(-h0) + exp(-t *v) - exp(-h0 - t *v)) *mu) - ( exp(m *mu* t - m* (-y0 + ymax) + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/ mu) * (m* mu + (-exp(-t *v) *v + exp(-h0 - t *v)* v)/((exp(-h0) + exp(-t* v) - exp(-h0 - t* v))* mu)))/((1 + exp(-m * (-y0 + ymax)) * (-1 + exp( m *mu *t + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/mu))) * m)", "reversible":[0], "fast":[0]}}}';
-    text_model = text_model_baranyi;
-    json=loadjson(text_model);
-    j_model = json.model;
-    %
-    model = SBmodel( 'models/baranyi.txt' );
+    model = SBmodel( strcat('models/',MEXmodel_global,'.txt') );
     %% project
     experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , [SBexperiment], 'measurements' , '');
     experiments.measurements = { measurement };

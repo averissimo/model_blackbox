@@ -1,4 +1,4 @@
-function compile_model()
+function compile_model(model_path)
 %% declare functions that will be called
 %$function est_gompertz
 %#function mex
@@ -6,80 +6,25 @@ function compile_model()
 %#function defaultcostparameterestimationSBPD
 %#function SBPDparameterestimation
 
-%% get inputs
-% input paramters are in the environment variable "QUERY_STRING"
-input = qs2struct(getenv('QUERY_STRING'));
-% The HTML page returns the field "size"
-%  which is now stored in input.size as a string
-%  This is passed to the mymagic function 
-%  to compute the magic square.
-
 global MEXmodel_global MEXmodelfullpath_global MEX_DO_NOT_CREATE;
 
-%MEXmodel_global = 'est_gompertz_test2';
-%MEXmodelfullpath_global = '/home/dev/work/pneumosys/matlab/standalone_estimation/lib/';
-
-MEX_DO_NOT_CREATE = 1;
-MEXmodel_global = 'est_baranyi';
-MEXmodelfullpath_global = '/home/dev/work/pneumosys/matlab/standalone_estimation/lib/';
-
+MEX_DO_NOT_CREATE = 0;
+MEXmodelfullpath_global = strcat(pwd,'/lib/');
 try
     %% html header
     printHeader( 0 );
     %
     %% measurements
-    time = str2num(input.time)';
-    values = str2num(input.values)';
-    str = SBstruct(SBmeasurement());
-    str.name = 'estimation';
-    str.notes = '';
-    str.time = time;
-    maxmin = NaN(size(values,1),1);
-    str.data = struct( 'name' , 'N' ,  'notes' , [] , 'values', values , 'maxvalues', maxmin , 'minvalues' , maxmin );
-    measurement = SBmeasurement( str );
-    %
     %% model
-    imodel = '{"model":{"name":"Baranyi", "states":[{"name":"N", "initialCondition":[0.001], "ODE":"R"}, {"name":"t", "initialCondition":[0], "ODE":"1"}], "parameters":[{"name":"mu", "value":[1]},{"name":"v", "value":[1]},{"name":"m", "value":[1]},{"name":"h0", "value":[1]},{"name":"y0", "value":[0]},{"name":"ymax", "value":[5]}], "reactions":{"name":"R", "formula":"mu + (-exp(-t *v) *v +   exp(-h0 - t *v) *v)/((exp(-h0) + exp(-t *v) - exp(-h0 - t *v)) *mu) - ( exp(m *mu* t - m* (-y0 + ymax) + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/ mu) * (m* mu + (-exp(-t *v) *v + exp(-h0 - t *v)* v)/((exp(-h0) + exp(-t* v) - exp(-h0 - t* v))* mu)))/((1 + exp(-m * (-y0 + ymax)) * (-1 + exp( m *mu *t + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/mu))) * m)", "reversible":[0], "fast":[0]}}}';
-    json=loadjson(imodel);
-    j_model = json.model;
-    %
-    model = SBmodel( build_model(j_model) );
+    model = SBmodel( model_path );
+    struct = SBstruct(model);
+    MEXmodel_global = struct.name;
     makeTempMEXmodelSBPD( model );
     
-    %%%% project
-    %%experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , [SBexperiment], 'measurements' , '');
-    %%experiments.measurements = { measurement };
-    %%%
-    %%proj_s = struct(SBPDproject());
-    %%proj_s.experiments = experiments;
-    %%proj_s.models = {model};
-    %%%
-    %%project = SBPDproject(proj_s);
-    %%%% estimation
-    %%estimation = build_estimation( loadjson( input.estimation ) );
-    %%% calls evalc and avoids verbose output
-    %%[~,output] = evalc('SBPDparameterestimation(project,estimation,1);');
-    %%%output= SBPDparameterestimation(project,estimation,1);
-    %%len = length(output.parameters);
-    %%fprintf(1,'{\n');
-    %%for x = 1:len
-    %%    fprintf(1,'\t"%s": %f',output.parameters{x},output.Popt(x));
-    %%    fprintf(1,',\n');
-    %%end
-    %%len = length(output.icnames);
-    %%for x = 1:len
-    %%    fprintf(1,'\t"%s": %f',output.icnames{x},output.ICopt(x));
-    %%    if x ~= len
-    %%        fprintf(1,',\n');
-    %%    end
-    %%end
-    %%fprintf(1,'\n');
-    %%fprintf(1,'}\n');
     fprintf(1,'mex model can be located at\n');
     fprintf(1,'%s%s.mexglx\n',MEXmodelfullpath_global,MEXmodel_global);
 catch e
     fprintf(1,'{ "error": "%s" }\n',e.message);
-    %fprintf(1,'{ "error": "%s" }\n',e.stack(0).file);
 end
 
 end

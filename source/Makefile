@@ -1,7 +1,7 @@
 all: remote_estimation clean
 
 remote_estimation: remote_estimation.m
-	/usr/local/mathlab/bin/mcc -m -I /home/dev/work/pneumosys/matlab/standalone_estimation/lib -R -nodisplay -R -nojvm remote_estimation.m
+	/usr/local/mathlab/bin/mcc -m -I /home/dev/work/pneumosys/matlab/standalone_estimation/models -I /home/dev/work/pneumosys/matlab/standalone_estimation/lib -R -nodisplay -R -nojvm remote_estimation.m
 #	/usr/local/mathlab/bin/mcc -m -v -R -nodisplay -R -nojvm remote_estimation.m
 	mv remote_estimation script.cgi
 
