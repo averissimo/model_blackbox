@@ -54,7 +54,7 @@ try
     %% estimation
     estimat = strrep(input.estimation, '%22' , '"');
     estimat = strrep(estimat, '%7B' , '{');
-    estimat = strrep(estimat, '%7C' , '}');
+    estimat = strrep(estimat, '%7D' , '}');
     estimation = build_estimation( loadjson( estimat ) );
 
     % calls evalc and avoids verbose output

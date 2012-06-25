@@ -11,7 +11,7 @@ input = qs2struct(getenv('QUERY_STRING'));
 Baranyi('parameters');
 MEXmodel_global = 'Baranyi';
 
-try
+%try
     %
     mu      = str2double( input.mu );
     m       = str2double( input.m );
@@ -30,9 +30,9 @@ try
     %
     M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];
     printJson(M) 
-catch
-    fprintf(1,'{ "error": "error creating magic square" }\n')
-end
+%catch
+%    fprintf(1,'{ "error": "error creating magic square" }\n')
+%end
 
 
 end
