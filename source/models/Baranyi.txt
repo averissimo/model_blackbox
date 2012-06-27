@@ -1,0 +1,35 @@
+********** MODEL NAME
+Baranyi
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(N) = R                                                                                                                                                                                                                                                                                                                                                                                            
+d/dt(t) = 1                                                                                                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                       
+N(0) = 0.2                                                                                                                                                                                                                                                                                                                                                                                             
+t(0) = 0
+
+********** MODEL PARAMETERS
+mu = 0.20515   
+v = 0.147768   
+m = 4.7651   
+h0 = 0.354086   
+y0 = 2.44751   
+ymax = 4.58376  
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+R = mu + (-exp(-t *v) *v +   exp(-h0 - t *v) *v)/((exp(-h0) + exp(-t *v) - exp(-h0 - t *v)) *mu) - ( exp(m *mu* t - m* (-y0 + ymax) + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/ mu) * (m* mu + (-exp(-t *v) *v + exp(-h0 - t *v)* v)/((exp(-h0) + exp(-t* v) - exp(-h0 - t* v))* mu)))/((1 + exp(-m * (-y0 + ymax)) * (-1 + exp( m *mu *t + log(exp(-h0) + exp(-t *v) - exp(-h0 - t *v))/mu))) * m)
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+
