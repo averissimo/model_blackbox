@@ -8,15 +8,15 @@ function TEMPLATE_sim( )
 input = qs2struct(getenv('QUERY_STRING'));
 
 Gompertz('parameters');
+
 MEXmodel_global = 'Gompertz';
-MEXmodelfullpath_global = strcat(pwd,'/lib/');
 
 try
     %
     miu     = str2double( input.miu );
     lambda  = str2double( input.lambda );
     A       = str2double( input.A );
-    TimeEnd = str2double( input.end );
+    TimeEnd = timeStep( str2double( input.end ) );
     N       = str2double( input.N );
     %
     inicond = [N , 0];
