@@ -19,7 +19,7 @@ MEXmodel_global = 'Baranyi';
     y0      = str2double( input.y0 );
     h0      = str2double( input.h0 );
     ymax    = str2double( input.ymax );
-    TimeEnd = str2double( input.end );
+    TimeEnd = 0:0.02:str2double( input.end );
     N       = str2double( input.N );
     %
     inicond = [N , 0];
