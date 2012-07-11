@@ -5,7 +5,7 @@ function [M]=gompertz_sim( )
 %
 % example:
 % setenv('QUERY_STRING','miu=1.266&lambda=3.78826&A=0.665752&end=23&x_0=0.146912');
-setenv('QUERY_STRING','A=0.654608&lambda=3.777706&miu=0.875303&N=0.051472&end=100');
+% setenv('QUERY_STRING','A=0.654608&lambda=3.777706&miu=0.875303&N=0.051472&end=100');
 
 input = qs2struct(getenv('QUERY_STRING'));
 
