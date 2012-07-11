@@ -196,7 +196,7 @@ estimation.integrator.options.abstol = 1e-006;
 estimation.integrator.options.reltol = 1e-006;
 estimation.integrator.options.minstep = 0;
 estimation.integrator.options.maxstep = Inf;
-estimation.integrator.options.maxnumsteps = 1000;
+estimation.integrator.options.maxnumsteps = 10000;
 
 % Flags
 estimation.displayFlag = 1; % show iterations and final message
