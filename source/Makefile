@@ -1,19 +1,27 @@
-all: gompertz_est clean baranyi_est clean gompertz_sim clean baranyi_sim clean
+MCC = /opt/R2010a/bin/mcc
+MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I lib -R -nodisplay -R -nojvm
+
+
+all: gompertz baranyi clean
+
+gompertz: gompertz_est gompertz_sim
+
+baranyi: baranyi_est baranyi_sim
 
 gompertz_est: estimators/gompertz_est.m
-	/usr/local/mathlab/bin/mcc -m -I auxiliary -I models -I lib -R -nodisplay -R -nojvm estimators/gompertz_est.m
+	$(MCC) $(MFLAGS) estimators/gompertz_est.m
 	mv gompertz_est ../estimators/gompertz.cgi
 
 baranyi_est: estimators/baranyi_est.m
-	/usr/local/mathlab/bin/mcc -m -I auxiliary -I models -I lib -R -nodisplay -R -nojvm estimators/baranyi_est.m
+	$(MCC) $(MFLAGS) estimators/baranyi_est.m
 	mv baranyi_est ../estimators/baranyi.cgi
 
 gompertz_sim: simulators/gompertz_sim.m
-	/usr/local/mathlab/bin/mcc -m -I auxiliary -I lib -R -nodisplay -R -nojvm simulators/gompertz_sim.m
+	$(MCC) $(MFLAGS) simulators/gompertz_sim.m
 	mv gompertz_sim ../simulators/gompertz.cgi
 
 baranyi_sim: simulators/baranyi_sim.m
-	/usr/local/mathlab/bin/mcc -m -I auxiliary -I lib -R -nodisplay -R -nojvm simulators/baranyi_sim.m
+	$(MCC) $(MFLAGS) simulators/baranyi_sim.m
 	mv baranyi_sim ../simulators/baranyi.cgi
 
 full_clean: clean
