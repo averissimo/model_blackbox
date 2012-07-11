@@ -1,4 +1,4 @@
-function [M]=gompertz_sim( )
+function gompertz_sim( )
 %BARANYI Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -17,7 +17,7 @@ try
     miu     = str2double( input.miu );
     lambda  = str2double( input.lambda );
     A       = str2double( input.A );
-    TimeEnd = 0:0.02:str2double( input.end );
+    TimeEnd = timeStep( str2double( input.end ) );
     N       = str2double( input.N );
     %
     inicond = [N , 0];
