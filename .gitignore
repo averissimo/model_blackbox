@@ -8,5 +8,6 @@ remote_gompertz
 .*.swp
 /lib
 *.mexglx
+*.mexa64
 /estimators/
 /simulators/
