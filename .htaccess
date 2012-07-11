@@ -1,8 +1,0 @@
-SetEnv "LD_LIBRARY_PATH" "/opt/MATLAB/MATLAB_Compiler_Runtime/v713/runtime/glnx86"
-SetEnv "XAPPLRESDIR" "/opt/MATLAB/MATLAB_Compiler_Runtime/v713/X11/app-defaults/"
-
-Options ExecCGI FollowSymLinks Indexes
-
-AddHandler cgi-script sh cgi
-
-
