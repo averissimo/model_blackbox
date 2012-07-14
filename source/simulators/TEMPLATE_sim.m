@@ -23,12 +23,13 @@ try
     parameters = {'miu' 'lambda' 'A' };
     paravalues = [miu lambda A];
     %
-    simdata = SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);
+    [~ simdata]=evalc(sprintf('SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);'));
+    %simdata = SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);
     %
     M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];
     printJson(M) 
-catch
-    fprintf(1,'{ "error": "error creating magic square" }\n')
+catch err
+    fprintf(1,'{ "error": "%s" }\n',err.message)
 end
 
 
