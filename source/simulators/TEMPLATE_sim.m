@@ -30,9 +30,9 @@ try
     M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];
     printJson(M) 
 catch err
-    printHeader();
-    fprintf(1,'{ "error": "%s" }\n',err.message)
-end
+    msg = sprintf('{ "error": "%s" }\n',err.message);
+    printHeader(length(msg));
+    fprintf(1,'%s',msg);end
 
 
 end
