@@ -6,7 +6,7 @@ function baranyi_sim( )
 %
 % example:
 % setenv('QUERY_STRING','m=5.000000,&y0=0.001381,&h0=2&ymax=5.000000,&mu=0.246028,&v= 0.325587,&N=0.120706&end=20');
-setenv('QUERY_STRING','h0=1.817612&m=3&mu=0.927801&N=0.0&v=1.038042&y0=3.82986&ymax=7.711657&end=100');	
+%setenv('QUERY_STRING','h0=1.817612&m=3&mu=0.927801&N=0.0&v=1.038042&y0=3.82986&ymax=7.711657&end=100');	
 input = qs2struct(getenv('QUERY_STRING'));
 
 Baranyi('parameters');
