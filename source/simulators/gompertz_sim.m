@@ -30,7 +30,7 @@ try
     options.maxstep = inf;%inf;
     options.maxnumsteps = 100000;%100000;
     %
-    [~ simdata]=evalc(sprintf('SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);'));
+    [~, simdata]=evalc(sprintf('SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);'));
     %simdata = SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues,options);
     %
     M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];

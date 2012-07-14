@@ -26,7 +26,7 @@ try
     parameters = {'mu' 'm' 'v' 'y0' 'ymax' 'h0' };
     paravalues = [mu m v y0 ymax h0];
     %
-    [~ simdata]=evalc(sprintf('SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);'));
+    [~, simdata] = eval('SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);');
     %simdata = SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);
     %
     M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];
