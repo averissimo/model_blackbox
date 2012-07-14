@@ -35,7 +35,7 @@ try
 catch err
     msg = sprintf('{ "error": "%s" }\n',err.message);
     printHeader(length(msg));
-    fprintf(1,'%s',msg);end
+    fprintf(1,'%s',msg);
 end
 
 
