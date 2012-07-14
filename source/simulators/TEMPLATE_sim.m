@@ -1,6 +1,7 @@
 function TEMPLATE_sim( )
 %BARANYI Summary of this function goes here
 %   Detailed explanation goes here
+%#function SBPDsimulate
 
 %
 % example:
