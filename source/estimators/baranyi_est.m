@@ -78,8 +78,8 @@ try
     estimation = build_estimation( loadjson( estimat ) );
 
     % calls evalc and avoids verbose output
-    %[~,output] = evalc('SBPDparameterestimation(project,estimation,1);');
-    output= SBPDparameterestimation(project,estimation,1);
+    [~,output] = evalc('SBPDparameterestimation(project,estimation,1);');
+    %output= SBPDparameterestimation(project,estimation,1);
     len = length(output.parameters);
     fprintf(1,'{\n');
     for x = 1:len
