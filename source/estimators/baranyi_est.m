@@ -8,7 +8,27 @@ function baranyi_est()
 
 %
 % example:
-% setenv('QUERY_STRING','time=[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0]&values=[0.04,0.113,0.363,0.924,1.632,2.288,2.172,2.188]&estimation=%7B%22states%22:[%7B%22name%22:%22h0%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22m%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22mu%22,%22bottom%22:0.0,%22top%22:3.0%7D,%7B%22name%22:%22v%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22y0%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22ymax%22,%22bottom%22:0.0,%22top%22:10.0%7D],%22initial%22:[%7B%22name%22:%22N%22,%22bottom%22:0.0,%22top%22:0.0%7D,%7B%22name%22:%22t%22,%22bottom%22:0,%22top%22:100%7D]%7D')
+%qs.time='[0.0,1.05,2.3,3.0,4.0,5.05,6.05,7.05,8.0,9.05,10.05]';
+%qs.values='[0.053,0.065,0.092,0.129,0.198,0.326,0.536,0.658,0.884,0.978,0.91]';
+%qs.h0.bottom='0.0354086';
+%qs.h0.top='3.54086';
+%qs.m.bottom='-5.47651';
+%qs.m.top='47.651';
+%qs.mu.bottom='0.020515';
+%qs.mu.top='15';
+%qs.v.bottom='-5.0147768';
+%qs.v.top='1.47768';
+%qs.y0.bottom='-5.244751';
+%qs.y0.top='24.4751';
+%qs.ymax.bottom='0.458376';
+%qs.ymax.top='30.8376';
+%qs.N.bottom='-10';
+%qs.N.top='30';
+%qs.t.bottom='0';
+%qs.t.top='100';
+
+%query = sprintf('time=%s&values=%s&estimation=%%7B%%22states%%22:[%%7B%%22name%%22:%%22h0%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22m%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22mu%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22v%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22y0%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22ymax%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D],%%22initial%%22:[%%7B%%22name%%22:%%22N%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22t%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D]%%7D',qs.time,qs.values,qs.h0.bottom,qs.h0.top,qs.m.bottom,qs.m.top,qs.mu.bottom,qs.mu.top,qs.v.bottom,qs.v.top,qs.y0.bottom,qs.y0.top,qs.ymax.bottom,qs.ymax.top,qs.N.bottom,qs.N.top,qs.t.bottom,qs.t.top);
+setenv('QUERY_STRING',query)
 
 %% get inputs
 % input paramters are in the environment variable "QUERY_STRING"
@@ -43,7 +63,7 @@ try
     %% model
     model = SBmodel( strcat('models/',MEXmodel_global,'.txt') );
     %% project
-    experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , [SBexperiment], 'measurements' , '');
+    experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , SBexperiment, 'measurements' , '');
     experiments.measurements = { measurement };
     %
     proj_s = struct(SBPDproject());
@@ -58,8 +78,8 @@ try
     estimation = build_estimation( loadjson( estimat ) );
 
     % calls evalc and avoids verbose output
-    [~,output] = evalc('SBPDparameterestimation(project,estimation,1);');
-    %output= SBPDparameterestimation(project,estimation,1);
+    %[~,output] = evalc('SBPDparameterestimation(project,estimation,1);');
+    output= SBPDparameterestimation(project,estimation,1);
     len = length(output.parameters);
     fprintf(1,'{\n');
     for x = 1:len
@@ -78,11 +98,10 @@ try
     fprintf(1,'}\n');
     close all;
     
-catch e
-    fprintf(1,'{ "error": "%s" }\n',e.message);
-    %fprintf(1,'{ "error": "%s" }\n',e.stack(0).file);
+catch err
+    msg = sprintf('{ "error": "%s" }\n',err.message);
+    printHeader(length(msg));
+    fprintf(1,'%s',msg);
 end
 
 end
-
-
