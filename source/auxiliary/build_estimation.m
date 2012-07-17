@@ -7,7 +7,8 @@ function [ estimation ] = build_estimation( params )
     % Global parameters
     % Names    Lower bounds  Upper bounds
     len = length(params.states);
-    paramdata = cell(len,3);
+    %paramdata = cell(len,3);
+    paramdata = struct;
     for x = 1:len
         paramdata.names{x,1} = params.states(x).name;
         paramdata.lowbounds(x,1) = params.states(x).bottom;
@@ -16,7 +17,7 @@ function [ estimation ] = build_estimation( params )
     % Initial conditions (always experiment dependend)
     % Names    Lower bounds  Upper bounds
     len = length(params.initial);
-    icdata = cell(len,3);
+    icdata = struct;%cell(len,3);
     for x = 1:len
         icdata.names{x,1} = params.initial(x).name;
         icdata.lowbounds(x,1) = params.initial(x).bottom;
@@ -28,8 +29,8 @@ function [ estimation ] = build_estimation( params )
 
     % Model and experiment settings
     estimation.modelindex = 1;
-    estimation.experiments.indices = [1];
-    estimation.experiments.weight = [1];
+    estimation.experiments.indices = 1;
+    estimation.experiments.weight = 1;
 
     % Always needed (do not change ... unless you know what you do)
     estimation.parameters = paramdata;

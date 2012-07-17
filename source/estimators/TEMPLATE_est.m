@@ -26,17 +26,29 @@ try
     printHeader( 0 );
     %%
     %
+    %% experiments
+    experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , SBexperiment, 'measurements' , '');
+    
     %% measurements
-    time = str2num(input.time)';
-    values = str2num(input.values)';
-    str = SBstruct(SBmeasurement());
-    str.name = 'estimation';
-    str.notes = '';
-    str.time = time;
-    maxmin = NaN(size(values,1),1);
-    str.data = struct( 'name' , 'N' ,  'notes' , [] , 'values', values , 'maxvalues', maxmin , 'minvalues' , maxmin );
-    measurement = SBmeasurement( str );
-    %
+    % multiple measurements for one experiment
+    time_s_array = textscan(input.time,'%s','delimiter',';');
+    value_s_array = textscan(input.values,'%s','delimiter',';');
+    len = length(time_s_array{1});
+    
+    for i = 1:len
+        time = str2num(char(time_s_array{1}(i)));
+        values = str2num(char(value_s_array{1}(i)));
+        str = SBstruct(SBmeasurement());
+        str.name = 'estimation';
+        str.notes = '';
+        str.time = time;
+        maxmin = NaN(size(values,1),1);
+        str.data = struct( 'name' , 'N' ,  'notes' , [] , 'values', values , 'maxvalues', maxmin , 'minvalues' , maxmin );
+        measurement = SBmeasurement( str );
+        %
+        %% project
+        experiments.measurements{i} = measurement;
+    end
     %% model
     model = SBmodel( strcat('models/',MEXmodel_global,'.txt') );
     %% project
