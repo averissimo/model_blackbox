@@ -14,29 +14,18 @@ It is divided by
 
 h2. Create a new model blackbox
 
-h4. 1. create a SBTOOLBOX2 model (SBModel) and copy it the directory:
-
+# create a SBTOOLBOX2 model (SBModel) and copy it the directory:
 <pre> source/models/</pre>
-
-h4. 2. compile the model calling the compile_model.m function, ex:
-
+# compile the model calling the compile_model.m function, ex:
 <pre> compile_model('models/baranyi')</pre>
-
-h4. 3. copy the following files to the same directory and name it after the model, preserving the suffix (just to help organizing the files' function
-
+# copy the following files to the same directory and name it after the model, preserving the suffix (just to help organizing the files' function
 <pre> source/estimators/TEMPLATE_est.m
  source/simulators/TEMPLATE_sim.m</pre>
-
-h4. 4. change the source code to reflect the name of the model by replacing all the occurences of Gompertz to "Yourmodel"
-
-* IMPORTANT: the first letter must be Uppercase
-
-h4. 5. in the simulators/Yourmodel_sim.m you must change the code to handle the model's parameters
-
-h4. 6. add the makefile target following the existing templates
-
-h4. 7. run
-
+# change the source code to reflect the name of the model by replacing all the occurences of Gompertz to "Yourmodel"
+<pre> IMPORTANT: the first letter must be Uppercase</pre>
+# in the simulators/Yourmodel_sim.m you must change the code to handle the model's parameters
+# add the makefile target following the existing templates
+# run
  <pre>make yourmodel_est yourmodel_sim clean</pre>
 
 Done!
