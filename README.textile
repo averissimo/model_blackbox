@@ -12,7 +12,7 @@ It is divided by
 * estimators : cgi scripts that estimate parameters
 * simulators : cgi scripts that estimate parameters
 
-To create a new model blackbox you need to:
+h2. Create a new model blackbox
 
 h4. 1. create a SBTOOLBOX2 model (SBModel) and copy it the directory:
 
