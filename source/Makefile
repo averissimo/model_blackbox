@@ -1,4 +1,7 @@
+# mcc file location
 MCC = /opt/R2010a/bin/mcc
+
+# toolboxes /path/to/SBPD/SBT2/and/jsonlab
 MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I lib -R -nodisplay -R -nojvm
 
 
