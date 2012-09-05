@@ -1,6 +1,7 @@
 function [ output ] = analytical_estimator( input, model , draw_plot )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
+%#function lsqcurvefit
 
 MAX_COUNT = 20;
 COUNT_TEST = 5;
