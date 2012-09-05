@@ -1,4 +1,4 @@
-function baranyi_sim( )
+function baranyi_sim( test_data )
 %BARANYI Summary of this function goes here
 %   Detailed explanation goes here
 %#function SBPDsimulate
@@ -6,8 +6,12 @@ function baranyi_sim( )
 %
 % example:
 % setenv('QUERY_STRING','m=5.000000,&y0=0.001381,&h0=2&ymax=5.000000,&mu=0.246028,&v= 0.325587,&N=0.120706&end=20');
-%setenv('QUERY_STRING','h0=0.733564&m=0.534439&mu=2.570644&N=0.042879&v=4.99849&y0=-4.858&ymax=0.000875&end=25');	
-input = qs2struct(getenv('QUERY_STRING'));
+
+if nargin > 0 && test_data
+    input = qs2struct('h0=0.733564&m=0.534439&mu=2.570644&N=0.042879&v=4.99849&y0=-4.858&ymax=0.000875&end=25');	
+else
+    input = qs2struct(getenv('QUERY_STRING'));
+end
 
 Baranyi('parameters');
 MEXmodel_global = 'Baranyi';
