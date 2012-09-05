@@ -8,13 +8,13 @@ Gompertz
 d/dt(N) = R
 d/dt(t) = 1
 
-N(0) = 0
+N(0) = 2.56238
 t(0) = 0
 
 ********** MODEL PARAMETERS
-miu = 1
-lambda = 2
-A = 3
+miu = 1.1338
+lambda = 57.6917
+A = 2.70044
 
 ********** MODEL VARIABLES
 
