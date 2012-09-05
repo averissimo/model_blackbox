@@ -2,6 +2,8 @@ function [ output ] = analytical_estimator( input, model , draw_plot )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 
+MAX_COUNT = 20;
+COUNT_TEST = 5;
 
     try
         %% print html header that tells it is json data
@@ -44,8 +46,8 @@ function [ output ] = analytical_estimator( input, model , draw_plot )
         options.TolFun = estimation.optimization.options.tolfun;
         options.TolX = estimation.optimization.options.tolx;
         
-        max_count = 20;
-        count_test = 5;
+        max_count = MAX_COUNT;
+        count_test = COUNT_TEST;
         resnorm = Inf;
         ahat = [];
         output = [];
@@ -53,10 +55,10 @@ function [ output ] = analytical_estimator( input, model , draw_plot )
         while max_count >= 0 && count_test >= 0
             %
             [ub,lb,beta0] = set_init_params(res, index, estimation );
-            fprintf(1,'b0: %f | %f | %f\n' , beta0(1) , beta0(2) , beta0(3));
+            %fprintf(1,'b0: %f | %f | %f\n' , beta0(1) , beta0(2) , beta0(3));
             %
             [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
-            fprintf(1,'%2d: %f | %f | %f (%f)\n' , max_count , ahat_t(1) , ahat_t(2) , ahat_t(3) , resnorm_t);
+            %fprintf(1,'%2d: %f | %f | %f (%f)\n' , max_count , ahat_t(1) , ahat_t(2) , ahat_t(3) , resnorm_t);
             %
             if all_params_changed(beta0,ahat_t)
                 if resnorm_t < resnorm
@@ -66,6 +68,7 @@ function [ output ] = analytical_estimator( input, model , draw_plot )
                 end
                 count_test = count_test - 1;
             else
+                count_test = COUNT_TEST;
                 max_count = max_count - 1;    
             end
         end

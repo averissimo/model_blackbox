@@ -14,17 +14,20 @@ function [ estimation ] = build_estimation( params )
         paramdata.lowbounds(x,1) = params.states(x).bottom;
         paramdata.highbounds(x,1) = params.states(x).top;
     end
-    % Initial conditions (always experiment dependend)
-    % Names    Lower bounds  Upper bounds
-    len = length(params.initial);
     icdata = struct;%cell(len,3);
-    for x = 1:len
-        icdata.names{x,1} = params.initial(x).name;
-        icdata.lowbounds(x,1) = params.initial(x).bottom;
-        icdata.highbounds(x,1) = params.initial(x).top;
+    if isfield( params , 'initial')
+        % Initial conditions (always experiment dependend)
+        % Names    Lower bounds  Upper bounds
+        len = length(params.initial);
+        
+        for x = 1:len
+            icdata.names{x,1} = params.initial(x).name;
+            icdata.lowbounds(x,1) = params.initial(x).bottom;
+            icdata.highbounds(x,1) = params.initial(x).top;
+        end
+        % Local (experiment dependend) parameters
+        % Names    Lower bounds  Upper bounds
     end
-    % Local (experiment dependend) parameters
-    % Names    Lower bounds  Upper bounds
     paramdatalocal = struct();
 
     % Model and experiment settings
