@@ -5,7 +5,6 @@ A      = params(1);
 lambda = params(2);
 mu     = params(3);
 
-F = A / (1 + exp( (4 * mu) / A * (lambda - t) + 2 ))
-
+F = A ./ (1 + exp( (4 * mu) ./ A * (lambda - t) + 2 ));
 
 end
