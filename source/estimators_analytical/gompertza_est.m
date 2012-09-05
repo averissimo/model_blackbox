@@ -1,4 +1,4 @@
-function output = gompertza_est(test_data, plot)
+function output = gompertza_est(test_data, draw_plot)
 %
     %% get inputs
     % input paramters are in the environment variable "QUERY_STRING"
@@ -13,7 +13,7 @@ function output = gompertza_est(test_data, plot)
     %% define model
     model = @gompertza;
     flag = 0;
-    if nargin > 1 && plot
+    if nargin > 1 && draw_plot
         flag = 1;
     end
     %% perform parameter estimation

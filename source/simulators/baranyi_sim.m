@@ -1,4 +1,4 @@
-function baranyi_sim( test_data )
+function baranyi_sim( test_data, draw_plot )
 %BARANYI Summary of this function goes here
 %   Detailed explanation goes here
 %#function SBPDsimulate
@@ -8,7 +8,8 @@ function baranyi_sim( test_data )
 % setenv('QUERY_STRING','m=5.000000,&y0=0.001381,&h0=2&ymax=5.000000,&mu=0.246028,&v= 0.325587,&N=0.120706&end=20');
 
 if nargin > 0 && test_data
-    input = qs2struct('h0=0.733564&m=0.534439&mu=2.570644&N=0.042879&v=4.99849&y0=-4.858&ymax=0.000875&end=25');	
+    s = 'm=5.000000,&y0=0.001381,&h0=2&ymax=5.000000,&mu=0.246028,&v= 0.325587,&N=0.120706&end=20';
+    input = qs2struct(s);	
 else
     input = qs2struct(getenv('QUERY_STRING'));
 end
@@ -35,6 +36,9 @@ try
     %simdata = SBPDsimulate(MEXmodel_global,TimeEnd,inicond,parameters,paravalues);
     %
     M = [ simdata.statevalues(:,2) simdata.statevalues(:,1)];
+    if nargin > 1 && draw_plot
+        plot(M(:,1) , M(:,2));
+    end
     printJson(M) 
 catch err
     msg = sprintf('{ "error": "%s" }\n',err.message);

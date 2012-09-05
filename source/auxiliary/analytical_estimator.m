@@ -1,4 +1,4 @@
-function [ output ] = analytical_estimator( model , plot )
+function [ output ] = analytical_estimator( input, model , draw_plot )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -53,10 +53,10 @@ function [ output ] = analytical_estimator( model , plot )
         while max_count >= 0 && count_test >= 0
             %
             [ub,lb,beta0] = set_init_params(res, index, estimation );
-            %fprintf(1,'b0: %f | %f | %f\n' , beta0(1) , beta0(2) , beta0(3));
+            fprintf(1,'b0: %f | %f | %f\n' , beta0(1) , beta0(2) , beta0(3));
             %
             [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
-            %fprintf(1,'%2d: %f | %f | %f\n' , max_count , ahat_t(1) , ahat_t(2) , ahat_t(3));
+            fprintf(1,'%2d: %f | %f | %f (%f)\n' , max_count , ahat_t(1) , ahat_t(2) , ahat_t(3) , resnorm_t);
             %
             if all_params_changed(beta0,ahat_t)
                 if resnorm_t < resnorm
@@ -80,7 +80,7 @@ function [ output ] = analytical_estimator( model , plot )
         fprintf(1,'}\n');
         %
         % if plot argument is true
-        if plot
+        if draw_plot
             xrange= min(time):.01:max(time);
             hold on;
             [~,len] = size(time);

@@ -1,4 +1,4 @@
-function [ output ] = gompertza_sim( test_data , plot )
+function [ output ] = gompertza_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
@@ -19,9 +19,10 @@ function [ output ] = gompertza_sim( test_data , plot )
         values = model(params , TimeEnd);
         output = [ transpose(TimeEnd) transpose(values) ];
         
-        if nargin > 1 && plot
-            scatter(TimeEnd,values);
+        if nargin > 1 && draw_plot
+            plot(TimeEnd,values);
         end
+        printJson(output);
     catch err
         msg = sprintf('{ "error": "%s" }\n',err.message);
         printHeader(length(msg));
