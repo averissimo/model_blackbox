@@ -41,12 +41,12 @@ function [ estimation ] = build_estimation( params )
     estimation.optimization.method = 'simplexSB';
     estimation.optimization.options.maxfunevals = 50000;
     estimation.optimization.options.maxiter = 20000;
-    estimation.optimization.options.tolfun = 1e-10;
-    estimation.optimization.options.tolx = 1e-10;
+    estimation.optimization.options.tolfun = 1e-14;
+    estimation.optimization.options.tolx = 1e-14;
 
     % Integrator settings
-    estimation.integrator.options.abstol = 1e-006;
-    estimation.integrator.options.reltol = 1e-006;
+    estimation.integrator.options.abstol = 1e-6;
+    estimation.integrator.options.reltol = 1e-6;
     estimation.integrator.options.minstep = 0;
     estimation.integrator.options.maxstep = Inf;
     estimation.integrator.options.maxnumsteps = 10000;
