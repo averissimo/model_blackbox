@@ -1,4 +1,4 @@
-function [ output ] = analytical_estimator( input, model , draw_plot )
+function [ output ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 %#function lsqcurvefit
@@ -30,6 +30,19 @@ COUNT_TEST = 5;
         estimat = strrep(estimat, '%7D' , '}');
         % reads json
         estimation = build_estimation( loadjson( estimat ) );
+        %% Options for estimation
+        options = optimset('DerivativeCheck','on','FinDiffType','central','Display','off');
+        % options retrieved from build estimation
+        options.MaxIter = estimation.optimization.options.maxiter;
+        options.MaxFunEvals = estimation.optimization.options.maxfunevals;
+        options.TolFun = estimation.optimization.options.tolfun;
+        options.TolX = estimation.optimization.options.tolx;
+        
+        custom_fieldnames = fieldnames(custom_options);
+        for j = 1:length(custom_fieldnames);
+            options.(char(custom_fieldnames(j))) = custom_options.(char(custom_fieldnames(j)));
+        end
+        
         % sorting by parameters name (convention!)
         [res index] = sort(lower(estimation.parameters.names));
         %
@@ -39,14 +52,6 @@ COUNT_TEST = 5;
         % params(2): lambda
         % params(3): miu
         %
-        %% Estimation
-        options = optimset('DerivativeCheck','on','FinDiffType','central','Display','off');
-        % options retrieved from build estimation
-        options.MaxIter = estimation.optimization.options.maxiter;
-        options.MaxFunEvals = estimation.optimization.options.maxfunevals;
-        options.TolFun = estimation.optimization.options.tolfun;
-        options.TolX = estimation.optimization.options.tolx;
-        
         max_count = MAX_COUNT;
         count_test = COUNT_TEST;
         resnorm = Inf;
@@ -56,11 +61,21 @@ COUNT_TEST = 5;
         while max_count >= 0 && count_test >= 0
             %
             [ub,lb,beta0] = set_init_params(res, index, estimation );
-            %fprintf(1,'b0: %f | %f | %f\n' , beta0(1) , beta0(2) , beta0(3));
-            %
+            if debug
+                fprintf(1,'b0: ');
+                for j = 1:length(beta0)
+                    fprintf(1,'%f | ' , beta0(j) );
+                end
+                fprintf(1,' start point for parameters\n');
+            end
             [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
-            %fprintf(1,'%2d: %f | %f | %f (%f)\n' , max_count , ahat_t(1) , ahat_t(2) , ahat_t(3) , resnorm_t);
-            %
+            if debug
+                fprintf(1,'%2d: ', max_count);
+                for j = 1:length(ahat_t)
+                    fprintf(1,'%f | ' , ahat_t(j));
+                end
+                fprintf(1,'(%f)\n' , resnorm_t);
+            end
             if all_params_changed(beta0,ahat_t)
                 if resnorm_t < resnorm
                    resnorm = resnorm_t;
