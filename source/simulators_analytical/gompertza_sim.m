@@ -2,7 +2,9 @@ function [ output ] = gompertza_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        input = qs2struct('A=7.050965&lambda=88.318105&miu=0.014470&N=1.5&end=467');
+        s = 'A=7.050965&lambda=88.318105&miu=0.014470&N=1.5&end=467';
+        s = 'miu=7.050965&lambda=88.318105&A=0.01447&end=467.50000000000006';
+        input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));    
     end

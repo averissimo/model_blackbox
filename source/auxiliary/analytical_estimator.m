@@ -77,7 +77,7 @@ COUNT_TEST = 5;
         fprintf(1,'{\n');
 
         for j = 1:length(res)
-           fprintf( 1 , '\t"%s": %f' , res{index(j)} , ahat(j) );
+           fprintf( 1 , '\t"%s": %f' , res{j} , ahat(j) );
            fprintf(1,',\n');
         end
         fprintf(1,'\t"N": 0,\n\t"o": %.14f\n' , output.firstorderopt);
