@@ -1,0 +1,7 @@
+# use source <this_file> to setup environment
+
+export LD_LIBRARY_PATH="/opt/MATLAB/MATLAB_Compiler_Runtime/v713/runtime/glnx86"
+echo "LD_LIBRARY="$LD_LIBRARY_PATH
+export XAPPLRESDIR="/opt/MATLAB/MATLAB_Compiler_Runtime/v713/X11/app-defaults/"
+echo "XAPPLRESDIR="$XAPPLRESDIR
+
