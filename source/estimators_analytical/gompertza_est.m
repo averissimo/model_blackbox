@@ -18,8 +18,12 @@ function output = gompertza_est(test_data, draw_plot)
     if nargin > 1 && draw_plot
         flag = 1;
     end
+    debug_flag = 0;
+    if nargin > 2 && debug
+        debug_flag = 1;
+    end
     %% perform parameter estimation
-    output = analytical_estimator(input, model, flag);
+    output = analytical_estimator(input, model, options, flag, debug_flag);
 
 end
 

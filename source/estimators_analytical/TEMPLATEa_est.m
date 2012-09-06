@@ -15,8 +15,11 @@ function output = TEMPLATEa_est(test_data, draw_plot) % << change
     if nargin > 1 && draw_plot
         flag = 1;
     end
-    %% perform parameter estimation
-    output = analytical_estimator(input, model, flag);
+    debug_flag = 0;
+    if nargin > 2 && debug
+        debug_flag = 1;
+    end
+    output = analytical_estimator(input, model, struct, flag, debug_flag);
 
 end
 
