@@ -31,7 +31,7 @@ COUNT_TEST = 5;
         % reads json
         estimation = build_estimation( loadjson( estimat ) );
         % sorting by parameters name (convention!)
-        [res index] = sort(estimation.parameters.names);
+        [res index] = sort(lower(estimation.parameters.names));
         %
         %% model (with parameters sorted by name)
         % parameters' name reflects what is defined in the application
@@ -77,7 +77,7 @@ COUNT_TEST = 5;
         fprintf(1,'{\n');
 
         for j = 1:length(res)
-           fprintf( 1 , '\t"%s": %f' , res{j} , ahat(j) );
+           fprintf( 1 , '\t"%s": %f' , estimation.parameters.names{index(j)} , ahat(j) );
            fprintf(1,',\n');
         end
         fprintf(1,'\t"o": %.14f\n' , resnorm);
