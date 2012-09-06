@@ -14,17 +14,20 @@ function [ estimation ] = build_estimation( params )
         paramdata.lowbounds(x,1) = params.states(x).bottom;
         paramdata.highbounds(x,1) = params.states(x).top;
     end
-    % Initial conditions (always experiment dependend)
-    % Names    Lower bounds  Upper bounds
-    len = length(params.initial);
     icdata = struct;%cell(len,3);
-    for x = 1:len
-        icdata.names{x,1} = params.initial(x).name;
-        icdata.lowbounds(x,1) = params.initial(x).bottom;
-        icdata.highbounds(x,1) = params.initial(x).top;
+    if isfield( params , 'initial')
+        % Initial conditions (always experiment dependend)
+        % Names    Lower bounds  Upper bounds
+        len = length(params.initial);
+        
+        for x = 1:len
+            icdata.names{x,1} = params.initial(x).name;
+            icdata.lowbounds(x,1) = params.initial(x).bottom;
+            icdata.highbounds(x,1) = params.initial(x).top;
+        end
+        % Local (experiment dependend) parameters
+        % Names    Lower bounds  Upper bounds
     end
-    % Local (experiment dependend) parameters
-    % Names    Lower bounds  Upper bounds
     paramdatalocal = struct();
 
     % Model and experiment settings
@@ -41,12 +44,12 @@ function [ estimation ] = build_estimation( params )
     estimation.optimization.method = 'simplexSB';
     estimation.optimization.options.maxfunevals = 50000;
     estimation.optimization.options.maxiter = 20000;
-    estimation.optimization.options.tolfun = 1e-10;
-    estimation.optimization.options.tolx = 1e-10;
+    estimation.optimization.options.tolfun = 1e-14;
+    estimation.optimization.options.tolx = 1e-14;
 
     % Integrator settings
-    estimation.integrator.options.abstol = 1e-006;
-    estimation.integrator.options.reltol = 1e-006;
+    estimation.integrator.options.abstol = 1e-6;
+    estimation.integrator.options.reltol = 1e-6;
     estimation.integrator.options.minstep = 0;
     estimation.integrator.options.maxstep = Inf;
     estimation.integrator.options.maxnumsteps = 10000;
