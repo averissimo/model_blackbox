@@ -6,7 +6,7 @@ function [ output ] = analytical_estimator( input, model , draw_plot )
 MAX_COUNT = 20;
 COUNT_TEST = 5;
 
-    try
+%    try
         %% print html header that tells it is json data
         printHeader( 0 );
         %
@@ -80,7 +80,7 @@ COUNT_TEST = 5;
            fprintf( 1 , '\t"%s": %f' , res{j} , ahat(j) );
            fprintf(1,',\n');
         end
-        fprintf(1,'\t"N": 0,\n\t"o": %.14f\n' , output.firstorderopt);
+        fprintf(1,'\t"o": %.14f\n' , resnorm);
         fprintf(1,'}\n');
         %
         % if plot argument is true
@@ -94,10 +94,10 @@ COUNT_TEST = 5;
             plot(xrange,model(ahat,xrange),'r');
             hold off;
         end
-    catch err
-        msg = sprintf('{ "error": "%s" }\n',err.message);
-        fprintf(1,'%s',msg);
-    end
+%    catch err
+%        msg = sprintf('{ "error": "%s" }\n',err.message);
+%        fprintf(1,'%s',msg);
+%    end
 
 end
 

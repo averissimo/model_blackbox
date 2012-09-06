@@ -4,6 +4,7 @@ function [ output ] = gompertza_sim( test_data , draw_plot )
     if nargin > 0 && test_data
         s = 'A=7.050965&lambda=88.318105&miu=0.014470&N=1.5&end=467';
         s = 'miu=7.050965&lambda=88.318105&A=0.01447&end=467.50000000000006';
+        s = 'miu=0.01447&lambda=88.318105&A=7.050965&end=467.50000000000006';
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));    
@@ -14,6 +15,7 @@ function [ output ] = gompertza_sim( test_data , draw_plot )
         params(1) = str2double( input.A );
         params(2) = str2double( input.lambda );
         params(3) = str2double( input.miu );
+        params(4) = str2double( input.N );
         TimeEnd = timeStep( str2double( input.end ) );
         %
         model = @gompertza;
