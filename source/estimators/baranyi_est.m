@@ -8,7 +8,29 @@ function baranyi_est()
 
 %
 % example:
-% setenv('QUERY_STRING','time=[0,1.167,2,3.167,4.083,5.333,6.333,7.250,8.250,9,9.917,11,11.833]&values=[0.051,0.074,0.104,0.155,0.205,0.283,0.380,0.447,0.618,0.715,0.792,1.923,1.953]&estimation=%7B"states":[%7B"name":"m","bottom":0,"top":5%7C,%7B"name":"y0","bottom":0,"top":5%7C,%7B"name":"ymax","bottom":0,"top":5%7C,%7B"name":"mu","bottom":0,"top":2%7C,%7B"name":"v","bottom":0,"top":5%7C,%7B"name":"h0","bottom":0,"top":5%7C],"initial":[%7B"name":"N","bottom":0,"top":1%7C,%7B"name":"t","bottom":0,"top":0%7C]%7C')
+%qs.time='[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0];[0.0,1.0,2.0,3.0,4.0,5.0];[0.0,1.0,2.1,3.0,4.1,5.1,6.0,7.0];[0.0,1.0,2.1,3.0,4.1,5.1,6.0,7.0];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,25.6];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.05];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.05,23.42];[0.0,1.317,2.0,2.983,3.983,4.917,6.0];[0.0,0.917,2.083,2.917,4.083,5.0,6.167,7.25]';
+%qs.values='[0.04,0.113,0.363,0.924,1.632,2.288,2.172,2.188];[0.06,0.244,0.528,1.28,2.192,2.188];[0.068,0.143,0.391,0.994,1.78,2.268,2.336,2.308];[0.055,0.116,0.27,0.6,1.348,2.04,2.292,2.272];[0.067,0.157,0.396,0.962,1.828,1.996,2.032,1.952];[0.07,0.139,0.404,0.994,1.884,2.044,2.1,1.92,1.932];[0.06,0.12,0.29,0.77,1.64,2.42,2.515,2.4];[0.06,0.13,0.34,0.91,1.81,2.03,2.535,2.47,2.5];[0.049,0.142,0.274,0.682,1.448,1.952,2.296];[0.052,0.091,0.288,0.63,1.437,2.07,2.352,2.22]';
+
+%qs.h0.bottom='0.0354086';
+%qs.h0.top='3.54086';
+%qs.m.bottom='-5.47651';
+%qs.m.top='47.651';
+%qs.mu.bottom='0.020515';
+%qs.mu.top='15';
+%qs.v.bottom='-5.0147768';
+%qs.v.top='1.47768';
+%qs.y0.bottom='-5.244751';
+%qs.y0.top='24.4751';
+%qs.ymax.bottom='0.458376';
+%qs.ymax.top='30.8376';
+%qs.N.bottom='-10';
+%qs.N.top='30';
+%qs.t.bottom='0';
+%qs.t.top='100';
+
+%query = sprintf('time=%s&values=%s&estimation=%%7B%%22states%%22:[%%7B%%22name%%22:%%22h0%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22m%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22mu%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22v%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22y0%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22ymax%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D],%%22initial%%22:[%%7B%%22name%%22:%%22N%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D,%%7B%%22name%%22:%%22t%%22,%%22bottom%%22:%s,%%22top%%22:%s%%7D]%%7D',qs.time,qs.values,qs.h0.bottom,qs.h0.top,qs.m.bottom,qs.m.top,qs.mu.bottom,qs.mu.top,qs.v.bottom,qs.v.top,qs.y0.bottom,qs.y0.top,qs.ymax.bottom,qs.ymax.top,qs.N.bottom,qs.N.top,qs.t.bottom,qs.t.top);
+%setenv('QUERY_STRING',query)
+%setenv('QUERY_STRING','time=[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0];[0.0,1.0,2.0,3.0,4.0,5.0];[0.0,1.0,2.1,3.0,4.1,5.1,6.0,7.0];[0.0,1.0,2.1,3.0,4.1,5.1,6.0,7.0];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,25.6];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.05];[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.05,23.42];[0.0,1.317,2.0,2.983,3.983,4.917,6.0];[0.0,0.917,2.083,2.917,4.083,5.0,6.167,7.25]&values=[0.04,0.113,0.363,0.924,1.632,2.288,2.172,2.188];[0.06,0.244,0.528,1.28,2.192,2.188];[0.068,0.143,0.391,0.994,1.78,2.268,2.336,2.308];[0.055,0.116,0.27,0.6,1.348,2.04,2.292,2.272];[0.067,0.157,0.396,0.962,1.828,1.996,2.032,1.952];[0.07,0.139,0.404,0.994,1.884,2.044,2.1,1.92,1.932];[0.06,0.12,0.29,0.77,1.64,2.42,2.515,2.4];[0.06,0.13,0.34,0.91,1.81,2.03,2.535,2.47,2.5];[0.049,0.142,0.274,0.682,1.448,1.952,2.296];[0.052,0.091,0.288,0.63,1.437,2.07,2.352,2.22]&estimation=%7B"states":[%7B"name":"h0","bottom":-5.0,"top":5.0%7D,%7B"name":"m","bottom":-5.0,"top":5.0%7D,%7B"name":"mu","bottom":0.0,"top":3.0%7D,%7B"name":"v","bottom":-5.0,"top":5.0%7D,%7B"name":"y0","bottom":-5.0,"top":5.0%7D,%7B"name":"ymax","bottom":0.0,"top":10.0%7D],"initial":[%7B"name":"N","bottom":0.0,"top":0.0%7D,%7B"name":"t","bottom":0,"top":100%7D]%7D');
 
 %% get inputs
 % input paramters are in the environment variable "QUERY_STRING"
@@ -29,22 +51,32 @@ try
     printHeader( 0 );
     %%
     %
+    %% experiments
+    experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , SBexperiment, 'measurements' , '');
+    
     %% measurements
-    time = str2num(input.time)';
-    values = str2num(input.values)';
-    str = SBstruct(SBmeasurement());
-    str.name = 'estimation';
-    str.notes = '';
-    str.time = time;
-    maxmin = NaN(size(values,1),1);
-    str.data = struct( 'name' , 'N' ,  'notes' , [] , 'values', values , 'maxvalues', maxmin , 'minvalues' , maxmin );
-    measurement = SBmeasurement( str );
-    %
+    % multiple measurements for one experiment
+    time_s_array = textscan(input.time,'%s','delimiter',';');
+    value_s_array = textscan(input.values,'%s','delimiter',';');
+    len = length(time_s_array{1});
+    
+    for i = 1:len
+        time = str2num(char(time_s_array{1}(i)));
+        values = str2num(char(value_s_array{1}(i)));
+        str = SBstruct(SBmeasurement());
+        str.name = 'estimation';
+        str.notes = '';
+        str.time = time;
+        maxmin = NaN(size(values,1),1);
+        str.data = struct( 'name' , 'N' ,  'notes' , [] , 'values', values , 'maxvalues', maxmin , 'minvalues' , maxmin );
+        measurement = SBmeasurement( str );
+        %
+        %% project
+        experiments.measurements{i} = measurement;
+    
+    end
     %% model
     model = SBmodel( strcat('models/',MEXmodel_global,'.txt') );
-    %% project
-    experiments = struct( 'name' , 'test', 'notes' , '', 'experiment' , [SBexperiment], 'measurements' , '');
-    experiments.measurements = { measurement };
     %
     proj_s = struct(SBPDproject());
     proj_s.experiments = experiments;
@@ -78,135 +110,10 @@ try
     fprintf(1,'}\n');
     close all;
     
-catch e
-    fprintf(1,'{ "error": "%s" }\n',e.message);
-    %fprintf(1,'{ "error": "%s" }\n',e.stack(0).file);
+catch err
+    msg = sprintf('{ "error": "%s" }\n',err.message);
+    printHeader(length(msg));
+    fprintf(1,'%s',msg);
 end
-
-end
-
-function printHeader(len)
-fprintf(1,'Content-type: application/json; charset=utf-8\n');
-fprintf(1,'Cache-control: max-age=0, private, must-revalidate\n');
-if ( len > 0)
-    fprintf(1,'Content-length: %i\n',len);
-end
-fprintf(1,'Access-Control-Allow-Origin: *\n');
-
-
-fprintf(1,'\r\n');
-end
-function printJson(M)
-json = savejson('result',M);
-printHeader( length(json) );
-fprintf(1,'%s',json);
-end
-function x=qs2struct(qs)
-% return the query string as a structure
-% each field is a paramter name
-% the value of the field is its value as a string
-
-% an example query string:
-% myinput=test&size=2&num=10
-
-% get the indeces of the characters that divide names and fields
-div = [0,strfind(qs,'&'),length(qs)+1];
-eq = strfind(qs,'=');
-
-x.querystring = qs;
-for i=1:length(eq)
-    field = qs(div(i)+1:eq(i)-1); %field string
-    value = qs(eq(i)+1:div(i+1)-1); %value stirng
-    x = setfield(x,field,value); %place in structure
-end
-end
-function model = build_model( json_model )
-%BUILD_MODEL Summary of this function goes here
-%   Detailed explanation goes here
-
-    model = SBstruct(SBmodel());
-    names = fieldnames(model);
-    has_name = isfield( json_model , names );
-    
-    arrayfun( @(x,y)( first( x,y) ), has_name , names);
-    
-    % first level function
-    function first( x, y )
-        if x == 1
-            if isstruct(model.(char(y)))
-                names_2 = fieldnames(model.(char(y)));
-                has_name_2 = isfield(json_model.(char(y)) , names_2);
-                arrayfun( @(z,w)( second(z,y,w) ) , has_name_2 , names_2 );
-            end
-            model.(char(y)) = json_model.(char(y));
-        end
-    end
-    % second level function
-    function second( z , k, w )
-        if z == 0
-            size = length( json_model.(char(k)) );
-            for c = 1:size
-               json_model.(char(k))(c).(char(w)) = '';
-            end
-        end
-    end   
-end
-
-function estimation=build_estimation(params)
-
-%% DEFINE THE ESTIMATION INFORMATION (STRUCTURE)
-estimation = [];
-% Global parameters
-% Names    Lower bounds  Upper bounds
-len = length(params.states);
-paramdata = cell(len,3);
-for x = 1:len
-    paramdata{x,1} = params.states(x).name;
-    paramdata{x,2} = params.states(x).bottom;
-    paramdata{x,3} = params.states(x).top;
-end
-% Initial conditions (always experiment dependend)
-% Names    Lower bounds  Upper bounds
-len = length(params.initial);
-icdata = cell(len,3);
-for x = 1:len
-    icdata{x,1} = params.initial(x).name;
-    icdata{x,2} = params.initial(x).bottom;
-    icdata{x,3} = params.initial(x).top;
-end
-% Local (experiment dependend) parameters
-% Names    Lower bounds  Upper bounds
-paramdatalocal = {
-};
-
-% Model and experiment settings
-estimation.modelindex = 1;
-estimation.experiments.indices = [1];
-estimation.experiments.weight = [1];
-
-% Optimization settings
-estimation.optimization.method = 'simplexSB';
-estimation.optimization.options.maxfunevals = 50000;
-estimation.optimization.options.maxiter = 20000;
-estimation.optimization.options.tolfun = 1e-10;
-estimation.optimization.options.tolx = 1e-10;
-
-% Integrator settings
-estimation.integrator.options.abstol = 1e-006;
-estimation.integrator.options.reltol = 1e-006;
-estimation.integrator.options.minstep = 0;
-estimation.integrator.options.maxstep = Inf;
-estimation.integrator.options.maxnumsteps = 1000;
-
-% Flags
-estimation.displayFlag = 1; % show iterations and final message
-estimation.scalingFlag = 1; % scale by mean values
-estimation.timescalingFlag = 0; % do not apply time-scaling
-estimation.initialconditionsFlag = 1; % do use initial conditions from measurement data (if available)
-
-% Always needed (do not change ... unless you know what you do)
-estimation.parameters = paramdata;
-estimation.parameterslocal = paramdatalocal;
-estimation.initialconditions = icdata;
 
 end
