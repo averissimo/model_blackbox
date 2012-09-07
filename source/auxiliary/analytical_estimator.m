@@ -68,7 +68,12 @@ COUNT_TEST = 5;
                 end
                 fprintf(1,' start point for parameters\n');
             end
-            [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
+            try
+                [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
+            catch err_sqr
+                max_count = max_count - 1;
+                continue;
+            end
             if debug
                 fprintf(1,'%2d: ', max_count);
                 for j = 1:length(ahat_t)
