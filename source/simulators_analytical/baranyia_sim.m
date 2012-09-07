@@ -14,7 +14,7 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         %
         params(1) = str2double( input.h0 );
         params(2) = str2double( input.m );
-        params(3) = str2double( input.miu );
+        params(3) = str2double( input.mu );
         params(4) = str2double( input.v );
         params(5) = str2double( input.y0 );
         params(6) = str2double( input.ymax );
