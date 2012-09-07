@@ -3,7 +3,7 @@ function [ output ] = analytical_estimator( input, model , custom_options, draw_
 %   Detailed explanation goes here
 %#function lsqcurvefit
 
-MAX_COUNT = 20;
+MAX_COUNT = 25;
 COUNT_TEST = 5;
 
     try
@@ -64,20 +64,23 @@ COUNT_TEST = 5;
             if debug
                 fprintf(1,'b0: ');
                 for j = 1:length(beta0)
-                    fprintf(1,'%f | ' , beta0(j) );
+                    fprintf(1,'%s:%f | ' , estimation.parameters.names{index(j)},beta0(j) );
                 end
                 fprintf(1,' start point for parameters\n');
             end
             try
                 [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
             catch err_sqr
+                if debug
+                   fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message); 
+                end
                 max_count = max_count - 1;
                 continue;
             end
             if debug
                 fprintf(1,'%2d: ', max_count);
                 for j = 1:length(ahat_t)
-                    fprintf(1,'%f | ' , ahat_t(j));
+                    fprintf(1,'%s:%f | ' , estimation.parameters.names{index(j)},ahat_t(j));
                 end
                 fprintf(1,'(%f)\n' , resnorm_t);
             end
@@ -94,6 +97,18 @@ COUNT_TEST = 5;
             end
         end
 
+    catch err
+        msg = sprintf('{"error": "%s" }\n',err.message);
+        fprintf(1,'%s',msg);
+        return;
+    end
+    
+    if isempty( ahat )
+        fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
+        return;
+    end
+    
+    try
         fprintf(1,'{\n');
 
         for j = 1:length(res)
@@ -115,7 +130,7 @@ COUNT_TEST = 5;
             hold off;
         end
     catch err
-        msg = sprintf('{ "error": "%s" }\n',err.message);
+        msg = sprintf('"error": "%s" }\n',err.message);
         fprintf(1,'%s',msg);
     end
 
