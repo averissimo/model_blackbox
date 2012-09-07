@@ -23,7 +23,7 @@ function output = gompertza_est(test_data, draw_plot)
         debug_flag = 1;
     end
     %% perform parameter estimation
-    output = analytical_estimator(input, model, options, flag, debug_flag);
+    output = analytical_estimator(input, model, struct , flag, debug_flag);
 
 end
 
