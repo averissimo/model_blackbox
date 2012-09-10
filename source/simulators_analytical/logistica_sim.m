@@ -12,6 +12,7 @@ function [ output ] = logistica_sim( test_data , draw_plot ) % << change
         params(1) = str2double( input.A );
         params(2) = str2double( input.lambda );
         params(3) = str2double( input.miu );
+        params(4) = str2double( input.N );
         TimeEnd = timeStep( str2double( input.end ) );
         %
         model = @logistica; % << change

@@ -104,7 +104,7 @@ COUNT_TEST = 5;
     end
     
     if isempty( ahat )
-        fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
+        fprintf(1,'%s\n','{"Error": "could not determine parameters, check range and try again." }');
         return;
     end
     
@@ -130,7 +130,7 @@ COUNT_TEST = 5;
             hold off;
         end
     catch err
-        msg = sprintf('"error": "%s" }\n',err.message);
+        msg = sprintf('"Error": "%s" }\n',err.message);
         fprintf(1,'%s',msg);
     end
 
