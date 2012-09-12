@@ -7,6 +7,8 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         %s = 'h0=0.733564&m=0.534439&mu=2.570644&N=0.042879&v=4.99849&y0=-4.858&ymax=0.000875&end=25';
         s = 'h0=3.713722&m=5.162075&mu=1.201054&v=1.407028&y0=0.067029&ymax=4.476695&end=7.700000000000001';
         s = 'h0=0.166148&m=0.163282&mu=0.508102&v=0.264794&y0=0.06&ymax=1.411889&end=5.5';
+        s = 'h0=10.2&m=2&mu=0.1&v=1&y0=0.1&ymax=10&end=7';
+        s = 'h0=0&m=1&mu=0.001&v=0.001&y0=0.101995&ymax=5.493876&end=1000.700000000000001';
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));    

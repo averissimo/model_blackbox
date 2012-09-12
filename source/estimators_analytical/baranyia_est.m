@@ -9,6 +9,7 @@ function output = baranyia_est(test_data, draw_plot, debug)
         s = 'time=[11.25,12.3,13.65,16.11666667,18.1,21.08333333,22.41666667,23.48333333,25.05,26.2,27.06666667,28.16666667,29.31666667]&values=[0.021,0.021,0.021,0.024,0.026,0.039,0.058,0.089,0.182,0.33,0.51,0.832,0.98]&estimation={"states":[{"name":"h0","bottom":-5.0,"top":100.0},{"name":"m","bottom":-5.0,"top":5.0},{"name":"mu","bottom":0.0,"top":3.0},{"name":"v","bottom":-5.0,"top":5.0},{"name":"y0","bottom":-5.0,"top":5.0},{"name":"ymax","bottom":0.1,"top":10.0}]}';
         s = 'time=[11.25,12.3,13.65,16.11666667,18.1,21.08333333,22.41666667,23.48333333,25.05,26.2,27.06666667,28.16666667,29.31666667]&values=[0.021,0.021,0.021,0.024,0.026,0.039,0.058,0.089,0.182,0.33,0.51,0.832,0.98]&estimation={"states":[{"name":"h0","bottom":-5.0,"top":100.0},{"name":"m","bottom":0.1,"top":5.0},{"name":"mu","bottom":0.0,"top":3.0},{"name":"v","bottom":-5.0,"top":5.0},{"name":"y0","bottom":-5.0,"top":5.0},{"name":"ymax","bottom":0.1,"top":10.0}]}';
         s = 'time=[0.0,1.0,2.0,3.0,4.0,5.0]&values=[0.06,0.244,0.528,1.28,2.192,2.188]&estimation=%7B%22states%22:[%7B%22name%22:%22h0%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22m%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22mu%22,%22bottom%22:0.0,%22top%22:3.0%7D,%7B%22name%22:%22v%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22y0%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22ymax%22,%22bottom%22:0.0,%22top%22:10.0%7D]%7D';
+        s = 'time=[0.0,60.0,120.0,180.0,210.0,250.0,270.0,315.0,345.0,375.0,405.0,425.0]&values=[0.102,0.242,0.717,1.52,1.798,2.114,2.666,3.156,3.964,4.048,4.362,4.646]&estimation=%7B%22states%22:[%7B%22name%22:%22h0%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22m%22,%22bottom%22:0.0,%22top%22:5.0%7D,%7B%22name%22:%22mu%22,%22bottom%22:0.0,%22top%22:20.0%7D,%7B%22name%22:%22v%22,%22bottom%22:0.0,%22top%22:5.0%7D,%7B%22name%22:%22y0%22,%22bottom%22:-5.0,%22top%22:5.0%7D,%7B%22name%22:%22ymax%22,%22bottom%22:10.0,%22top%22:10.0%7D]%7D';
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));    
@@ -22,12 +23,12 @@ function output = baranyia_est(test_data, draw_plot, debug)
     end
     debug_flag = 0;
     if nargin > 2 && debug
-        debug_flag = 1;
+        debug_flag = 1; 
     end
     %% Options for estimation
     % options retrieved from build estimation
-    options.TolFun = 1e-8; % becomes too slow with default value
-    options.TolX = 1e-8; % becomes too slow with default value
+    options.TolFun = 1e-7; % becomes too slow with default value
+    options.TolX = 1e-7; % becomes too slow with default value
     %% perform parameter estimation
     output = analytical_estimator(input, model, options, flag, debug_flag);
 
