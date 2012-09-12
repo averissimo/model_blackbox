@@ -84,12 +84,12 @@ COUNT_TEST = 5;
                 end
                 fprintf(1,'(%f)\n' , resnorm_t);
             end
+            if resnorm_t < resnorm
+               resnorm = resnorm_t;
+               ahat = ahat_t;
+               output = output_t;
+            end
             if all_params_changed(beta0,ahat_t)
-                if resnorm_t < resnorm
-                   resnorm = resnorm_t;
-                   ahat = ahat_t;
-                   output = output_t;
-                end
                 count_test = count_test - 1;
             else
                 count_test = COUNT_TEST;
