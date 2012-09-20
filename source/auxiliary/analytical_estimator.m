@@ -1,4 +1,4 @@
-function [ output ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
+function [ output_args ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 %#function lsqcurvefit
@@ -12,8 +12,7 @@ COUNT_TEST = 5;
         method = getenv('REQUEST_METHOD');
         if strcmp(method,'POST')
             post = '';
-            %fid = fopen('/dev/fd/0');
-            fid = fopen('/home/dev/test_long');
+            fid = fopen('/dev/fd/0');
             eof = 1;
             while eof == 1
                 post_tmp = fgets(fid,Inf);
@@ -125,15 +124,14 @@ COUNT_TEST = 5;
         end
 
     catch err
-        msg = sprintf('{"error": "%s" }\n',err.message);
-        fprintf(1,'%s',msg);
-        output = -1;
+        print_error_json(err,1);
+        output_args = -1;
         return;
     end
     
     if isempty( ahat )
-        fprintf(1,'%s\n','{"Error": "could not determine parameters, check range and try again." }');
-        output = -1;
+        fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
+        output_args = -1;
         return;
     end
     
@@ -159,12 +157,11 @@ COUNT_TEST = 5;
             hold off;
         end
     catch err
-        msg = sprintf('"error": "%s" }\n',err.message);
-        fprintf(1,'%s',msg);
-        output = -1;
+        print_error_json(err,1,1);
+        output_args = -1;
         return;
     end
-    output = 0;
+    output_args = 0;
         
 end
 
