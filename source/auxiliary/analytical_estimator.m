@@ -7,12 +7,31 @@ MAX_COUNT = 25;
 COUNT_TEST = 5;
 
     try
+        
+        %% check if it is a POST or GET method
+        method = getenv('REQUEST_METHOD');
+        if 1 == 1 || strcmp(method,'POST')
+            post = '';
+            %fid = fopen('/dev/fd/0');
+            fid = fopen('/home/dev/test_long');
+            eof = 1;
+            while eof == 1
+                post_tmp = fgets(fid,Inf);
+                if post_tmp == -1
+                    eof = 0;
+                else
+                    post = strcat(post,post_tmp);
+                end
+            end
+            input = qs2struct(post);
+            fclose(fid);
+        end
         %% print html header that tells it is json data
         printHeader( 0 );
         %
         %% builds time (x) and values (y) matrices
-        time_s_array = textscan(input.time,'%s','delimiter',';');
-        value_s_array = textscan(input.values,'%s','delimiter',';');
+        time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
+        value_s_array = textscan(input.values,'%s','delimiter',';','BufSize',length(input.values)+100);
         len = length(time_s_array{1});
         time = [];
         values = [];
@@ -100,11 +119,13 @@ COUNT_TEST = 5;
     catch err
         msg = sprintf('{"error": "%s" }\n',err.message);
         fprintf(1,'%s',msg);
+        output = -1;
         return;
     end
     
     if isempty( ahat )
         fprintf(1,'%s\n','{"Error": "could not determine parameters, check range and try again." }');
+        output = -1;
         return;
     end
     
@@ -130,9 +151,12 @@ COUNT_TEST = 5;
             hold off;
         end
     catch err
-        msg = sprintf('"Error": "%s" }\n',err.message);
+        msg = sprintf('"error": "%s" }\n',err.message);
         fprintf(1,'%s',msg);
+        output = -1;
+        return;
     end
-
+    output = 0;
+        
 end
 
