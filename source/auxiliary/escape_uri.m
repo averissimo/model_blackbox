@@ -14,16 +14,16 @@ function [ output_args ] = escape_uri( input_args )
     end
     
     function output = escape_uri_string( string )
-        output = strrep(string , '%2C' , ',');
-        %output = strrep(output, '%5D' , ']');
-        %output = strrep(output, '%5B' , '[');
-        output = strrep(output, '%5D' , '');
-        output = strrep(output, '%5B' , '');
-        output = strrep(output, '%3B' , ';');
-        output = strrep(output, '%7D' , '}');
-        output = strrep(output, '%7B' , '{');
-        output = strrep(output, '+' , ' ');
-        output = strrep(output, '%20' , ' ');
+        output = regexprep(string , '%2C' , ',', 'ignorecase');
+        %output = regexprep(output, '%5D' , ']', 'ignorecase');
+        %output = regexprep(output, '%5B' , '[', 'ignorecase');
+        output = regexprep(output, '%5D' , '', 'ignorecase');
+        output = regexprep(output, '%5B' , '', 'ignorecase');
+        output = regexprep(output, '%3B' , ';', 'ignorecase');
+        output = regexprep(output, '%7D' , '}', 'ignorecase');
+        output = regexprep(output, '%7B' , '{', 'ignorecase');
+        output = regexprep(output, '+' , ' ', 'ignorecase');
+        output = regexprep(output, '%20' , ' ', 'ignorecase');
     end
 end
 
