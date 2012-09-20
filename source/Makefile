@@ -6,6 +6,12 @@ MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I models
 
 all: gompertz baranyi gompertza baranyia logistica richardsa schnutea clean
 
+
+test: estimators_analytical/test.m
+	$(MCC) $(MFLAGS) estimators_analytical/test.m
+	mv test ../estimators/test.cgi
+
+
 # Gompertz (SBT2)
 #############################
 

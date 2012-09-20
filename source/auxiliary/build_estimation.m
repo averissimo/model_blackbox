@@ -6,24 +6,24 @@ function [ estimation ] = build_estimation( params )
     estimation = [];
     % Global parameters
     % Names    Lower bounds  Upper bounds
-    len = length(params.states);
+    len = length(params.param_bottom);
     %paramdata = cell(len,3);
     paramdata = struct;
     for x = 1:len
-        paramdata.names{x,1} = params.states(x).name;
-        paramdata.lowbounds(x,1) = params.states(x).bottom;
-        paramdata.highbounds(x,1) = params.states(x).top;
+        paramdata.names{x,1} = params.param_names{1}{x};
+        paramdata.lowbounds(x,1) = params.param_bottom(x);
+        paramdata.highbounds(x,1) = params.param_top(x);
     end
     icdata = struct;%cell(len,3);
-    if isfield( params , 'initial')
+    if isfield( params , 'ic_names')
         % Initial conditions (always experiment dependend)
         % Names    Lower bounds  Upper bounds
-        len = length(params.initial);
+        len = length(params.ic_bottom);
         
         for x = 1:len
-            icdata.names{x,1} = params.initial(x).name;
-            icdata.lowbounds(x,1) = params.initial(x).bottom;
-            icdata.highbounds(x,1) = params.initial(x).top;
+            icdata.names{x,1} = params.ic_names{1}{x};
+            icdata.lowbounds(x,1) = params.ic_bottom(x);
+            icdata.highbounds(x,1) = params.ic_top(x);
         end
         % Local (experiment dependend) parameters
         % Names    Lower bounds  Upper bounds

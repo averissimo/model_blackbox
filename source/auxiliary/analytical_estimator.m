@@ -1,4 +1,4 @@
-function [ output ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
+function [ output_args ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 %#function lsqcurvefit
@@ -7,12 +7,32 @@ MAX_COUNT = 25;
 COUNT_TEST = 5;
 
     try
+        
+        %% check if it is a POST or GET method
+        method = getenv('REQUEST_METHOD');
+        if strcmp(method,'POST')
+            post = '';
+            fid = fopen('/dev/fd/0');
+            eof = 1;
+            while eof == 1
+                post_tmp = fgets(fid,Inf);
+                if post_tmp == -1
+                    eof = 0;
+                else
+                    post = strcat(post,post_tmp);
+                end
+            end
+            input = qs2struct(post);
+            fclose(fid);
+        end
         %% print html header that tells it is json data
         printHeader( 0 );
         %
+        input = escape_uri( input );
+        
         %% builds time (x) and values (y) matrices
-        time_s_array = textscan(input.time,'%s','delimiter',';');
-        value_s_array = textscan(input.values,'%s','delimiter',';');
+        time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
+        value_s_array = textscan(input.values,'%s','delimiter',';','BufSize',length(input.values)+100);
         len = length(time_s_array{1});
         time = [];
         values = [];
@@ -25,11 +45,17 @@ COUNT_TEST = 5;
         end
         %% building string 
         % starts by converting string to json
-        estimat = strrep(input.estimation, '%22' , '"');
-        estimat = strrep(estimat, '%7B' , '{');
-        estimat = strrep(estimat, '%7D' , '}');
+        estimation_input.param_names = textscan(input.param_names,'%s','delimiter',',','BufSize',length(input.param_names)+100);
+        estimation_input.param_top = str2num(char(input.param_top));
+        estimation_input.param_bottom = str2num(char(input.param_bottom));
+        
+        if isfield(input, 'ic_names')
+            estimation_input.ic_names = textscan(input.ic_names,'%s','delimiter',',','BufSize',length(input.ic_names)+100);
+            estimation_input.ic_top = str2num(char(input.ic_top));
+            estimation_input.ic_bottom = str2num(char(input.ic_bottom));
+        end
         % reads json
-        estimation = build_estimation( loadjson( estimat ) );
+        estimation = build_estimation( estimation_input );
         %% Options for estimation
         options = optimset('DerivativeCheck','on','FinDiffType','central','Display','off');
         % options retrieved from build estimation
@@ -98,13 +124,14 @@ COUNT_TEST = 5;
         end
 
     catch err
-        msg = sprintf('{"error": "%s" }\n',err.message);
-        fprintf(1,'%s',msg);
+        print_error_json(err,1);
+        output_args = -1;
         return;
     end
     
     if isempty( ahat )
-        fprintf(1,'%s\n','{"Error": "could not determine parameters, check range and try again." }');
+        fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
+        output_args = -1;
         return;
     end
     
@@ -130,9 +157,11 @@ COUNT_TEST = 5;
             hold off;
         end
     catch err
-        msg = sprintf('"Error": "%s" }\n',err.message);
-        fprintf(1,'%s',msg);
+        print_error_json(err,1,1);
+        output_args = -1;
+        return;
     end
-
+    output_args = 0;
+        
 end
 
