@@ -10,7 +10,7 @@ COUNT_TEST = 5;
         
         %% check if it is a POST or GET method
         method = getenv('REQUEST_METHOD');
-        if 1 == 1 || strcmp(method,'POST')
+        if strcmp(method,'POST')
             post = '';
             %fid = fopen('/dev/fd/0');
             fid = fopen('/home/dev/test_long');
@@ -29,6 +29,8 @@ COUNT_TEST = 5;
         %% print html header that tells it is json data
         printHeader( 0 );
         %
+        input = escape_uri( input );
+        
         %% builds time (x) and values (y) matrices
         time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
         value_s_array = textscan(input.values,'%s','delimiter',';','BufSize',length(input.values)+100);
@@ -44,11 +46,17 @@ COUNT_TEST = 5;
         end
         %% building string 
         % starts by converting string to json
-        estimat = strrep(input.estimation, '%22' , '"');
-        estimat = strrep(estimat, '%7B' , '{');
-        estimat = strrep(estimat, '%7D' , '}');
+        estimation_input.param_names = textscan(input.param_names,'%s','delimiter',',','BufSize',length(input.param_names)+100);
+        estimation_input.param_top = str2num(char(input.param_top));
+        estimation_input.param_bottom = str2num(char(input.param_bottom));
+        
+        if isfield(input, 'ic_names')
+            estimation_input.ic_names = textscan(input.ic_names,'%s','delimiter',',','BufSize',length(input.ic_names)+100);
+            estimation_input.ic_top = str2num(char(input.ic_top));
+            estimation_input.ic_bottom = str2num(char(input.ic_bottom));
+        end
         % reads json
-        estimation = build_estimation( loadjson( estimat ) );
+        estimation = build_estimation( estimation_input );
         %% Options for estimation
         options = optimset('DerivativeCheck','on','FinDiffType','central','Display','off');
         % options retrieved from build estimation
