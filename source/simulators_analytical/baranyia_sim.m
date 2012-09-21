@@ -24,7 +24,11 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         params(4) = str2double( input.v );
         params(5) = str2double( input.y0 );
         params(6) = str2double( input.ymax );
-        TimeEnd = timeStep( str2double( input.end ) );
+        if isfield( input, 'minor_step' )
+            TimeEnd = timeStep( str2double( input.end ), str2double( input.minor_step ) );
+        else
+            TimeEnd = timeStep( str2double( input.end ) );
+        end
         %
         model = @baranyia;
         
