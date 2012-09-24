@@ -5,9 +5,11 @@ function [ output_args ] = analytical_estimator( input, model , custom_options, 
 
 MAX_COUNT = 25;
 COUNT_TEST = 5;
-
+    
+    if nargin < 5 || ~debug
+        warning('off', 'all');
+    end
     try
-        
         %% check if it is a POST or GET method
         method = getenv('REQUEST_METHOD');
         if strcmp(method,'POST')
@@ -92,7 +94,7 @@ COUNT_TEST = 5;
                 for j = 1:length(beta0)
                     fprintf(1,'%s:%f | ' , estimation.parameters.names{index(j)},beta0(j) );
                 end
-                fprintf(1,' start point for parameters\n');
+                fprintf(1,' start point for parameters (b0 = beta0)\n');
             end
             try
                 [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );

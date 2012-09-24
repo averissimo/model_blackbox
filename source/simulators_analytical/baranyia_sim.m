@@ -10,7 +10,7 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         %s = 'h0=10.2&m=2&mu=0.1&v=1&y0=0.1&ymax=10&end=7';
         %s = 'h0=0&m=1&mu=0.001&v=0.001&y0=0.101995&ymax=5.493876&end=1000.700000000000001';
         %s = 'h0=0.175878&m=0.070316&mu=0.012664&v=1.55 8334&y0=0.102&ymax=7.359438&end=467.50000000000006';
-        s = 'h0=-0.003403&m=-0.657574&mu=0.012902&v=17.718774&y0=0.29745&ymax=1.735577&end=467';
+        %s = 'h0=-0.003403&m=-0.657574&mu=0.012902&v=17.718774&y0=0.29745&ymax=1.735577&end=467';
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));    
@@ -24,11 +24,8 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         params(4) = str2double( input.v );
         params(5) = str2double( input.y0 );
         params(6) = str2double( input.ymax );
-        if isfield( input, 'minor_step' )
-            TimeEnd = timeStep( str2double( input.end ), str2double( input.minor_step ) );
-        else
-            TimeEnd = timeStep( str2double( input.end ) );
-        end
+        
+        TimeEnd = time_step(input);
         %
         model = @baranyia;
         
