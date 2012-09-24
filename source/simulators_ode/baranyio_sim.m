@@ -17,11 +17,12 @@ function [ output ] = baranyio_sim( test_data , draw_plot )
         params(5) = str2double( input.y0 );
         params(6) = str2double( input.ymax );
         
-        TimeEnd = time_step(input);
+        [TimeEnd, t_start, ~, resolution] = time_step(input);
         %
         model = @baranyio;
         
         values = model(params , TimeEnd);
+        
         output = [ transpose(TimeEnd) values ];
         
         if nargin > 1 && draw_plot
