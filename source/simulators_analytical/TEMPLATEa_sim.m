@@ -12,11 +12,8 @@ function [ output ] = TEMPLATEa_sim( test_data , draw_plot ) % << change
         params(1) = str2double( input.A );
         params(2) = str2double( input.lambda );
         params(3) = str2double( input.miu );
-        if isfield( input, 'minor_step' )
-            TimeEnd = timeStep( str2double( input.end ), str2double( input.minor_step ) );
-        else
-            TimeEnd = timeStep( str2double( input.end ) );
-        end
+
+        TimeEnd = time_step(input);
         %
         model = @gompertza; % << change
         

@@ -25,12 +25,15 @@ function F = baranyio( params,t )
     else
         tsim = timeStep(t);
     end
+    
     if length(tsim) == 1
         F = y0;
     else
-        [~, Xsim] = ode15s(@ode, tsim , y0, [], params); % initial value parameter must be extracted from the parameter list
+        initial_condition = y0; % change initial condition
+        f_parameters = [h0,m,mu,v,y0,ymax]; % change parameters (might not include initial condition if it is not parameter for equation
+        [~, Xsim] = ode15s(@ode, tsim , initial_condition, [], f_parameters);
         if isvector(t)
-            F = Xsim';
+            F = Xsim;
         else
             F = Xsim(end);
         end
