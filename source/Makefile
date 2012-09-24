@@ -112,7 +112,7 @@ baranyio_est: estimators_ode/baranyio_est.m
 	$(MCC) $(MFLAGS) estimators_ode/baranyio_est.m
 	mv baranyio_est ../estimators/baranyio.cgi
 
-baranyio_sim: simulators_ode/baranyio_est.m
+baranyio_sim: simulators_ode/baranyio_sim.m
 	$(MCC) $(MFLAGS) simulators_ode/baranyio_sim.m
 	mv baranyio_sim ../simulators/baranyio.cgi
 

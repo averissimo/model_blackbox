@@ -5,9 +5,11 @@ function [ output_args ] = analytical_estimator( input, model , custom_options, 
 
 MAX_COUNT = 25;
 COUNT_TEST = 5;
-
+    
+    if nargin < 5 || ~debug
+        warning('off', 'all');
+    end
     try
-        
         %% check if it is a POST or GET method
         method = getenv('REQUEST_METHOD');
         if strcmp(method,'POST')
