@@ -17,14 +17,14 @@ function [ output_args ] = escape_uri( input_args )
         output = regexprep(string , '%2C' , ',', 'ignorecase');
         %output = regexprep(output, '%5D' , ']', 'ignorecase');
         %output = regexprep(output, '%5B' , '[', 'ignorecase');
-        output = regexprep(output, '[' , '', 'ignorecase');
-        output = regexprep(output, ']' , '', 'ignorecase');
+        output = regexprep(output, '\[' , '', 'ignorecase');
+        output = regexprep(output, '\]' , '', 'ignorecase');
         output = regexprep(output, '%5D' , '', 'ignorecase');
         output = regexprep(output, '%5B' , '', 'ignorecase');
         output = regexprep(output, '%3B' , ';', 'ignorecase');
         output = regexprep(output, '%7D' , '}', 'ignorecase');
         output = regexprep(output, '%7B' , '{', 'ignorecase');
-        output = regexprep(output, '+' , ' ', 'ignorecase');
+        output = regexprep(output, '\+' , ' ', 'ignorecase');
         output = regexprep(output, '%20' , ' ', 'ignorecase');
     end
 end

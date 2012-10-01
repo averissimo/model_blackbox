@@ -36,7 +36,8 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
             scatter(TimeEnd,values);
         end
         printJson(output);
-    catch err
+    catch 
+        err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
         printHeader(length(msg));
         fprintf(1,'%s',msg);    
