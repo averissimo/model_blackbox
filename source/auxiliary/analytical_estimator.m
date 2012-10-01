@@ -88,7 +88,7 @@ COUNT_TEST = 5;
         beta0 = [];
         while max_count >= 0 && count_test >= 0
             %
-            [ub,lb,beta0] = set_init_params(res, index, estimation );
+            [ub,lb,beta0,bounds] = set_init_params(res, index, estimation );
             if debug
                 fprintf(1,'b0: ');
                 for j = 1:length(beta0)
@@ -97,8 +97,14 @@ COUNT_TEST = 5;
                 fprintf(1,' start point for parameters (b0 = beta0)\n');
             end
             try
-                [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
-            catch err_sqr
+                if isoctave()
+                    options.bounds = bounds;
+                    %leastsqr(time,values,beta0,model,0.0001,20);
+                else
+                    [ahat_t,resnorm_t,null,null,output_t,null,null] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
+                end
+            catch
+                err_sqr = lasterror();
                 if debug
                    fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message); 
                 end
@@ -125,7 +131,8 @@ COUNT_TEST = 5;
             end
         end
 
-    catch err
+    catch
+        err = lasterror();
         print_error_json(err,1);
         output_args = -1;
         return;
@@ -151,14 +158,15 @@ COUNT_TEST = 5;
         if draw_plot
             xrange= min(time):.01:max(time);
             hold on;
-            [~,len] = size(time);
+            [null,len] = size(time);
             for j = 1:len
                 scatter(time(:,j),values(:,j));
             end
             plot(xrange,model(ahat,xrange),'r');
             hold off;
         end
-    catch err
+    catch
+        err = lasterror();
         print_error_json(err,1,1);
         output_args = -1;
         return;

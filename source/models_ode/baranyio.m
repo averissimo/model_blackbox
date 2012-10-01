@@ -9,7 +9,7 @@ function F = baranyio( params,t )
     y0   = params(5);
     ymax = params(6);
 
-    function dxdt = ode(t,x,params)  
+    function dxdt = ode(t,x,params)
         h0_   = params(1);
         m_    = params(2);
         mu_   = params(3);
@@ -23,15 +23,15 @@ function F = baranyio( params,t )
     if isvector(t)
         tsim = t;
     else
-        tsim = timeStep(t);
+        tsim = time_step(t);
     end
-    
+
     if length(tsim) == 1
         F = y0;
     else
         initial_condition = y0; % change initial condition
         f_parameters = [h0,m,mu,v,y0,ymax]; % change parameters (might not include initial condition if it is not parameter for equation
-        [~, Xsim] = ode15s(@ode, tsim , initial_condition, [], f_parameters);
+        [null,Xsim] = ode45(@ode, tsim , initial_condition,odeset,f_parameters);
         if isvector(t)
             F = Xsim;
         else
@@ -39,3 +39,4 @@ function F = baranyio( params,t )
         end
     end
 end
+
