@@ -12,12 +12,12 @@ directories.each do |d,k|
       new_cgi_path = "..#{File::Separator + cgi_dir + File::Separator + d + File::Separator}"
       file_path = new_cgi_path + new_cgi_name + extension
       #
-      if File.exists? file_path
+      if File.exists?(file_path)
         puts "doing nothing (file already exists): " + file_path
       else
         puts "creating new file: " + file_path
         fid = File.open(file_path,"w")
-        fid.write "#! /usr/bin/octave -q\n"
+        fid.write "#! /usr/bin/octave -q --no-window-system\n"
         fid.write "warning(\"off\",\"all\");\n"
         fid.write "#{File.basename(f).sub(".m","")};\n"
         fid.chmod 0775
