@@ -12,8 +12,8 @@ shebang_path = "../bin"
 Dir::mkdir(shebang_path) unless FileTest::directory?(shebang_path)
 bin_dir = File.expand_path(shebang_path)
 octave_bin = bin_dir+File::Separator+shebang_name
-puts octave_bin
 unless File.exists?(octave_bin)
+  puts "creating bin for octave: " + octave_bin
   f = File.new(octave_bin,"w")
   f.write("#! /bin/sh\n")
   f.write("octave --silent --no-window-system\n")
