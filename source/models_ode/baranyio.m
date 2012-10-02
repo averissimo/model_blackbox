@@ -33,7 +33,7 @@ function F = baranyio( params,t )
         f_parameters = [h0,m,mu,v,y0,ymax]; % change parameters (might not include initial condition if it is not parameter for equation
         [null,Xsim] = ode45(@ode, tsim , initial_condition,odeset,f_parameters);
         if isvector(t)
-            F = Xsim;
+            F = Xsim';
         else
             F = Xsim(end);
         end

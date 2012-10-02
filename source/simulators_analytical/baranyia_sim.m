@@ -29,7 +29,7 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         %
         model = @baranyia;
         
-        values = model(params , TimeEnd);
+        values = model(TimeEnd,params);
         output = [ transpose(TimeEnd) transpose(values) ];
         
         if nargin > 1 && draw_plot

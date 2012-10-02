@@ -7,5 +7,5 @@ mu     = params(3);
 N      = params(4);
 
 F = N + A ./ (1 + exp( (4 * mu) ./ A * (lambda - t) + 2 ));
-
+if size(F,1) > 1 F = F'; end
 end

@@ -1,4 +1,4 @@
-function [higherbound,lowerbound,beta0,bounds] = set_init_params(res, index, estimation )
+function [higherbound,lowerbound,beta0] = set_init_params(res, index, estimation )
     higherbound = zeros( length(res) , 1);
     lowerbound = zeros( length(res) , 1);
     bounds = zeros( length(res) , 2);
@@ -9,8 +9,6 @@ function [higherbound,lowerbound,beta0,bounds] = set_init_params(res, index, est
         if lowerbound(j) == higherbound(j)
            higherbound(j) =  higherbound(j) + abs( higherbound(j)*0.001 );
         end
-        bounds(j,1) = lowerbound(j);
-        bounds(j,2) = higherbound(j);
         beta0( j ) = lowerbound( index(j) ) + rand*( higherbound( index(j) )-lowerbound( index(j) ) );
     end
 end

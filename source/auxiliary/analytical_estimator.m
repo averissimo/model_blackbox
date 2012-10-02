@@ -88,7 +88,7 @@ COUNT_TEST = 5;
         beta0 = [];
         while max_count >= 0 && count_test >= 0
             %
-            [ub,lb,beta0,bounds] = set_init_params(res, index, estimation );
+            [ub,lb,beta0] = set_init_params(res, index, estimation );
             if debug
                 fprintf(1,'b0: ');
                 for j = 1:length(beta0)
@@ -98,10 +98,21 @@ COUNT_TEST = 5;
             end
             try
                 if isoctave()
-                    options.bounds = bounds;
-                    %leastsqr(time,values,beta0,model,0.0001,20);
+                    options.lbound = lb;
+                    options.ubound = ub;
+                    [ahat_t, fy, null, output_t]=nonlin_curvefit(model,beta0,time,values',options);
+                    resnorm_t = sumsq(fy'-values);
                 else
-                    [ahat_t,resnorm_t,null,null,output_t,null,null] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
+                    problem = struct;
+                    problem.objective = model;
+                    problem.x0 = beta0';
+                    problem.xdata = time';
+                    problem.ydata = values';
+                    problem.lb = lb';
+                    problem.ub = ub';
+                    problem.options = options;
+                    problem.solver = 'lsqcurvefit';
+                    [ahat_t,resnorm_t,null,null,output_t,null,null] = lsqcurvefit( problem );
                 end
             catch
                 err_sqr = lasterror();
