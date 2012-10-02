@@ -16,7 +16,7 @@ function [ output, t_start, t_end resolution ] = time_step( input )
    
     t_end = str2double( input.end );
 
-    MAX_STEPS = 10;
+    MAX_STEPS = 2500;
     
     if minor_step > 0 && minor_step * MAX_STEPS < t_end + t_start
         resolution = minor_step * 0.5;
