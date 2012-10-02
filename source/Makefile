@@ -4,6 +4,8 @@ MCC = /opt/R2010a/bin/mcc
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
 MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I models_ode -I models_analytical -I lib -R -nodisplay -R -nojvm
 
+YADA = estimators_analytical/testa_est.m estimators_ode/testo_est.m
+
 all: gompertz baranyi gompertza baranyia logistica richardsa schnutea clean
 
 
@@ -11,13 +13,13 @@ test: estimators_analytical/test.m
 	$(MCC) $(MFLAGS) estimators_analytical/test.m
 	mv test ../estimators/test.cgi
 
+RUBY = ruby
 
 
 # OCTAVE
 
 octave:
-	@echo "yada"
-
+	$(RUBY) create_octave_cgi_scripts.rb
 
 # MATLAB
 
