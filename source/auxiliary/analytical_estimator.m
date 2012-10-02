@@ -17,7 +17,7 @@ COUNT_TEST = 5;
             fid = fopen('/dev/fd/0');
             eof = 1;
             while eof == 1
-                post_tmp = fgets(fid,Inf);
+                post_tmp = fgets(fid,3000);
                 if post_tmp == -1
                     eof = 0;
                 else
