@@ -39,6 +39,7 @@ directories.each do |d,k|
         fid = File.open(file_path,"w")
         fid.write "#! #{octave_bin}\n"
         fid.write "warning(\"off\",\"all\");\n"
+	fid.write "addpath(genpath(\".\"))\n"
         fid.write "#{File.basename(f).sub(".m","")};\n"
         fid.chmod 0775
         fid.close
