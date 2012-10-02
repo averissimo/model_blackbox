@@ -4,7 +4,8 @@ function [ F ] = logistica( params,t )
 A      = params(1);
 lambda = params(2);
 mu     = params(3);
+N      = params(4);
 
-F = A ./ (1 + exp( (4 * mu) ./ A * (lambda - t) + 2 ));
-
+F = N + A ./ (1 + exp( (4 * mu) ./ A * (lambda - t) + 2 ));
+if size(F,1) > 1 F = F'; end
 end

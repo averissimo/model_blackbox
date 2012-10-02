@@ -2,9 +2,27 @@
 MCC = /opt/R2010a/bin/mcc
 
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
-MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I models_analytical -I lib -R -nodisplay -R -nojvm
+MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I models_ode -I models_analytical -I lib -R -nodisplay -R -nojvm
+
+YADA = estimators_analytical/testa_est.m estimators_ode/testo_est.m
 
 all: gompertz baranyi gompertza baranyia logistica richardsa schnutea clean
+
+
+test: estimators_analytical/test.m
+	$(MCC) $(MFLAGS) estimators_analytical/test.m
+	mv test ../estimators/test.cgi
+
+RUBY = ruby
+
+
+# OCTAVE
+
+octave:
+	$(RUBY) create_octave_cgi_scripts.rb
+
+# MATLAB
+
 
 # Gompertz (SBT2)
 #############################
@@ -96,6 +114,19 @@ schnutea_est: estimators_analytical/schnutea_est.m
 schnutea_sim: simulators_analytical/schnutea_sim.m
 	$(MCC) $(MFLAGS) simulators_analytical/schnutea_sim.m
 	mv schnutea_sim ../simulators/schnutea.cgi
+
+# Baranyi (ODE)
+############################
+
+baranyio: baranyio_est baranyio_sim
+
+baranyio_est: estimators_ode/baranyio_est.m
+	$(MCC) $(MFLAGS) estimators_ode/baranyio_est.m
+	mv baranyio_est ../estimators/baranyio.cgi
+
+baranyio_sim: simulators_ode/baranyio_sim.m
+	$(MCC) $(MFLAGS) simulators_ode/baranyio_sim.m
+	mv baranyio_sim ../simulators/baranyio.cgi
 
 full_clean: clean
 	rm script.cgi

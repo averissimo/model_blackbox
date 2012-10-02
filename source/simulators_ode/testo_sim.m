@@ -1,28 +1,28 @@
-function [ output ] = schnutea_sim( test_data , draw_plot ) % << change
+function [ output ] = testo_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        input = qs2struct('a=1&b=0.5&lambda=0&miu=1&N=1.5&end=20');
+        s = 'a=0&b=1&start=11.25&end=30&minor_step=0.866667';
+        input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));    
     end
     
     try
-        % change to reflect the parameters (sorted by alphabetic order)
+        %
         params(1) = str2double( input.a );
         params(2) = str2double( input.b );
-        params(3) = str2double( input.lambda );
-        params(4) = str2double( input.miu );
-
-        TimeEnd = time_step(input);
-        %
-        model = @schnutea; % << change
         
-        values = model(params , TimeEnd);
-        output = [ transpose(TimeEnd) transpose(values) ];
+        [TimeEnd, t_start, null, resolution] = time_step(input);
+        %
+        model = @testo;
+        
+        values = model(TimeEnd,params);
+        
+        output = [ transpose(TimeEnd) values ];
         
         if nargin > 1 && draw_plot
-            plot(TimeEnd,values);
+            scatter(TimeEnd,values);
         end
         printJson(output);
     catch err

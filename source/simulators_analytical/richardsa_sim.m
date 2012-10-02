@@ -13,7 +13,8 @@ function [ output ] = richardsa_sim( test_data , draw_plot ) % << change
         params(2) = str2double( input.lambda );
         params(3) = str2double( input.miu );
         params(4) = str2double( input.v );
-        TimeEnd = timeStep( str2double( input.end ) );
+
+        TimeEnd = time_step(input);
         %
         model = @richardsa; % << change
         
