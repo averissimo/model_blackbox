@@ -12,6 +12,16 @@ test: estimators_analytical/test.m
 	mv test ../estimators/test.cgi
 
 
+
+# OCTAVE
+
+octave:
+	@echo "yada"
+
+
+# MATLAB
+
+
 # Gompertz (SBT2)
 #############################
 
