@@ -4,6 +4,7 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
     if nargin > 0 && test_data
         s = 'm=5.000000,&y0=0.001381,&h0=2&ymax=5.000000,&mu=0.246028,&v=0.325587,&N=0.120706&end=20';
         s = 'm=16.724087,&y0=0.643485,&h0=2.905646&ymax=7.787065,&mu=1.080329,&v=1.216351,&N=&end=20';
+        s = 'h0=0.553019&m=0.634265&mu=0.572822&v=1.042926&y0=-2.955369&ymax=0.0&start=0.0&end=16.5&minor_step=0.7'
         %s = 'h0=0.733564&m=0.534439&mu=2.570644&N=0.042879&v=4.99849&y0=-4.858&ymax=0.000875&end=25';
         %s = 'h0=3.713722&m=5.162075&mu=1.201054&v=1.407028&y0=0.067029&ymax=4.476695&end=7.700000000000001';
         %s = 'h0=0.166148&m=0.163282&mu=0.508102&v=0.264794&y0=0.06&ymax=1.411889&end=5.5';
@@ -13,9 +14,9 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         %s = 'h0=-0.003403&m=-0.657574&mu=0.012902&v=17.718774&y0=0.29745&ymax=1.735577&end=467';
         input = qs2struct(s);
     else
-        input = qs2struct(getenv('QUERY_STRING'));    
+        input = qs2struct(getenv('QUERY_STRING'));
     end
-    
+
     try
         %
         params(1) = str2double( input.h0 );
@@ -24,24 +25,23 @@ function [ output ] = baranyia_sim( test_data , draw_plot )
         params(4) = str2double( input.v );
         params(5) = str2double( input.y0 );
         params(6) = str2double( input.ymax );
-        
+
         TimeEnd = time_step(input);
         %
         model = @baranyia;
-        
-        values = model(TimeEnd,params);
+
+        values = model(params,TimeEnd);
         output = [ transpose(TimeEnd) transpose(values) ];
-        
+
         if nargin > 1 && draw_plot
             scatter(TimeEnd,values);
         end
         printJson(output);
-    catch 
+    catch
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
         printHeader(length(msg));
-        fprintf(1,'%s',msg);    
+        fprintf(1,'%s',msg);
     end
 
 end
-
