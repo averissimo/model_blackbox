@@ -1,22 +1,22 @@
 directories = {"estimators"=>"_est","simulators"=>"_sim"}
 suffixes = ["ode","analytical"]
 prefix_rm = "TEMPLATE"
-cgi_dir = "octave_cgi_scripts"
+cgi_dir = "cgi/octave"
 extension = ".cgi"
 shebang_name = "octave-no-x11"
 shebang_path = "../bin"
 
-
 # generate custom octave bin
 
-Dir::mkdir(shebang_path) unless FileTest::directory?(shebang_path)
+Dir::mkdir(shebang_path) unless FileTest::directory?(shebang_path) # creates dir if does not exists
+
 bin_dir = File.expand_path(shebang_path)
-octave_bin = bin_dir+File::Separator+shebang_name
-puts octave_bin
+octave_bin = bin_dir + File::Separator + shebang_name
 unless File.exists?(octave_bin)
+  puts "creating bin for octave: " + octave_bin
   f = File.new(octave_bin,"w")
   f.write("#! /bin/sh\n")
-  f.write("octave --silent --no-window-system\n")
+  f.write("exec octave --silent --no-window-system $@\n")
   f.chmod 0775
   f.close
   f = nil

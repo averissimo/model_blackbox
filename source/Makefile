@@ -19,7 +19,7 @@ RUBY = ruby
 # OCTAVE
 
 octave:
-	$(RUBY) create_octave_cgi_scripts.rb
+	$(RUBY) octave_cgi.rb
 
 # MATLAB
 
