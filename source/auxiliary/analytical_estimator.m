@@ -5,7 +5,7 @@ function [ output_args ] = analytical_estimator( input, model , custom_options, 
 
 MAX_COUNT = 25;
 COUNT_TEST = 5;
-    
+
     if nargin < 5 || ~debug
         warning('off', 'all');
     end
@@ -31,7 +31,7 @@ COUNT_TEST = 5;
         printHeader( 0 );
         %
         input = escape_uri( input );
-        
+
         %% builds time (x) and values (y) matrices
         time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
         value_s_array = textscan(input.values,'%s','delimiter',';','BufSize',length(input.values)+100);
@@ -45,12 +45,12 @@ COUNT_TEST = 5;
             padadd( time , time_aux );
             padadd(values, values_aux);
         end
-        %% building string 
+        %% building string
         % starts by converting string to json
         estimation_input.param_names = textscan(input.param_names,'%s','delimiter',',','BufSize',length(input.param_names)+100);
         estimation_input.param_top = str2num(char(input.param_top));
         estimation_input.param_bottom = str2num(char(input.param_bottom));
-        
+
         if isfield(input, 'ic_names')
             estimation_input.ic_names = textscan(input.ic_names,'%s','delimiter',',','BufSize',length(input.ic_names)+100);
             estimation_input.ic_top = str2num(char(input.ic_top));
@@ -65,12 +65,12 @@ COUNT_TEST = 5;
         options.MaxFunEvals = estimation.optimization.options.maxfunevals;
         options.TolFun = estimation.optimization.options.tolfun;
         options.TolX = estimation.optimization.options.tolx;
-        
+
         custom_fieldnames = fieldnames(custom_options);
         for j = 1:length(custom_fieldnames);
             options.(char(custom_fieldnames(j))) = custom_options.(char(custom_fieldnames(j)));
         end
-        
+
         % sorting by parameters name (convention!)
         [res index] = sort(lower(estimation.parameters.names));
         %
@@ -117,7 +117,7 @@ COUNT_TEST = 5;
             catch
                 err_sqr = lasterror();
                 if debug
-                   fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message); 
+                   fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message);
                 end
                 max_count = max_count - 1;
                 continue;
@@ -138,7 +138,7 @@ COUNT_TEST = 5;
                 count_test = count_test - 1;
             else
                 count_test = COUNT_TEST;
-                max_count = max_count - 1;    
+                max_count = max_count - 1;
             end
         end
 
@@ -148,13 +148,13 @@ COUNT_TEST = 5;
         output_args = -1;
         return;
     end
-    
+
     if isempty( ahat )
         fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
         output_args = -1;
         return;
     end
-    
+
     try
         fprintf(1,'{\n');
 
@@ -162,7 +162,7 @@ COUNT_TEST = 5;
            fprintf( 1 , '\t"%s": %f' , estimation.parameters.names{index(j)} , ahat(j) );
            fprintf(1,',\n');
         end
-        fprintf(1,'\t"o": %.14f\n' , resnorm);
+        fprintf(1,'\t"o": %.14f\n' , sum(resnorm));
         fprintf(1,'}\n');
         %
         % if plot argument is true
@@ -183,6 +183,5 @@ COUNT_TEST = 5;
         return;
     end
     output_args = 0;
-        
-end
 
+end
