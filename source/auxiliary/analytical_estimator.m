@@ -42,8 +42,20 @@ COUNT_TEST = 5;
             time_aux = str2num(char(time_s_array{1}(i)));
             values_aux = str2num(char(value_s_array{1}(i)));
             %
-            padadd( time , time_aux );
-            padadd(values, values_aux);
+            if isoctave()
+              time = cat(2,time,time_aux);
+              values = cat(2,values,values_aux);
+            else
+              padadd( time , time_aux );
+              padadd(values, values_aux);
+            end
+        end
+        if isoctave()
+          [time, t_ord] = sort(time);
+          for i = 1:length(time)
+            values_aux(i) = values(t_ord(i));
+          end
+          values = values_aux';
         end
         %% building string
         % starts by converting string to json
@@ -163,7 +175,6 @@ COUNT_TEST = 5;
            fprintf(1,',\n');
         end
         fprintf(1,'\t"o": %.14f\n' , sum(resnorm));
-        fprintf(1,'}\n');
         %
         % if plot argument is true
         if draw_plot
@@ -173,9 +184,10 @@ COUNT_TEST = 5;
             for j = 1:len
                 scatter(time(:,j),values(:,j));
             end
-            plot(xrange,model(ahat,xrange),'r');
+            #plot(xrange,model(ahat,xrange),'r');
             hold off;
         end
+       fprintf(1,'}\n');
     catch
         err = lasterror();
         print_error_json(err,1,1);
