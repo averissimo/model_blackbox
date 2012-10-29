@@ -1,3 +1,20 @@
+% Model Blackbox
+% Copyright (C) 2012-2012  André Veríssimo
+%
+% This program is free software; you can redistribute it and/or
+% modify it under the terms of the GNU General Public License
+% as published by the Free Software Foundation; version 2
+% of the License.
+%
+% program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 function [ output_args ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
@@ -5,7 +22,7 @@ function [ output_args ] = analytical_estimator( input, model , custom_options, 
 
 MAX_COUNT = 25;
 COUNT_TEST = 5;
-    
+
     if nargin < 5 || ~debug
         warning('off', 'all');
     end
@@ -17,7 +34,7 @@ COUNT_TEST = 5;
             fid = fopen('/dev/fd/0');
             eof = 1;
             while eof == 1
-                post_tmp = fgets(fid,Inf);
+                post_tmp = fgets(fid,3000);
                 if post_tmp == -1
                     eof = 0;
                 else
@@ -31,7 +48,7 @@ COUNT_TEST = 5;
         printHeader( 0 );
         %
         input = escape_uri( input );
-        
+
         %% builds time (x) and values (y) matrices
         time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
         value_s_array = textscan(input.values,'%s','delimiter',';','BufSize',length(input.values)+100);
@@ -42,15 +59,27 @@ COUNT_TEST = 5;
             time_aux = str2num(char(time_s_array{1}(i)));
             values_aux = str2num(char(value_s_array{1}(i)));
             %
-            padadd( time , time_aux );
-            padadd(values, values_aux);
+            if isoctave()
+              time = cat(2,time,time_aux);
+              values = cat(2,values,values_aux);
+            else
+              padadd( time , time_aux );
+              padadd(values, values_aux);
+            end
         end
-        %% building string 
+        if isoctave()
+          [time, t_ord] = sort(time);
+          for i = 1:length(time)
+            values_aux(i) = values(t_ord(i));
+          end
+          values = values_aux';
+        end
+        %% building string
         % starts by converting string to json
         estimation_input.param_names = textscan(input.param_names,'%s','delimiter',',','BufSize',length(input.param_names)+100);
         estimation_input.param_top = str2num(char(input.param_top));
         estimation_input.param_bottom = str2num(char(input.param_bottom));
-        
+
         if isfield(input, 'ic_names')
             estimation_input.ic_names = textscan(input.ic_names,'%s','delimiter',',','BufSize',length(input.ic_names)+100);
             estimation_input.ic_top = str2num(char(input.ic_top));
@@ -65,12 +94,12 @@ COUNT_TEST = 5;
         options.MaxFunEvals = estimation.optimization.options.maxfunevals;
         options.TolFun = estimation.optimization.options.tolfun;
         options.TolX = estimation.optimization.options.tolx;
-        
+
         custom_fieldnames = fieldnames(custom_options);
         for j = 1:length(custom_fieldnames);
             options.(char(custom_fieldnames(j))) = custom_options.(char(custom_fieldnames(j)));
         end
-        
+
         % sorting by parameters name (convention!)
         [res index] = sort(lower(estimation.parameters.names));
         %
@@ -97,10 +126,27 @@ COUNT_TEST = 5;
                 fprintf(1,' start point for parameters (b0 = beta0)\n');
             end
             try
-                [ahat_t,resnorm_t,~,~,output_t,~,~] = lsqcurvefit(model , beta0 , time , values , lb , ub , options );
-            catch err_sqr
+                if isoctave()
+                    options.lbound = lb;
+                    options.ubound = ub;
+                    [ahat_t, fy, null, output_t]=nonlin_curvefit(model,beta0,time,values',options);
+                    resnorm_t = sumsq(fy'-values);
+                else
+                    problem = struct;
+                    problem.objective = model;
+                    problem.x0 = beta0';
+                    problem.xdata = time';
+                    problem.ydata = values';
+                    problem.lb = lb';
+                    problem.ub = ub';
+                    problem.options = options;
+                    problem.solver = 'lsqcurvefit';
+                    [ahat_t,resnorm_t,null,null,output_t,null,null] = lsqcurvefit( problem );
+                end
+            catch
+                err_sqr = lasterror();
                 if debug
-                   fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message); 
+                   fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message);
                 end
                 max_count = max_count - 1;
                 continue;
@@ -121,22 +167,23 @@ COUNT_TEST = 5;
                 count_test = count_test - 1;
             else
                 count_test = COUNT_TEST;
-                max_count = max_count - 1;    
+                max_count = max_count - 1;
             end
         end
 
-    catch err
+    catch
+        err = lasterror();
         print_error_json(err,1);
         output_args = -1;
         return;
     end
-    
+
     if isempty( ahat )
         fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
         output_args = -1;
         return;
     end
-    
+
     try
         fprintf(1,'{\n');
 
@@ -144,26 +191,26 @@ COUNT_TEST = 5;
            fprintf( 1 , '\t"%s": %f' , estimation.parameters.names{index(j)} , ahat(j) );
            fprintf(1,',\n');
         end
-        fprintf(1,'\t"o": %.14f\n' , resnorm);
-        fprintf(1,'}\n');
+        fprintf(1,'\t"o": %.14f\n' , sum(resnorm));
         %
         % if plot argument is true
         if draw_plot
             xrange= min(time):.01:max(time);
             hold on;
-            [~,len] = size(time);
+            [null,len] = size(time);
             for j = 1:len
                 scatter(time(:,j),values(:,j));
             end
             plot(xrange,model(ahat,xrange),'r');
             hold off;
         end
-    catch err
+       fprintf(1,'}\n');
+    catch
+        err = lasterror();
         print_error_json(err,1,1);
         output_args = -1;
         return;
     end
     output_args = 0;
-        
-end
 
+end

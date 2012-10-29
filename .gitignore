@@ -9,5 +9,4 @@ remote_gompertz
 /lib
 *.mexglx
 *.mexa64
-/estimators/
-/simulators/
+/bin

@@ -4,12 +4,24 @@ MCC = /opt/R2010a/bin/mcc
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
 MFLAGS =  -m -I auxiliary -I /home/averissimo/work/toolboxes -I models -I models_ode -I models_analytical -I lib -R -nodisplay -R -nojvm
 
+YADA = estimators_analytical/testa_est.m estimators_ode/testo_est.m
+
 all: gompertz baranyi gompertza baranyia logistica richardsa schnutea clean
 
 
 test: estimators_analytical/test.m
 	$(MCC) $(MFLAGS) estimators_analytical/test.m
 	mv test ../estimators/test.cgi
+
+RUBY = ruby
+
+
+# OCTAVE
+
+octave:
+	$(RUBY) octave_cgi.rb
+
+# MATLAB
 
 
 # Gompertz (SBT2)
@@ -102,6 +114,19 @@ schnutea_est: estimators_analytical/schnutea_est.m
 schnutea_sim: simulators_analytical/schnutea_sim.m
 	$(MCC) $(MFLAGS) simulators_analytical/schnutea_sim.m
 	mv schnutea_sim ../simulators/schnutea.cgi
+
+# Monomer (ODE)
+############################
+
+monomero: monomero_est monomero_sim
+
+monomero_est: estimators_ode/monomero_est.m
+	$(MCC) $(MFLAGS) estimators_ode/monomero_est.m
+	mv monomero_est ../cgi/matlab/estimators/monomero.cgi
+
+monomero_sim: simulators_ode/monomero_sim.m
+	$(MCC) $(MFLAGS) simulators_ode/monomero_sim.m
+	mv monomero_sim ../cgi/matlab/simulators/monomero.cgi
 
 # Baranyi (ODE)
 ############################

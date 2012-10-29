@@ -1,43 +1,56 @@
-function F = TEMPLATEo( params,t )
+% Model Blackbox
+% Copyright (C) 2012-2012  André Veríssimo
+%
+% This program is free software; you can redistribute it and/or
+% modify it under the terms of the GNU General Public License
+% as published by the Free Software Foundation; version 2
+% of the License.
+%
+% program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+function F = TEMPLATEo( params,t ) % << change
 %BARANYIO Summary of this function goes here
 %   Detailed explanation goes here
 
     % Extract each parameter from the model
     %  one of them must be the initial value for t = 0 / t = start
-    h0   = params(1);
-    m    = params(2);
-    mu   = params(3);
-    v    = params(4);
-    y0   = params(5); % initial value parameter for template
-    ymax = params(6);
+    fr   = params(1); % << change
+    k11  = params(2); % << change
+    M0   = params(3); % << change
+    n    = params(4); % << change
 
-    function dxdt = ode(t,x,params)  
-        h0_   = params(1);
-        m_    = params(2);
-        mu_   = params(3);
-        v_    = params(4);
-        y0_   = params(5);
-        ymax_ = params(6);
+   function dxdt = ode(t,x,params_)
+        fr_  = params_(1); % << change based on f_parameters
+        k11_ = params_(2); % << change based on f_parameters
+        n_   = params_(3); % << change based on f_parameters
 
-        dxdt = mu_ + (-exp(-t *v_) *v_ +   exp(-h0_ - t *v_) *v_)/((exp(-h0_) + exp(-t *v_) - exp(-h0_ - t *v_)) *mu_) - ( exp(m_ *mu_* t - m_* (-y0_ + ymax_) + log(exp(-h0_) + exp(-t *v_) - exp(-h0_ - t *v_))/ mu_) * (m_* mu_ + (-exp(-t *v_) *v_ + exp(-h0_ - t *v_)* v_)/((exp(-h0_) + exp(-t* v_) - exp(-h0_ - t* v_))* mu_)))/((1 + exp(-m_ * (-y0_ + ymax_)) * (-1 + exp( m_ *mu_ *t + log(exp(-h0_) + exp(-t *v_) - exp(-h0_ - t *v_))/mu_))) * m_);
+        dxdt = -2 .* fr_ .* fr_ .* k11_ .* ( n_ / 2 ) .* x .* x; % << change
     end
-    
+
     if isvector(t)
         tsim = t;
     else
         tsim = timeStep(t);
     end
     if length(tsim) == 1
-        F = y0;
+        F = M0; % << change
     else
         % ODE15s solver
         try
-            initial_condition = y0; % change initial condition
-            f_parameters = [h0,m,mu,v,y0,ymax]; % change parameters (might not include initial condition if it is not parameter for equation
-            [~, Xsim] = ode15s(@ode, tsim , initial_condition, [], f_parameters);
-        catch err
+            initial_condition = M0; % << change initial condition
+            f_parameters = [fr,k11,n]; % << change parameters (might not include initial condition if it is not parameter for equation
+            [null, Xsim] = ode15s(@ode, tsim' , initial_condition, odeset, f_parameters);
+        catch
+            err = lasterror();
             % with stiffer OD45 solver
-            [~, Xsim] = ode45(@ode, tsim , initial_condition, [], f_parameters);
+            [null, Xsim] = ode45(@ode, tsim , initial_condition, odeset, f_parameters);
         end
         if isvector(t)
             F = Xsim';
