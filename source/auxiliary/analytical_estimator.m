@@ -184,7 +184,7 @@ COUNT_TEST = 5;
             for j = 1:len
                 scatter(time(:,j),values(:,j));
             end
-            #plot(xrange,model(ahat,xrange),'r');
+            plot(xrange,model(ahat,xrange),'r');
             hold off;
         end
        fprintf(1,'}\n');

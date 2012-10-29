@@ -115,6 +115,19 @@ schnutea_sim: simulators_analytical/schnutea_sim.m
 	$(MCC) $(MFLAGS) simulators_analytical/schnutea_sim.m
 	mv schnutea_sim ../simulators/schnutea.cgi
 
+# Monomer (ODE)
+############################
+
+monomero: monomero_est monomero_sim
+
+monomero_est: estimators_ode/monomero_est.m
+	$(MCC) $(MFLAGS) estimators_ode/monomero_est.m
+	mv monomero_est ../cgi/matlab/estimators/monomero.cgi
+
+monomero_sim: simulators_ode/monomero_sim.m
+	$(MCC) $(MFLAGS) simulators_ode/monomero_sim.m
+	mv monomero_sim ../cgi/matlab/simulators/monomero.cgi
+
 # Baranyi (ODE)
 ############################
 
