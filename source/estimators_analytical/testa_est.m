@@ -1,3 +1,20 @@
+% Model Blackbox
+% Copyright (C) 2012-2012  André Veríssimo
+%
+% This program is free software; you can redistribute it and/or
+% modify it under the terms of the GNU General Public License
+% as published by the Free Software Foundation; version 2
+% of the License.
+%
+% program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 function output = testa_est(test_data, draw_plot, debug)
 %
     %% get inputs
@@ -6,9 +23,9 @@ function output = testa_est(test_data, draw_plot, debug)
         s = 'param_names=[a,b]&param_top=[5.0,5.0]&param_bottom=[-5.0,0.0]&time=[0,1,2,3,4,5]&values=[0,1.1,4.2,8.2,16.1,25.2]';
         input = qs2struct(s);
     else
-        input = qs2struct(getenv('QUERY_STRING'));    
+        input = qs2struct(getenv('QUERY_STRING'));
     end
-    
+
     %% define model
     model = @testa;
     flag = 0;
@@ -17,7 +34,7 @@ function output = testa_est(test_data, draw_plot, debug)
     end
     debug_flag = 0;
     if nargin > 2 && debug
-        debug_flag = 1; 
+        debug_flag = 1;
     end
     %% Options for estimation
     % options retrieved from build estimation
@@ -27,6 +44,3 @@ function output = testa_est(test_data, draw_plot, debug)
     output = analytical_estimator(input, model, options, flag, debug_flag);
 
 end
-
-
-

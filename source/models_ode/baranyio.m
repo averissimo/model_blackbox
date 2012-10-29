@@ -1,3 +1,20 @@
+% Model Blackbox
+% Copyright (C) 2012-2012  André Veríssimo
+%
+% This program is free software; you can redistribute it and/or
+% modify it under the terms of the GNU General Public License
+% as published by the Free Software Foundation; version 2
+% of the License.
+%
+% program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 function F = baranyio( params,t )
 %BARANYIO Summary of this function goes here
 %   Detailed explanation goes here
@@ -19,7 +36,7 @@ function F = baranyio( params,t )
 
         dxdt = mu_ + (-exp(-t *v_) *v_ +   exp(-h0_ - t *v_) *v_)/((exp(-h0_) + exp(-t *v_) - exp(-h0_ - t *v_)) *mu_) - ( exp(m_ *mu_* t - m_* (-y0_ + ymax_) + log(exp(-h0_) + exp(-t *v_) - exp(-h0_ - t *v_))/ mu_) * (m_* mu_ + (-exp(-t *v_) *v_ + exp(-h0_ - t *v_)* v_)/((exp(-h0_) + exp(-t* v_) - exp(-h0_ - t* v_))* mu_)))/((1 + exp(-m_ * (-y0_ + ymax_)) * (-1 + exp( m_ *mu_ *t + log(exp(-h0_) + exp(-t *v_) - exp(-h0_ - t *v_))/mu_))) * m_);
     end
-    
+
     if isvector(t)
         tsim = t;
     else
@@ -39,4 +56,3 @@ function F = baranyio( params,t )
         end
     end
 end
-
