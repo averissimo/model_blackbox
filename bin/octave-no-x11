@@ -1,0 +1,2 @@
+#! /bin/sh
+exec octave --silent --no-window-system $@
