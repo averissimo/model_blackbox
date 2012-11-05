@@ -72,27 +72,27 @@ add to the Makefile file a target using any of the existing as a template
 
 1. create a SBTOOLBOX2 model (SBModel) and copy it the directory:
 
-    source/models/
+        source/models/
 
 1. compile the model calling the compile_model.m function, ex:
 
-    compile_model('models/baranyi')
+        compile_model('models/baranyi')
 
 1. copy the following files to the same directory and name it after the model, preserving the suffix (just to help organizing the files' function
 
-    source/estimators/TEMPLATE_est.m
+        source/estimators/TEMPLATE_est.m
 
-    source/simulators/TEMPLATE_sim.m
+        source/simulators/TEMPLATE_sim.m
 
 1. change the source code to reflect the name of the model by replacing all the occurences of Gompertz to "Yourmodel"
 
-    IMPORTANT: the first letter must be Uppercase
+        IMPORTANT: the first letter must be Uppercase
 
 1. in the simulators/Yourmodel_sim.m you must change the code to handle the model's parameters
 1. add the makefile target following the existing templates
 1. run
 
-    make yourmodel_est yourmodel_sim clean
+        make yourmodel_est yourmodel_sim clean
 
 ## Test the model
 
