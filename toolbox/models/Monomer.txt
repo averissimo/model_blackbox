@@ -1,0 +1,31 @@
+********** MODEL NAME
+Monomer
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(M) = R  * M * M
+d/dt(t) = 1
+
+M(0) = 1
+t(0) = 0
+
+********** MODEL PARAMETERS
+k11 = 10
+fa = 0.80
+n = 1
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+R = -2 * fa * fa * n / 2
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
