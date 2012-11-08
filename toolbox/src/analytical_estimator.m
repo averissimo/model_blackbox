@@ -101,6 +101,15 @@ COUNT_TEST = 5;
         end
 
         % sorting by parameters name (convention!)
+        if isfield(estimation.initialconditions,'names')
+            estimation.parameters.names = cat(1,estimation.parameters.names,estimation.initialconditions.names);
+        end
+        if isfield(estimation.initialconditions,'lowbounds')
+            estimation.parameters.lowbounds = cat(1,estimation.parameters.lowbounds,estimation.initialconditions.lowbounds);
+        end
+        if isfield(estimation.initialconditions,'highbounds')
+            estimation.parameters.highbounds = cat(1,estimation.parameters.highbounds,estimation.initialconditions.highbounds);
+        end
         [res index] = sort(lower(estimation.parameters.names));
         %
         %% model (with parameters sorted by name)
