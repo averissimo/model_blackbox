@@ -58,6 +58,7 @@ suffixes.each do |s|
         fid.write "#! #{octave_bin}\n"
         fid.write "warning(\"off\",\"all\");\n"
         fid.write "addpath(genpath(\"#{File.expand_path("toolbox")}\"));\n"
+        fid.write "addpath(genpath(\"#{File.expand_path("models")}\"));\n"
         fid.write "#{File.basename(f).sub(".m","")};\n"
         fid.chmod 0775
         fid.close
