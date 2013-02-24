@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output ] = TEMPLATEo_sim( test_data , draw_plot ) % << change
+function [ string_output,output ] = TEMPLATEo_sim( test_data , draw_plot ) % << change
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
@@ -43,11 +43,12 @@ function [ output ] = TEMPLATEo_sim( test_data , draw_plot ) % << change
         if nargin > 1 && draw_plot
             scatter(TimeEnd,values);
         end
-        printJson(output);
+        string_output = printJson(output);
     catch
         err = lasterror();
-        printHeader(0);
-        print_error_json(err,1);
+        msg = sprintf('{ "error": "%s" }\n',err.message);
+	string_output = printHeader(length(msg));
+        string_output = strcat(string_output,sprintf('%s',msg));
     end
 
 end

@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function output = TEMPLATEa_est(test_data, draw_plot) % << change
+function [output_string,output] = TEMPLATEa_est(test_data, draw_plot) % << change
 %
     %% get inputs
     % input paramters are in the environment variable "QUERY_STRING"
@@ -36,6 +36,6 @@ function output = TEMPLATEa_est(test_data, draw_plot) % << change
     if nargin > 2 && debug
         debug_flag = 1;
     end
-    output = analytical_estimator(input, model, struct, flag, debug_flag);
+    [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
 
 end

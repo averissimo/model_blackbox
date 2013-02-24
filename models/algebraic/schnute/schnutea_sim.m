@@ -15,11 +15,16 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output ] = schnutea_sim( test_data , draw_plot ) % << change
+function [ string_output,output ] = schnutea_sim( test_data , draw_plot ) % << change
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        input = qs2struct('a=1&b=0.5&lambda=0&miu=1&N=1.5&end=20');
+        if test_data == 1
+          s = test_query("simulator","schnutea");
+        else
+          s = test_data;
+        end
+        input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));
     end
@@ -42,11 +47,11 @@ function [ output ] = schnutea_sim( test_data , draw_plot ) % << change
         if nargin > 1 && draw_plot
             plot(TimeEnd,values);
         end
-        printJson(output);
-    catch err
+        string_output = printJson(output);
+    catch 
+        err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        printHeader(length(msg));
-        fprintf(1,'%s',msg);
+        string_output = msg
     end
 
 end

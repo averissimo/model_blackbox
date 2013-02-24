@@ -15,11 +15,15 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output ] = baranyio_sim( test_data , draw_plot )
+function [ string_output,output ] = baranyio_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        s = 'h0=20.0&m=2.553767&mu=0.846645&v=0.715549&y0=0.001689&ymax=15.229774&start=11.25&end=33.513333337&minor_step=0.866667';
+        if test_data == 1
+          s = test_query("simulator","baranyio");
+        else
+          s = test_data;
+        end
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));
@@ -45,11 +49,11 @@ function [ output ] = baranyio_sim( test_data , draw_plot )
         if nargin > 1 && draw_plot
             scatter(TimeEnd,values);
         end
-        printJson(output);
-    catch err
+        string_output = printJson(output);
+    catch
+        err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        printHeader(length(msg));
-        fprintf(1,'%s',msg);
+        string_output = msg
     end
 
 end

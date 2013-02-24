@@ -15,14 +15,15 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output ] = gompertza_sim( test_data , draw_plot )
+function [ string_output,output ] = gompertza_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        s = 'A=7.050965&lambda=88.318105&miu=0.014470&N=1.5&end=467';
-        s = 'miu=7.050965&lambda=88.318105&A=0.01447&end=467.50000000000006';
-        s = 'miu=0.01447&lambda=88.318105&A=7.050965&end=467.50000000000006';
-        s = 'miu=0.144022&lambda=0.910374&A=1.907692&N=1.966649&end=7.700000000000001';
+        if test_data == 1
+          s = test_query("simulator","gompertza");
+        else
+          s = test_data;
+        end
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));
@@ -45,11 +46,11 @@ function [ output ] = gompertza_sim( test_data , draw_plot )
         if nargin > 1 && draw_plot
             plot(TimeEnd,values);
         end
-        printJson(output);
-    catch err
+        string_output = printJson(output);
+    catch 
+        err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        printHeader(length(msg));
-        fprintf(1,'%s',msg);
+        string_output = msg
     end
 
 end
