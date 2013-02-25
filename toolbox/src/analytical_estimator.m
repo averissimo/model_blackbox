@@ -45,7 +45,7 @@ COUNT_TEST = 5;
             fclose(fid);
         end
         string_output = "";
-        fid = 1
+        fid = 1;
         %
         input = escape_uri( input );
 
