@@ -15,14 +15,13 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function printJson(M)
+function string_output = printJson(M)
     json = savejson('result',M);
-    printHeader( length(json) );
-
+    string_output = "";
     if isreal(M)
-        fprintf(1,'%s\n\n',json);
+        string_output = strcat(string_output,sprintf('%s\n\n',json));
     else
-        fprintf(1,'{ "error": "Simulated parameters return a complex number" }\n');
+        string_output = strcat(string_output,sprintf('{ "error": "Simulated parameters return a complex number" }\n'));
     end
 
 end

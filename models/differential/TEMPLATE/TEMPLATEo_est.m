@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function output = TEMPLATEo_est(test_data, draw_plot, debug)
+function [string_output,output] = TEMPLATEo_est(test_data, draw_plot, debug)
 %
     %% get inputs
     % input paramters are in the environment variable "QUERY_STRING"
@@ -41,6 +41,6 @@ function output = TEMPLATEo_est(test_data, draw_plot, debug)
     options.TolFun = 1e-7; % becomes too slow with default value
     options.TolX = 1e-7; % becomes too slow with default value
     %% perform parameter estimation
-    output = analytical_estimator(input, model, options, flag, debug_flag);
+    [output,output_string] = analytical_estimator(input, model, options, flag, debug_flag);
 
 end

@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output_args ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
+function [ output_args,string_output ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 %#function lsqcurvefit
@@ -44,8 +44,8 @@ COUNT_TEST = 5;
             input = qs2struct(post);
             fclose(fid);
         end
-        %% print html header that tells it is json data
-        printHeader( 0 );
+        string_output = "";
+        fid = 1;
         %
         input = escape_uri( input );
 
@@ -128,11 +128,12 @@ COUNT_TEST = 5;
             %
             [ub,lb,beta0] = set_init_params(res, index, estimation );
             if debug
-                fprintf(1,'b0: ');
+                fprintf(fid,'b0: ');
+		
                 for j = 1:length(beta0)
-                    fprintf(1,'%s:%f | ' , estimation.parameters.names{index(j)},beta0(j) );
+                    fprintf(fid,'%s:%f | ' , estimation.parameters.names{index(j)},beta0(j) );
                 end
-                fprintf(1,' start point for parameters (b0 = beta0)\n');
+                fprintf(fid,' start point for parameters (b0 = beta0)\n');
             end
             try
                 if isoctave()
@@ -155,17 +156,17 @@ COUNT_TEST = 5;
             catch
                 err_sqr = lasterror();
                 if debug
-                   fprintf(1,'%2d: error!: %s\n' , max_count, err_sqr.message);
+                   fprintf(fid,'%2d: error!: %s\n' , max_count, err_sqr.message);
                 end
                 max_count = max_count - 1;
                 continue;
             end
             if debug
-                fprintf(1,'%2d: ', max_count);
+                fprintf(fid,'%2d: ', max_count);
                 for j = 1:length(ahat_t)
-                    fprintf(1,'%s:%f | ' , estimation.parameters.names{index(j)},ahat_t(j));
+                    fprintf(fid,'%s:%f | ' , estimation.parameters.names{index(j)},ahat_t(j));
                 end
-                fprintf(1,'(%f)\n' , resnorm_t);
+                fprintf(fid,'(%f)\n' , resnorm_t);
             end
             if resnorm_t < resnorm
                resnorm = resnorm_t;
@@ -182,25 +183,25 @@ COUNT_TEST = 5;
 
     catch
         err = lasterror();
-        print_error_json(err,1);
+        string_output = strcat(string_output,print_error_json(err,1));
         output_args = -1;
         return;
     end
 
     if isempty( ahat )
-        fprintf(1,'%s\n','{"error": "could not determine parameters, check range and try again." }');
+        string_output = strcat(string_output,sprintf('%s\n','{"error": "could not determine parameters, check range and try again." }'));
         output_args = -1;
         return;
     end
 
     try
-        fprintf(1,'{\n');
+        string_output = strcat(string_output,sprintf('{\n'));
 
         for j = 1:length(res)
-           fprintf( 1 , '\t"%s": %f' , estimation.parameters.names{index(j)} , ahat(j) );
-           fprintf(1,',\n');
+           string_output = strcat(string_output,sprintf( '\t"%s": %f' , estimation.parameters.names{index(j)} , ahat(j) ));
+           string_output = strcat(string_output,sprintf(',\n'));
         end
-        fprintf(1,'\t"o": %.14f\n' , sum(resnorm));
+        string_output = strcat(string_output,sprintf('\t"o": %.14f\n' , sum(resnorm)));
         %
         % if plot argument is true
         if draw_plot
@@ -213,10 +214,10 @@ COUNT_TEST = 5;
             plot(xrange,model(ahat,xrange),'r');
             hold off;
         end
-       fprintf(1,'}\n');
+       string_output = strcat(string_output,sprintf('}\n'));
     catch
         err = lasterror();
-        print_error_json(err,1,1);
+        string_output = strcat(string_output,print_error_json(err,1,1));
         output_args = -1;
         return;
     end

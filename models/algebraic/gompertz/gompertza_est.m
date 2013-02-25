@@ -15,12 +15,16 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function output = gompertza_est(test_data, draw_plot,debug)
+function [output_string,output] = gompertza_est(test_data, draw_plot,debug)
 %
     %% get inputs
     % input paramters are in the environment variable "QUERY_STRING"
     if nargin > 0 && test_data
-        s = '';
+        if test_data == 1
+          s = test_query("estimator","gompertza");
+        else
+          s = test_data;
+        end
         input = qs2struct( s );
     else
         input = qs2struct(getenv('QUERY_STRING'));
@@ -37,6 +41,6 @@ function output = gompertza_est(test_data, draw_plot,debug)
         debug_flag = 1;
     end
     %% perform parameter estimation
-    output = analytical_estimator(input, model, struct , flag, debug_flag);
+    [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
 
 end
