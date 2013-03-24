@@ -198,7 +198,7 @@ COUNT_TEST = 5;
         string_output = strcat(string_output,sprintf('{\n'));
 
         for j = 1:length(res)
-           string_output = strcat(string_output,sprintf( '\t"%s": %f' , estimation.parameters.names{index(j)} , ahat(j) ));
+           string_output = strcat(string_output,sprintf( '\t"%s": %.14f' , estimation.parameters.names{index(j)} , ahat(j) ));
            string_output = strcat(string_output,sprintf(',\n'));
         end
         string_output = strcat(string_output,sprintf('\t"o": %.14f\n' , sum(resnorm)));

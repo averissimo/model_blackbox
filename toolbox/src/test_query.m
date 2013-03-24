@@ -58,6 +58,8 @@ function query = test_query(type,function_name)
 
     switch(function_name)
 
+      case "hyperbolastic"
+        s = "param_names=[M,d,g,theta,P0]&param_top=[10.0,1.0e-3,5.0,1.0,2.0]&param_bottom=[0.0,1e-9,0.0,-1.0,0.0]&time=[9.0,13.0,17.0,21.0,29.0,33.0,37.0,40.0,43.0,49.0,55.0,57.0,60.0,66.0,72.0,74.0,78.0,82.0]&values=[0.21,0.39,0.49,0.65,0.89,1.13,1.49,1.89,2.31,3.05,4.05,4.51,4.96,5.91,6.86,7.09,7.21,7.35]";
       case "gompertza"
 
       case "baranyia"
