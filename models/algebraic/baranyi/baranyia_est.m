@@ -21,7 +21,7 @@ function [output_string,output] = baranyia_est(test_data, draw_plot, debug)
     % input paramters are in the environment variable "QUERY_STRING"
     if nargin > 0 && test_data
         if test_data == 1
-          s = test_query("estimator","baranyia");
+          s = test_query('estimator','baranyia');
         else
           s = test_data;
         end
