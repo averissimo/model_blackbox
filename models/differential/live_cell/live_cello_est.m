@@ -15,13 +15,13 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [output_string,output] = hyperbolastica_est(test_data, draw_plot, debug)
+function [output_string,output] = live_cello_est( test_data, draw_plot, debug )
 %
     %% get inputs
     % input paramters are in the environment variable "QUERY_STRING"
     if nargin > 0 && test_data
         if test_data == 1
-          s = test_query('estimator','hyperbolastic');
+          s = test_query('estimator','live cell');
         else
           s = test_data;
         end
@@ -31,7 +31,7 @@ function [output_string,output] = hyperbolastica_est(test_data, draw_plot, debug
     end
 
     %% define model
-    model = @hyperbolastica; % << change
+    model = @live_cello; % << change
     flag = 0;
     if nargin > 1 && draw_plot
         flag = 1;
@@ -42,10 +42,6 @@ function [output_string,output] = hyperbolastica_est(test_data, draw_plot, debug
     end
     %% Options for estimation
     % options retrieved from build estimation
-    options.TolFun = 1.0e-12; 
-    options.TolX = 1.0e-12; 
-    options.abstol = 1.0e-07; 
-    options.reltol = 1.0e-07; 
     %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
 end

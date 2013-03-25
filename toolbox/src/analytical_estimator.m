@@ -44,7 +44,7 @@ COUNT_TEST = 5;
             input = qs2struct(post);
             fclose(fid);
         end
-        string_output = "";
+        string_output = '';
         fid = 1;
         %
         input = escape_uri( input );
