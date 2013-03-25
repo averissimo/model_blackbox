@@ -15,11 +15,15 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output ] = monomero_sim( test_data , draw_plot )
+function [ string_output,output ] = monomero_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        s = 'fr=0.12&k11=10&M0=1&n=1&start=0&end=30&minor_step=0.866667';
+        if test_data == 1
+          s = test_query("simulator","monomero");
+        else
+          s = test_data;
+        end
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));
@@ -43,11 +47,11 @@ function [ output ] = monomero_sim( test_data , draw_plot )
         if nargin > 1 && draw_plot
             scatter(TimeEnd,values);
         end
-        printJson(output);
+        string_output = printJson(output);
     catch
         err = lasterror();
-        printHeader(0);
-        print_error_json(err,1);
+        msg = sprintf('{ "error": "%s" }\n',err.message);
+        string_output = msg
     end
 
 end

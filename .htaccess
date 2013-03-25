@@ -1,0 +1,8 @@
+SetEnv "LD_LIBRARY_PATH" "/opt/MCR/v713/runtime/glnxa64"
+SetEnv "XAPPLRESDIR" "/opt/MCR/v713/X11/app-defaults/"
+
+Options ExecCGI FollowSymLinks Indexes
+
+AddHandler cgi-script sh cgi
+
+

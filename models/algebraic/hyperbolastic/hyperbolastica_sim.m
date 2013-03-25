@@ -1,5 +1,5 @@
 % Model Blackbox
-% Copyright (C) 2012-2012  André Veríssimo
+% Copyright (C) 2013  afsverissimo@gmail.com
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -15,11 +15,15 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ string_output,output ] = TEMPLATEo_sim( test_data , draw_plot ) % << change
+function [ string_output,output ] = hyperbolastica_sim( test_data , draw_plot ) % << change
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
-        s = 'fr=0.12&k11=10&M0=1&n=1&start=0&end=30&minor_step=0.866667';
+        if test_data == 1
+          s = test_query("simulator","hyperbolastic");
+        else
+          s = test_data;
+        end
         input = qs2struct(s);
     else
         input = qs2struct(getenv('QUERY_STRING'));
@@ -27,14 +31,15 @@ function [ string_output,output ] = TEMPLATEo_sim( test_data , draw_plot ) % << 
 
     try
         %
-        params(1) = str2double( input.fr ); % << change
-        params(2) = str2double( input.k11 ); % << change
-        params(3) = str2double( input.M0 ); % << change
-        params(4) = str2double( input.n ); % << change
+        params(1) = str2double( input.d );
+        params(2) = str2double( input.g );
+        params(3) = str2double( input.M );
+        params(4) = str2double( input.P0 );
+        params(5) = str2double( input.theta );
 
         [TimeEnd, t_start, null, resolution] = time_step(input);
         %
-        model = @TEMPLATEo; % << change
+        model = @hyperbolastica; % << change
 
         values = model(params,TimeEnd);
 
@@ -47,8 +52,7 @@ function [ string_output,output ] = TEMPLATEo_sim( test_data , draw_plot ) % << 
     catch
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-	string_output = printHeader(length(msg));
-        string_output = strcat(string_output,sprintf('%s',msg));
-    end
+        string_output = msg
+	end
 
 end

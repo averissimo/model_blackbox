@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output ] = testo_sim( test_data , draw_plot )
+function [ string_output,output ] = testo_sim( test_data , draw_plot )
 %GOMPERTZA_SIM Summary of this function goes here
 %   Detailed explanation goes here
     if nargin > 0 && test_data
@@ -41,11 +41,11 @@ function [ output ] = testo_sim( test_data , draw_plot )
         if nargin > 1 && draw_plot
             scatter(TimeEnd,values);
         end
-        printJson(output);
-    catch err
+        string_output = printJson(output);
+    catch
+        err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        printHeader(length(msg));
-        fprintf(1,'%s',msg);
+        string_output = msg
     end
 
 end

@@ -1,5 +1,5 @@
 % Model Blackbox
-% Copyright (C) 2012-2012  André Veríssimo
+% Copyright (C) 2013  afsverissimo@gmail.com
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -15,6 +15,18 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function output=printHeader(len)
-    output=sprintf('Content-type: application/json; charset=utf-8\nCache-control: max-age=0, private, must-revalidate\nAccess-Control-Allow-Origin: *\n\r\n');
+function [ F ] = hyperbolastica( params,t )
+%hyperbolastic_growth_model_of_type_iii_h3a Summary of this function goes here
+
+%% model parameters are extracted below
+d  = params(1);
+g  = params(2);
+M  = params(3);
+P0  = params(4);
+theta  = params(5);
+
+%% function
+F = M-(M-P0)*exp(-d*t.^g-asinh(theta*t));
+if size(F,1) > 1 F = F'; end
+
 end

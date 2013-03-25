@@ -1,5 +1,5 @@
 % Model Blackbox
-% Copyright (C) 2012-2012  André Veríssimo
+% Copyright (C) 2013  afsverissimo@gmail.com
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -15,12 +15,13 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ string_output,output ] = gompertza_sim( test_data , draw_plot )
-%GOMPERTZA_SIM Summary of this function goes here
-%   Detailed explanation goes here
+function [output_string,output] = hyperbolastica_est(test_data, draw_plot, debug)
+%
+    %% get inputs
+    % input paramters are in the environment variable "QUERY_STRING"
     if nargin > 0 && test_data
         if test_data == 1
-          s = test_query("simulator","gompertza");
+          s = test_query("estimator","hyperbolastic");
         else
           s = test_data;
         end
@@ -29,28 +30,22 @@ function [ string_output,output ] = gompertza_sim( test_data , draw_plot )
         input = qs2struct(getenv('QUERY_STRING'));
     end
 
-    try
-        %
-        params(1) = str2double( input.A );
-        params(2) = str2double( input.lambda );
-        params(3) = str2double( input.miu );
-        params(4) = str2double( input.N );
-
-        TimeEnd = time_step(input);
-        %
-        model = @gompertza;
-
-        values = model(params , TimeEnd);
-        output = [ transpose(TimeEnd) transpose(values) ];
-
-        if nargin > 1 && draw_plot
-            plot(TimeEnd,values);
-        end
-        string_output = printJson(output);
-    catch 
-        err = lasterror();
-        msg = sprintf('{ "error": "%s" }\n',err.message);
-        string_output = msg
+    %% define model
+    model = @hyperbolastica; % << change
+    flag = 0;
+    if nargin > 1 && draw_plot
+        flag = 1;
     end
-
+    debug_flag = 0;
+    if nargin > 2 && debug
+        debug_flag = 1;
+    end
+    %% Options for estimation
+    % options retrieved from build estimation
+    options.TolFun = 1.0e-12; 
+    options.TolX = 1.0e-12; 
+    options.abstol = 1.0e-07; 
+    options.reltol = 1.0e-07; 
+    %% perform parameter estimation
+    [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
 end
