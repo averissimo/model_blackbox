@@ -15,13 +15,12 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [output_string,output] = hyperbolastica_est(test_data, draw_plot, debug)
-%
-    %% get inputs
-    % input paramters are in the environment variable "QUERY_STRING"
+function [ string_output,output ] = live_cello_sim( test_data , draw_plot ) % << change
+%GOMPERTZA_SIM Summary of this function goes here
+%   Detailed explanation goes here
     if nargin > 0 && test_data
         if test_data == 1
-          s = test_query('estimator','hyperbolastic');
+          s = test_query('simulator','live cell');
         else
           s = test_data;
         end
@@ -30,22 +29,29 @@ function [output_string,output] = hyperbolastica_est(test_data, draw_plot, debug
         input = qs2struct(getenv('QUERY_STRING'));
     end
 
-    %% define model
-    model = @hyperbolastica; % << change
-    flag = 0;
-    if nargin > 1 && draw_plot
-        flag = 1;
-    end
-    debug_flag = 0;
-    if nargin > 2 && debug
-        debug_flag = 1;
-    end
-    %% Options for estimation
-    % options retrieved from build estimation
-    options.TolFun = 1.0e-12; 
-    options.TolX = 1.0e-12; 
-    options.abstol = 1.0e-07; 
-    options.reltol = 1.0e-07; 
-    %% perform parameter estimation
-    [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
+    try
+        %
+        params(1) = str2double( input.alpha );
+        params(2) = str2double( input.delta );
+        params(3) = str2double( input.lambda );
+        params(4) = str2double( input.r0 );
+
+        [TimeEnd, t_start, null, resolution] = time_step(input);
+        %
+        model = @live_cello; % << change
+
+        values = model(params,TimeEnd);
+
+        output = [ transpose(TimeEnd), transpose(values) ];
+
+        if nargin > 1 && draw_plot
+            scatter(TimeEnd,values);
+        end
+        string_output = printJson(output);
+    catch
+        err = lasterror();
+        msg = sprintf('{ "error": "%s" }\n',err.message);
+        string_output = msg;
+	end
+
 end

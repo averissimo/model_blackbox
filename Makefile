@@ -115,6 +115,19 @@ schnutea_sim: $(ALGEBRAIC)/schnute/schnutea_sim.m
 	$(MCC) $(MFLAGS) $(ALGEBRAIC)/schnute/schnutea_sim.m
 	mv schnutea_sim cgi/matlab/simulators/schnutea.cgi
 
+# Live Cell (ODE)
+############################
+
+live_cell: live_cello_est live_cello_sim
+
+live_cello_est: $(DIFFERENTIAL)/live_cell/live_cello_est.m
+	$(MCC) $(MFLAGS) $(DIFFERENTIAL)/live_cell/live_cello_est.m
+	mv live_cello_est cgi/matlab/estimators/live_cello.cgi
+
+live_cello_sim: $(DIFFERENTIAL)/live_cell/live_cello_sim.m
+	$(MCC) $(MFLAGS) $(DIFFERENTIAL)/live_cell/live_cello_sim.m
+	mv live_cello_sim cgi/matlab/simulators/live_cello.cgi
+
 # Monomer (ODE)
 ############################
 
