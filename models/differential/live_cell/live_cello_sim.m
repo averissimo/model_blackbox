@@ -53,6 +53,6 @@ function [ string_output,output ] = live_cello_sim( test_data , draw_plot ) % <<
         msg = sprintf('{ "error": "%s" }\n',err.message);
         string_output = msg;
     end
-    fprintf(1,printHeader(0));
-    fprintf(1,string_output);
+    disp(printHeader(0));
+    disp(output_string);
 end
