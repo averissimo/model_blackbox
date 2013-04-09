@@ -17,7 +17,7 @@
 
 function string_output = printJson(M)
     json = savejson('result',M);
-    string_output = "";
+    string_output = '';
     if isreal(M)
         string_output = strcat(string_output,sprintf('%s\n\n',json));
     else

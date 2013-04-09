@@ -52,6 +52,6 @@ function [ string_output,output ] = live_cello_sim( test_data , draw_plot ) % <<
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
         string_output = msg;
-	end
-
+    end
+    fprintf(1,string_output);
 end
