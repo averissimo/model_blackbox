@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ F ] = live_cell_fraction_modelo( params,t )
+function [ F ] = live_cello( params,t )
 %live_cell_fraction_modelo Summary of this function goes here
     % Extract each parameter from the model
     %  one of them must be the initial value for t = 0 / t = start
@@ -25,9 +25,9 @@ function [ F ] = live_cell_fraction_modelo( params,t )
     r0_  = params(4);
     
    function dxdt = ode(t,x,params_)
-        alpha  = params(1);
-        delta  = params(2);
-        lambda  = params(3);
+        alpha  = params_(1);
+        delta  = params_(2);
+        lambda  = params_(3);
 
         dxdt = x / 3 * ( ( alpha + delta ) * 3 * lambda / ( 3 * lambda + x ) - delta );
     end

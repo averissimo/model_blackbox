@@ -42,6 +42,8 @@ function [output_string,output] = live_cello_est( test_data, draw_plot, debug )
     end
     %% Options for estimation
     % options retrieved from build estimation
+    options.TolFun = 1e-3; % becomes too slow with default value
+    options.TolX = 1e-3; % becomes too slow with default value
     %% perform parameter estimation
-    [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
+    [output,output_string] = analytical_estimator(input, model, options, flag, debug_flag);
 end
