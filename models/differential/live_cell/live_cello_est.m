@@ -46,6 +46,6 @@ function [output_string,output] = live_cello_est( test_data, draw_plot, debug )
     options.TolX = 1e-3; % becomes too slow with default value
     %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, options, flag, debug_flag);
-    disp(printHeader(0));
-    disp(output_string);
+    fprintf(1,printHeader(0));
+    fprintf(1,output_string);
 end
