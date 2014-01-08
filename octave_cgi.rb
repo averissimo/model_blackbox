@@ -61,7 +61,7 @@ suffixes.each do |s|
         fid.write "addpath(genpath(\"#{File.expand_path("models")}\"));\n"
         fid.write "[output,string] = #{File.basename(f).sub(".m","")};\n"
 	fid.write "disp(printHeader( 0 ));\n"
-        fid.write "disp(string);\n"
+        fid.write "disp(output);\n"
         fid.chmod 0775
         fid.close
       end
