@@ -1,0 +1,32 @@
+********** MODEL NAME
+Gompertz
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(N) = R
+d/dt(t) = 1
+
+N(0) = 2.56238
+t(0) = 0
+
+********** MODEL PARAMETERS
+miu = 1.1338
+lambda = 57.6917
+A = 2.70044
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+R = miu*exp(1)*exp(-exp(miu*exp(1)*(lambda-t)/A+1))*exp(miu*exp(1)*(lambda-t)/A+1)
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+
