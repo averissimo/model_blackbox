@@ -32,7 +32,7 @@ t  = params(10);
 vmax_PK  = params(11);
 
 %% function
-F = (vmax_PK .* 2/KmPEP .* 5/KmADP .* (1 - KeqPK .* (2 .* 0) ./ (5 .* 2))) .* (2 ./ KmPEP + 0 ./ KmPYR).^(n-1) .* (5 ./ KmADP + 2 ./ KmATP).^(n-1) ./ ( ((1 + (t./KI).^n + (2./KA).^n)./(1 + t.*(t./KI).^n + s * (2 ./ KA).^n) + C2.^n) .* (((1 + (t./KI).^n + (2./KA).^n)./(1 + t.*(t./KI).^n + s * (2 ./ KA).^n)) + (5 ./ KmADP + 2 ./ KmATP).^n) );
+F = (vmax_PK .* 2/KmPEP .* 5/KmADP .* (1 - KeqPK .* (2 .* 0) ./ (5 .* 2))) .* (2 ./ KmPEP + 0 ./ KmPYR).^(n-1) .* (5 ./ KmADP + 2 ./ KmATP).^(n-1) ./ ( ((1 + (x./KI).^n + (2./KA).^n)./(1 + t.*(x./KI).^n + s * (2 ./ KA).^n) + (2 ./ KmPEP + 0 ./ KmPYR).^n) .* (((1 + (x./KI).^n + (2./KA).^n)./(1 + t.*(x./KI).^n + s * (2 ./ KA).^n)) + (5 ./ KmADP + 2 ./ KmATP).^n) );
 if size(F,1) > 1 F = F'; end
 
 end
