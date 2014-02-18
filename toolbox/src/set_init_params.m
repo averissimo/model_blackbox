@@ -26,6 +26,6 @@ function [higherbound,lowerbound,beta0] = set_init_params(res, index, estimation
         if lowerbound(j) == higherbound(j)
            higherbound(j) =  higherbound(j) + abs( higherbound(j)*0.001 );
         end
-        beta0( j ) = lowerbound( index(j) ) + rand*( higherbound( index(j) )-lowerbound( index(j) ) );
+        beta0( j ) = lowerbound( j ) + rand*( higherbound( j )-lowerbound( j ) );
     end
 end
