@@ -16,21 +16,12 @@
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 function [output_string,output] = reversible_hills_equationa_est(test_data, draw_plot, debug)
-%
-    %% get inputs
-    % input paramters are in the environment variable "QUERY_STRING"
-    if nargin > 0 && exist( 'test_data', 'var' )
-        if test_data == 1
-          s = test_query('estimator','reversible hills equation');
-        elseif test_data == 0
-          s = getenv('QUERY_STRING');
-        else      
-          s = test_data;
-        end
-        input = qs2struct(s);
-    else
-        input = qs2struct(getenv('QUERY_STRING'));
-    end
+    %% get input values
+    % if test_data == 0 or not defined, then it gets input
+    %  from the environment variable "QUERY_STRING", which is used in cgi
+    %  script.
+    % Otherwise, it should get from test_query or from the argument itself
+    input = get_inputs( nargin, test_data, 'estimator', 'reversible hills equation');
 
     %% define model
     model = @reversible_hills_equationa; % << change

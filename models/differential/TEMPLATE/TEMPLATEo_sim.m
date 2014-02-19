@@ -16,15 +16,14 @@
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 function [ string_output,output ] = TEMPLATEo_sim( test_data , draw_plot ) % << change
-%GOMPERTZA_SIM Summary of this function goes here
-%   Detailed explanation goes here
-    if nargin > 0 && test_data
-        s = 'fr=0.12&k11=10&M0=1&n=1&start=0&end=30&minor_step=0.866667';
-        input = qs2struct(s);
-    else
-        input = qs2struct(getenv('QUERY_STRING'));
-    end
-
+    %% get input values
+    % if test_data == 0 or not defined, then it gets input
+    %  from the environment variable "QUERY_STRING", which is used in cgi
+    %  script.
+    % Otherwise, it should get from test_query or from the argument itself
+    input = get_inputs( nargin, test_data, 'simulator', '<defined in test_query.m>'); % << change
+    
+    %%
     try
         %
         params(1) = str2double( input.fr ); % << change

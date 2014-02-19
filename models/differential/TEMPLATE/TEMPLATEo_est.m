@@ -16,16 +16,13 @@
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 function [string_output,output] = TEMPLATEo_est(test_data, draw_plot, debug)
-%
-    %% get inputs
-    % input paramters are in the environment variable "QUERY_STRING"
-    if nargin > 0 && test_data
-        s = 'param_names=[]&param_top=[]&param_bottom=[]&time=[]&values=[]';
-        input = qs2struct(s);
-    else
-        input = qs2struct(getenv('QUERY_STRING'));
-    end
-
+    %% get input values
+    % if test_data == 0 or not defined, then it gets input
+    %  from the environment variable "QUERY_STRING", which is used in cgi
+    %  script.
+    % Otherwise, it should get from test_query or from the argument itself
+    input = get_inputs( nargin, test_data, 'estimator', '<should define in test_query.m>'); % << change
+    
     %% define model
     model = @TEMPLATEo; % << change
     flag = 0;

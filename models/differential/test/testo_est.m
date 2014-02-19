@@ -16,16 +16,13 @@
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 function [string_output,output] = testo_est(test_data, draw_plot, debug)
-%
-    %% get inputs
-    % input paramters are in the environment variable "QUERY_STRING"
-    if nargin > 0 && test_data
-        s = 'param_names=[a,b]&param_top=[5.0,5.0]&param_bottom=[-5.0,0.0]&time=[0,1,2,3,4,5]&values=[0,1.1,4.2,8.2,16.1,25.2]';
-        input = qs2struct(s);
-    else
-        input = qs2struct(getenv('QUERY_STRING'));
-    end
-
+    %% get input values
+    % if test_data == 0 or not defined, then it gets input
+    %  from the environment variable "QUERY_STRING", which is used in cgi
+    %  script.
+    % Otherwise, it should get from test_query or from the argument itself
+    input = get_inputs( nargin, test_data, 'estimator', 'testo');
+    
     %% define model
     model = @testo;
     flag = 0;
