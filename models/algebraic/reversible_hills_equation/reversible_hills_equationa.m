@@ -20,17 +20,17 @@ function [ F ] = reversible_hills_equationa( params,I )
 
 %% model parameters are extracted below
 %% model parameters are extracted below
-vmax_PK = params(01);
-KmPEP   = params(02);
-KmADP   = params(03);
-KeqPK   = params(04);
-KmPYR   = params(05);
-KmATP   = params(06);
-KI      = params(07);
-KA      = params(08);
+KA      = params(01);
+KeqPK   = params(02);
+KI      = params(03);
+KmADP   = params(04);
+KmATP   = params(05);
+KmPEP   = params(06);
+KmPYR   = params(07);
+n       = params(08);
 s       = params(09);
 t       = params(10);
-n       = params(11);
+vmax_PK = params(11);
 
 PEP     = 2;
 ADP     = 5;
