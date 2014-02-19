@@ -19,9 +19,11 @@ function [output_string,output] = reversible_hills_equationa_est(test_data, draw
 %
     %% get inputs
     % input paramters are in the environment variable "QUERY_STRING"
-    if nargin > 0 && test_data
+    if nargin > 0 && exist( 'test_data', 'var' )
         if test_data == 1
           s = test_query('estimator','reversible hills equation');
+        elseif test_data == 0
+          s = getenv('QUERY_STRING');
         else      
           s = test_data;
         end
