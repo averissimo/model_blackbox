@@ -22,7 +22,7 @@ function [output_string,output] = reversible_hills_equationa_est(test_data, draw
     if nargin > 0 && test_data
         if test_data == 1
           s = test_query('estimator','reversible hills equation');
-        else
+        else      
           s = test_data;
         end
         input = qs2struct(s);

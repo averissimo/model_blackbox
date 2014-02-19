@@ -45,10 +45,11 @@ C3 = ADP ./ KmADP + ATP ./ KmATP;
 E1 = 1 + (I./KI).^n + (A./KA).^n;
 E2 = 1 + t.*(I./KI).^n + s * (A ./ KA).^n;
 
-
 F = C1 .* C2.^(n-1) .* C3.^(n-1) ./ ( (E1./E2 + C2.^n) .* ((E1./E2) + C3.^n) );
 
-% F = (vmax_PK .* 2/KmPEP .* 5/KmADP .* (1 - KeqPK .* (2 .* 0) ./ (5 .* 2))) .* (2 ./ KmPEP + 0 ./ KmPYR).^(n-1) .* (5 ./ KmADP + 2 ./ KmATP).^(n-1) ./ ( ((1 + (I./KI).^n + (2./KA).^n)./(1 + t.*(I./KI).^n + s * (2 ./ KA).^n) + (2 ./ KmPEP + 0 ./ KmPYR).^n) .* (((1 + (I./KI).^n + (2./KA).^n)./(1 + t.*(I./KI).^n + s * (2 ./ KA).^n)) + (5 ./ KmADP + 2 ./ KmATP).^n) );
+t_2 = t;
+t = I;
+%F = (vmax_PK .* 2/KmPEP .* 5/KmADP .* (1 - KeqPK .* (2 .* 0) ./ (5 .* 2))) .* (2 ./ KmPEP + 0 ./ KmPYR).^(n-1) .* (5 ./ KmADP + 2 ./ KmATP).^(n-1) ./ ( ((1 + (t./KI).^n + (2./KA).^n)./(1 + t_2.*(t./KI).^n + s * (2 ./ KA).^n) + (2 ./ KmPEP + 0 ./ KmPYR).^n) .* (((1 + (t./KI).^n + (2./KA).^n)./(1 + t_2.*(t./KI).^n + s * (2 ./ KA).^n)) + (5 ./ KmADP + 2 ./ KmATP).^n) );
 
 if size(F,1) > 1
     F = F';
