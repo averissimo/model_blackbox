@@ -2,6 +2,8 @@
 %  - 'simulator'
 %  - 'estimator'
 % name should be defined in test_query.m
+% to run with custom test_data just call it:
+%  get_inputs(1,'param_names=[...')
 function [ output_args ] = get_inputs( nargs, test_data, type, name )
     %
     %% get inputs

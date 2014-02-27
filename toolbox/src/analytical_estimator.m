@@ -21,7 +21,7 @@ function [ output_args,string_output ] = analytical_estimator( input, model , cu
 %#function lsqcurvefit
 
 MAX_COUNT = 25;
-COUNT_TEST = 5;
+COUNT_TEST = 15;
 
     if nargin < 5 || ~debug
         warning('off', 'all');
@@ -156,13 +156,13 @@ COUNT_TEST = 5;
             catch
                 err_sqr = lasterror();
                 if debug
-                   fprintf(fid,'%2d: error!: %s\n' , max_count, err_sqr.message);
+                   fprintf(fid,'\t%2d: error!: %s\n' , max_count, err_sqr.message);
                 end
                 max_count = max_count - 1;
                 continue;
             end
             if debug
-                fprintf(fid,'%2d: ', max_count);
+                fprintf(fid,'%2d/%2d: ', count_test, max_count);
                 for j = 1:length(ahat_t)
                     fprintf(fid,'%s:%f | ' , estimation.parameters.names{index(j)},ahat_t(j));
                 end
@@ -175,6 +175,7 @@ COUNT_TEST = 5;
             end
             if all_params_changed(beta0,ahat_t)
                 count_test = count_test - 1;
+                max_count = MAX_COUNT;
             else
                 count_test = COUNT_TEST;
                 max_count = max_count - 1;
