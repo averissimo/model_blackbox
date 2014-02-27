@@ -21,7 +21,7 @@ function [ output_args,string_output ] = analytical_estimator( input, model , cu
 %#function lsqcurvefit
 
 MAX_COUNT = 25;
-COUNT_TEST = 15;
+COUNT_TEST = 5;
 
     if nargin < 5 || ~debug
         warning('off', 'all');
