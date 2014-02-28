@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output_args,string_output ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
+function [ output_args,string_output,params,residuals ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 %#function lsqcurvefit
@@ -45,6 +45,8 @@ COUNT_TEST = 5;
             fclose(fid);
         end
         string_output = '';
+        params = NaN;
+        residuals = NaN;
         fid = 1;
         %
         input = escape_uri( input );
@@ -223,5 +225,7 @@ COUNT_TEST = 5;
         return;
     end
     output_args = 0;
+    params = ahat;
+    residuals = sum(resnorm);
 
 end
