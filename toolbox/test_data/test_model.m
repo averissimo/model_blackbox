@@ -3,30 +3,25 @@
 % input = get_inputs( nargin, 1, 'estimator', 'gompertza');
 % or you can user csvread, load, etc..
 % we use data directly from a http://kdbio.inesc-id.pt/bgfit experiment
-data_filename     = '203';
-data_filename_ext = '.csv';
-data_file         = strcat( data_filename, data_filename_ext );
-data = dataset('File', data_file, 'Delimiter',',','ReadVarNames',1);
+[parent, ~, ~] = fileparts(mfilename('fullpath'));
+file.data_dir = 'data';
+file.parent = strcat(parent,'/',file.data_dir);
+file.ext  = '.csv';
 
+print_flag = 0;
 
-% index of the replicate
-i = 512;
-% reduce the dataset to only this replicate
-data_reduced = data( data.index == i, 1:2);
-% get from dataest
-time   = transpose( data_reduced.time );
-values = transpose( data_reduced.n );
+data_files = dir(strcat(file.parent,'/*',file.ext));
 
-%% define modeli
-model = @gompertza;
-pnames = {'A','lambda','miu','N'};
-ub = [20, 20, 3    ,   1];
-lb = [0  ,  0, 0.001, -15];
+data = dataset();
+for f = data_files'
 
-% create 3 sample intervals to test
-intervals = cell(1);
-intervals{1} = [0, Inf ];
-intervals{2} = [0, 4, Inf ];
-intervals{3} = [0, 6, Inf ];
+    file.name = f.name;
+    file.file = strcat(file.parent,'/',file.name);
+    file.data = dataset('File', file.file, 'Delimiter',',','ReadVarNames',1);
+    data = cat(1, data, file.data);
+end
 
-[result, sum_result] = estimate_intervals(data_reduced, pnames, intervals, 2, lb, ub, model,1);
+[index_t, result_t, sum_result_t] = data_intervals( data.time, data.n, data.index, print_flag );
+result = dataset( index_t, result_t, sum_result_t);
+result.Properties.VarNames = {'index','result','sum_result'};
+

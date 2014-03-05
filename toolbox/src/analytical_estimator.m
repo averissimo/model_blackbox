@@ -215,6 +215,7 @@ COUNT_TEST = 5;
                 scatter(time(:,j),values(:,j));
             end
             plot(xrange,model(ahat,xrange),'r');
+            title( strcat('\bf', sprintf('Sum residuals = %d\rm', sum(resnorm)), '\rm'));
             hold off;
         end
        string_output = strcat(string_output,sprintf('}\n'));
