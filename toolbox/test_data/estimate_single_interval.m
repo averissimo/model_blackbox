@@ -1,4 +1,4 @@
-function [ output ] = estimate_interval( input_data, pnames, interval, sliding_param, lb, ub, model )
+function [ output ] = estimate_single_interval( input_data, pnames, interval, sliding_param, lb, ub, model )
 %ESTIMATE_INTERVALS Summary of this function goes here
 %   Detailed explanation goes here
 
