@@ -1,4 +1,4 @@
-function [ output_index, output_results, output_sum_results] = data_intervals( xdata, ydata, index, print_flag )
+function [ output_best, output_index, output_results, output_sum_results] = data_intervals( xdata, ydata, index, print_flag )
 %DATA_INTERVALS Summary of this function goes here
 %   Detailed explanation goes here
     
@@ -12,6 +12,7 @@ function [ output_index, output_results, output_sum_results] = data_intervals( x
     output_index       = [];
     output_results     = cell(length( indexes ),1 );
     output_sum_results = cell(length( indexes ),1 );
+    output_best = struct('ids', [], 'params', {}, 'residuals', [], 'intervals', []);
     
     count   = 1; % count over the iteration
     for index = indexes
@@ -32,13 +33,13 @@ function [ output_index, output_results, output_sum_results] = data_intervals( x
         intervals = generate_intervals(xdata', 1);
 
         %% create 3 sample intervals to test
-        intervals = cell(1);
-        intervals{1} = [0, Inf ];
-        intervals{2} = [0, 4, Inf ];
+        %intervals = cell(1);
+        %intervals{1} = [0, Inf ];
+        %intervals{2} = [0, 4, Inf ];
         %intervals{3} = [0, 6, Inf ];
 
         %% call the estimation
-        [result, sum_result] = estimate_intervals(data_reduced, ...
+        [best_t, result, sum_result] = estimate_intervals(data_reduced, ...
             model.pnames, intervals, 2, ...
             model.lb, model.ub, model.model, ...
             print_flag);
@@ -46,6 +47,13 @@ function [ output_index, output_results, output_sum_results] = data_intervals( x
         % set outputs
         output_index              = cat(1,output_index,index);
         output_results{count}     = result;
+        % from best_t
+        
+        output_best(1).ids           = cat(1, output_best.ids, best_t.id);
+        output_best(1).params{count} = best_t.params;
+        output_best(1).residuals     = cat(1, output_best.residuals, best_t.residual);
+        output_best(1).intervals     = cat(1, output_best.intervals, best_t.interval);
+        %
         output_sum_results{count} = sum_result;
         count = count + 1; % increment count
     end

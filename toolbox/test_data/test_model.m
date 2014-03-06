@@ -21,7 +21,6 @@ for f = data_files'
     data = cat(1, data, file.data);
 end
 
-[index_t, result_t, sum_result_t] = data_intervals( data.time, data.n, data.index, print_flag );
-result = dataset( index_t, result_t, sum_result_t);
-result.Properties.VarNames = {'index','result','sum_result'};
-
+[best, index_t, result_t, sum_result_t] = data_intervals( data.time, data.n, data.index, print_flag );
+result = dataset( index_t, best.ids, best.residuals, best.intervals, best.params', result_t, sum_result_t);
+result.Properties.VarNames = {'index','best_id', 'best_residual', 'best_interval', 'best_param', 'all_results','summary_of_results'};
