@@ -1,5 +1,5 @@
 % Model Blackbox
-% Copyright (C) 2012-2012  André Veríssimo
+% Copyright (C) 2014  afsverissimo@gmail.com
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -15,37 +15,46 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ string_output,output ] = logistica_sim( test_data , draw_plot ) % << change
-    %% get input values
-    % if test_data == 0 or not defined, then it gets input
-    %  from the environment variable "QUERY_STRING", which is used in cgi
-    %  script.
-    % Otherwise, it should get from test_query or from the argument itself
-    input = get_inputs( nargin, test_data, 'simulator', 'logistica');
+function [ string_output,output ] = logisticsa_sim( test_data , draw_plot ) % << change
+%GOMPERTZA_SIM Summary of this function goes here
+%   Detailed explanation goes here
+    if nargin > 0 && exist('test_data','var')
+        if test_data == 1
+          s = test_query('simulator','logistics');
+        else
+          s = test_data;
+        end
+        input = qs2struct(s);
+    else
+        input = qs2struct(getenv('QUERY_STRING'));
+    end
 
-    %%
     try
-        % change to reflect the parameters (sorted by alphabetic order)
+        %
         params(1) = str2double( input.A );
         params(2) = str2double( input.lambda );
         params(3) = str2double( input.miu );
-        params(4) = str2double( input.N );
-
-        TimeEnd = time_step(input);
+        % gets N_0
+        N_0 = str2double( input.N_0 );
+        
+        [TimeEnd, t_start, null, resolution] = time_step(input);
         %
-        model = @logistica; % << change
+        
+        model = @logisticsa; % << change
+        
+        values = model(params,TimeEnd);
+        values = values + N_0; % adds to reconvert
 
-        values = model(params , TimeEnd);
-        output = [ transpose(TimeEnd) transpose(values) ];
+        output = [ transpose(TimeEnd), transpose(values) ];
 
         if nargin > 1 && draw_plot
-            plot(TimeEnd,values);
+            scatter(TimeEnd,values);
         end
         string_output = printJson(output);
-    catch 
+    catch
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
         string_output = msg
-    end
+	end
 
 end

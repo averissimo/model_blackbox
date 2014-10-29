@@ -1,5 +1,5 @@
 % Model Blackbox
-% Copyright (C) 2012-2012  André Veríssimo
+% Copyright (C) 2014  afsverissimo@gmail.com
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -15,14 +15,16 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ F ] = logistica( params,t )
-%GOMPERTZA Summary of this function goes here
-%   Detailed explanation goes here
-A      = params(1);
-lambda = params(2);
-mu     = params(3);
-N      = params(4);
+function [ F ] = logisticsa( params,t )
+%logisticsa Summary of this function goes here
 
-F = N + A ./ (1 + exp( (4 * mu) ./ A * (lambda - t) + 2 ));
+%% model parameters are extracted below
+A  = params(1);
+lambda  = params(2);
+miu  = params(3);
+
+%% function
+F = A ./ (1 + exp( (4 * miu) ./ A * (lambda - t) + 2 ));
 if size(F,1) > 1 F = F'; end
+
 end
