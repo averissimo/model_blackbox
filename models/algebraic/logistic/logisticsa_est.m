@@ -16,21 +16,12 @@
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
-%
-    %% get inputs
-    % input paramters are in the environment variable "QUERY_STRING"
-    if nargin > 0 && exist('test_data','var')
-        if test_data == 1
-          s = test_query('estimator','logistics');
-        elseif test_data == 0
-          s = getenv('QUERY_STRING');
-        else
-          s = test_data;
-        end
-        input = qs2struct(s);
-    else
-        input = qs2struct(getenv('QUERY_STRING'));
-    end
+    %% get input values
+    % if test_data == 0 or not defined, then it gets input
+    %  from the environment variable "QUERY_STRING", which is used in cgi
+    %  script.
+    % Otherwise, it should get from test_query or from the argument itself
+    input = get_inputs( nargin, test_data, 'estimator', 'logisticsa');    %
     
     %% define model
     model = @logisticsa; % << change
@@ -42,18 +33,14 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     if nargin > 2 && debug
         debug_flag = 1;
     end
-    
     %% Convert Y axis to ln(x)/ln(X0)
-    % extract time and values
-    % convert values
-    % write back to input form
     [input, y_0, x_0] = convert_zwietering(input);
-    %
     
     %% Options for estimation
     % options retrieved from build estimation
     %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
     
+    % adds x_0 and y_0 to output variables
     output_string = add_zwietering(output, output_string, y_0, x_0);
 end

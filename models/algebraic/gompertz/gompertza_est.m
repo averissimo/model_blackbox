@@ -24,7 +24,7 @@ function [output_string,output] = gompertza_est(test_data, draw_plot,debug)
     input = get_inputs( nargin, test_data, 'estimator', 'gompertza');    %
     
     %% define model
-    model = @gompertza;
+    model = @gompertza; % << change
     flag = 0;
     if nargin > 1 && draw_plot
         flag = 1;
@@ -33,7 +33,14 @@ function [output_string,output] = gompertza_est(test_data, draw_plot,debug)
     if nargin > 2 && debug
         debug_flag = 1;
     end
+    %% Convert Y axis to ln(x)/ln(X0)
+    [input, y_0, x_0] = convert_zwietering(input);
+    
+    %% Options for estimation
+    % options retrieved from build estimation
     %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
-
+    
+    % adds x_0 and y_0 to output variables
+    output_string = add_zwietering(output, output_string, y_0, x_0);
 end

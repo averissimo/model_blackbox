@@ -29,23 +29,26 @@ function [ string_output,output ] = gompertza_sim( test_data , draw_plot )
         params(1) = str2double( input.A );
         params(2) = str2double( input.lambda );
         params(3) = str2double( input.miu );
-        params(4) = str2double( input.N );
+        % gets N_0
+        N_0 = str2double( input.N_0 );
 
         TimeEnd = time_step(input);
         %
         model = @gompertza;
 
         values = model(params , TimeEnd);
-        output = [ transpose(TimeEnd) transpose(values) ];
+        values = values + N_0; % adds to reconvert
+        
+        output = [ transpose(TimeEnd), transpose(values) ];
 
         if nargin > 1 && draw_plot
-            plot(TimeEnd,values);
+            scatter(TimeEnd,values);
         end
         string_output = printJson(output);
     catch 
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        string_output = msg
+        string_output = msg;
     end
 
 end

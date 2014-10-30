@@ -16,18 +16,12 @@
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 function [ string_output,output ] = logisticsa_sim( test_data , draw_plot ) % << change
-%GOMPERTZA_SIM Summary of this function goes here
-%   Detailed explanation goes here
-    if nargin > 0 && exist('test_data','var')
-        if test_data == 1
-          s = test_query('simulator','logistics');
-        else
-          s = test_data;
-        end
-        input = qs2struct(s);
-    else
-        input = qs2struct(getenv('QUERY_STRING'));
-    end
+    %% get input values
+    % if test_data == 0 or not defined, then it gets input
+    %  from the environment variable "QUERY_STRING", which is used in cgi
+    %  script.
+    % Otherwise, it should get from test_query or from the argument itself
+    input = get_inputs( nargin, test_data, 'simulator', 'logisticsa');
 
     try
         %
@@ -37,12 +31,11 @@ function [ string_output,output ] = logisticsa_sim( test_data , draw_plot ) % <<
         % gets N_0
         N_0 = str2double( input.N_0 );
         
-        [TimeEnd, t_start, null, resolution] = time_step(input);
+        TimeEnd = time_step(input);
         %
-        
         model = @logisticsa; % << change
         
-        values = model(params,TimeEnd);
+        values = model(params , TimeEnd);
         values = values + N_0; % adds to reconvert
 
         output = [ transpose(TimeEnd), transpose(values) ];
@@ -54,7 +47,7 @@ function [ string_output,output ] = logisticsa_sim( test_data , draw_plot ) % <<
     catch
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        string_output = msg
+        string_output = msg;
 	end
 
 end

@@ -33,7 +33,14 @@ function [output_string,output] = schnutea_est(test_data, draw_plot) % << change
     if nargin > 2 && debug
         debug_flag = 1;
     end
+    %% Convert Y axis to ln(x)/ln(X0)
+    [input, y_0, x_0] = convert_zwietering(input);
+    
+    %% Options for estimation
+    % options retrieved from build estimation
+    %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
-
-
+    
+    % adds x_0 and y_0 to output variables
+    output_string = add_zwietering(output, output_string, y_0, x_0);
 end
