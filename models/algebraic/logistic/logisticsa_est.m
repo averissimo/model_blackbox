@@ -64,7 +64,7 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
     
     if output == 0
-        output_string(length(output_string)) = '';
+        output_string(length(output_string)) = ',';
         output_string = strcat( output_string, sprintf('\n\t"N_0": %.14f,\n', values_aux(1)));
         output_string = strcat( output_string, sprintf('\t"t_0": %.14f\n', time(1)));
         output_string = strcat( output_string, '}');
