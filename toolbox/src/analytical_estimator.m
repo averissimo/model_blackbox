@@ -52,7 +52,6 @@ COUNT_TEST = 5;
         input = escape_uri( input );
 
         %% builds time (x) and values (y) matrices
-        fprintf(1,'%s\n',input.time);
         time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
         value_s_array = textscan(input.values,'%s','delimiter',';','BufSize',length(input.values)+100);
         len = length(time_s_array{1});
