@@ -66,8 +66,8 @@ suffixes.each do |s|
         fid.write " setenv('QUERY_STRING', sprintf('%c',val));\n"
         fid.write "end\n"
         #
+  	    fid.write "disp(printHeader( 0 ));\n"
         fid.write "[output,string] = #{File.basename(f).sub(".m","")};\n"
-	fid.write "disp(printHeader( 0 ));\n"
         fid.write "disp(output);\n"
         fid.chmod 0775
         fid.close

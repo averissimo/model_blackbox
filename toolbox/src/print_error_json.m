@@ -24,9 +24,8 @@ function string_output=print_error_json( err , fid, remove_bracket )
     string_output = strcat(string_output,sprintf('\t"error":\t"%s",\n',err.message));
     len = length(err.stack);
     for i = 1:len
-        string_output = strcat(string_output,sprintf('',i));
-        string_output = strcat(string_output,sprintf('\t"stack_%d":\t[line: %d",\t"name":"%s",\tfile:"%s"],\n', i, err.stack(i).line, err.stack(i).name  , err.stack(i).file));
+        string_output = strcat(string_output,sprintf('\t"stack_%d": {\n\t\t"line": "%d",\n\t\t"name": "%s",\n\t\t"file": "%s"\n\t},\n', i, err.stack(i).line, err.stack(i).name  , err.stack(i).file));
     end
     string_output = strcat(string_output,sprintf('}\n'));
-    fprintf(fid,string_output);
+    %fprintf(fid,string_output);
 end
