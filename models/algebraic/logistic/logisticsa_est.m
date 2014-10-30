@@ -42,22 +42,12 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     if nargin > 2 && debug
         debug_flag = 1;
     end
+    
     %% Convert Y axis to ln(x)/ln(X0)
     % extract time and values
     % convert values
     % write back to input form
-    [time,values_aux] = extract_time_values(input);
-    values = values_aux - values_aux(1); % ln(x/x0) = ln(x)-ln(x0)
-    time_s = '';
-    values_s = '';
-    for i = 1:(length(values)-1)
-        time_s   = strcat( time_s,   sprintf('%f,', time(i)) );
-        values_s = strcat( values_s, sprintf('%f,', values(i)) );
-    end
-    time_s   = strcat( '[', time_s,   sprintf('%f', time(length(values))),   ']' );
-    values_s = strcat( '[', values_s, sprintf('%f', values(length(values))), ']' );
-    input.time   = time_s;
-    input.values = values_s;
+    [input, y_0, x_0] = convert_zwietering(input);
     %
     
     %% Options for estimation
@@ -65,11 +55,5 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, struct, flag, debug_flag);
     
-    if output == 0
-        output_string = strrep( output_string, '}', ',');
-        %output_string(length(output_string)) = ',';
-        output_string = strcat( output_string, sprintf('\n\t"N_0": %.14f,\n', values_aux(1)));
-        output_string = strcat( output_string, sprintf('\t"t_0": %.14f\n', time(1)));
-        output_string = strcat( output_string, '}');
-    end
+    output_string = add_zwietering(output, output_string, y_0, x_0);
 end
