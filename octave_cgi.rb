@@ -60,11 +60,11 @@ suffixes.each do |s|
         fid.write "addpath(genpath(\"#{File.expand_path("toolbox")}\"));\n"
         fid.write "addpath(genpath(\"#{File.expand_path("models")}\"));\n"
         # in case of post methods get the data directly from stdin(0)
-        fid.write "method = getenv('REQUEST_METHOD');"
-        fid.write "if strcmp(method,'POST') && length(getenv('QUERY_STRING') > 0"
-        fid.write " [val,count] = fread( 0 );"
-        fid.write " setenv('QUERY_STRING', sprintf('%c',val));"
-        fid.write "end"
+        fid.write "method = getenv('REQUEST_METHOD');\n"
+        fid.write "if strcmp(method,'POST') && length(getenv('QUERY_STRING') > 0\n"
+        fid.write " [val,count] = fread( 0 );\n"
+        fid.write " setenv('QUERY_STRING', sprintf('%c',val));\n"
+        fid.write "end\n"
         #
         fid.write "[output,string] = #{File.basename(f).sub(".m","")};\n"
 	fid.write "disp(printHeader( 0 ));\n"
