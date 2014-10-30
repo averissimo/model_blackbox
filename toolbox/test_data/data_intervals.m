@@ -1,4 +1,4 @@
-function [ output_best, output_index, output_results, output_sum_results] = data_intervals( xdata, ydata, index, print_flag )
+function [ output_best, output_index, output_results, output_sum_results] = data_intervals( xdata, ydata, index, print_flag, prefix )
 %DATA_INTERVALS Summary of this function goes here
 %   Detailed explanation goes here
     
@@ -33,16 +33,17 @@ function [ output_best, output_index, output_results, output_sum_results] = data
         intervals = generate_intervals(xdata', 1);
 
         %% create 3 sample intervals to test
-        %intervals = cell(1);
-        %intervals{1} = [0, Inf ];
-        %intervals{2} = [0, 4, Inf ];
-        %intervals{3} = [0, 6, Inf ];
+        intervals = cell(1);
+        intervals{1} = [0, Inf ];
+        intervals{2} = [0, 4, Inf ];
+        intervals{3} = [0, 6, Inf ];
 
+        name_prefix = strcat(prefix,'-',num2str(index));
         %% call the estimation
         [best_t, result, sum_result] = estimate_intervals(data_reduced, ...
             model.pnames, intervals, 2, ...
             model.lb, model.ub, model.model, ...
-            print_flag);
+            print_flag,name_prefix);
         
         % set outputs
         output_index              = cat(1,output_index,index);

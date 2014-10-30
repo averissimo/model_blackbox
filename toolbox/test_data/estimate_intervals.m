@@ -1,4 +1,5 @@
-function [ best, result, sum_result ] = estimate_intervals( input_data, pnames, intervals, sliding_param, lb, ub, model, print_flag )
+function [ best, result, sum_result ] = estimate_intervals( input_data, pnames, intervals, ...
+                                                            sliding_param, lb, ub, model, print_flag, prefix )
 %ESTIMATE_INTERVALS Summary of this function goes here
 %   Detailed explanation goes here
     PRINT_OPTION = '-dpng';
@@ -24,10 +25,14 @@ function [ best, result, sum_result ] = estimate_intervals( input_data, pnames, 
                                   sliding_param, lb, ub, model));
             Id = cat(1, Id, repmat(i, length(interval) - 1, 1));
             if exist('print_flag','var') && print_flag == 1
-                print(h, PRINT_OPTION, sprintf('/%s/%s-%d.%s', log_dir, i, PRINT_EXT));    
+                name_prefix = '';
+                if exist('prefix','var')
+                    name_prefix = strcat(prefix,'-');
+                end
+                print(h, PRINT_OPTION, sprintf('/%s/%s%d.%s', log_dir, name_prefix, i, PRINT_EXT));    
             end
             t = get( get(gca, 'Title'), 'String');
-            title( strcat( t,' (id: ', num2str(i), ')') );
+            title( strcat( t,' (id: ', num2str(i), ') \bfsugar: ', prefix) );
             Intervals{count} = interval; %#ok<*AGROW>
             count = count + 1;
         catch err
