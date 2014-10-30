@@ -22,6 +22,8 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     if nargin > 0 && exist('test_data','var')
         if test_data == 1
           s = test_query('estimator','logistics');
+        elseif test_data == 0
+          s = getenv('QUERY_STRING');
         else
           s = test_data;
         end
