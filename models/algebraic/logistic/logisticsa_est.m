@@ -21,18 +21,13 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     %  from the environment variable "QUERY_STRING", which is used in cgi
     %  script.
     % Otherwise, it should get from test_query or from the argument itself
+    if ~exist('test_data','var'), test_data = 0; end
     input = get_inputs( nargin, test_data, 'estimator', 'logisticsa');    %
     
     %% define model
     model = @logisticsa; % << change
-    flag = 0;
-    if nargin > 1 && draw_plot
-        flag = 1;
-    end
-    debug_flag = 0;
-    if nargin > 2 && debug
-        debug_flag = 1;
-    end
+    flag = 0;       if nargin > 1 && draw_plot, flag = 1;       end
+    debug_flag = 0; if nargin > 2 && debug,     debug_flag = 1; end
     %% Convert Y axis to ln(x)/ln(X0)
     [input, y_0, x_0] = convert_zwietering(input);
     
