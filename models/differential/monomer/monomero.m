@@ -26,14 +26,6 @@ function F = monomero( params,t )
     M0   = params(3);
     n    = params(4);
 
-   function dxdt = ode(t,x,params_)
-        fr_  = params_(1);
-        k11_ = params_(2);
-        n_   = params_(3);
-
-        dxdt = -2 .* fr_ .* fr_ .* k11_ .* ( n_ / 2 ) .* x .* x;
-    end
-
     if isvector(t)
         tsim = t;
     else
@@ -58,4 +50,12 @@ function F = monomero( params,t )
             F = Xsim(end);
         end
     end
+end
+
+function dxdt = ode(t,x,params_)
+    fr_  = params_(1);
+    k11_ = params_(2);
+    n_   = params_(3);
+
+    dxdt = -2 .* fr_ .* fr_ .* k11_ .* ( n_ / 2 ) .* x .* x;
 end

@@ -90,6 +90,7 @@ COUNT_TEST = 5;
         % reads json
         estimation = build_estimation( estimation_input );
         %% Options for estimation
+
         options = optimset('DerivativeCheck','on','FinDiffType','central','Display','off');
         % options retrieved from build estimation
         options.MaxIter = estimation.optimization.options.maxiter;
@@ -126,6 +127,7 @@ COUNT_TEST = 5;
         ahat = [];
         output = [];
         beta0 = [];
+
         while max_count >= 0 && count_test >= 0
             %
             [ub,lb,beta0] = set_init_params(res, index, estimation );

@@ -1,10 +1,8 @@
 # mcc file location
-MCC = /opt/R2010a/bin/mcc
+MCC = /opt/MATLAB/R2013a/bin/mcc
 
-TOOLBOXES = /home/averissimo/work/toolboxes
-MODELS_SBT_PATH = toolbox/models
 MODELS_ODE_PATH = models/differential
-MODELS_ALG_PATH =  models/algebraic
+MODELS_ALG_PATH = models/algebraic
 LIBRARY = toolbox/lib
 AUXILIARY = toolbox/src
 
@@ -12,7 +10,7 @@ DIFFERENTIAL = $(MODELS_ODE_PATH)
 ALGEBRAIC = $(MODELS_ALG_PATH)
 
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
-MFLAGS =  -m -I $(AUXILIARY) -I $(TOOLBOXES) -I $(MODELS_SBT_PATH) -I $(MODELS_ODE_PATH) -I $(MODELS_ALG_PATH) -I $(LIBRARY) -R -nodisplay -R -nojvm
+MFLAGS =  -m -I $(AUXILIARY) -I $(MODELS_ODE_PATH) -I $(MODELS_ALG_PATH) -I $(LIBRARY) -R -nodisplay -R -nojvm
 
 RUBY = ruby
 
@@ -23,32 +21,6 @@ octave:
 	$(RUBY) octave_cgi.rb
 
 # MATLAB
-
-# Gompertz (SBT2)
-#############################
-
-gompertz: gompertz_est gompertz_sim
-
-gompertz_est: toolbox/estimators/gompertz_est.m
-	$(MCC) $(MFLAGS) toolbox/estimators/gompertz_est.m
-	mv gompertz_est cgi/matlab/estimators/gompertz.cgi
-
-gompertz_sim: toolbox/simulators/gompertz_sim.m
-	$(MCC) $(MFLAGS) simulators/gompertz_sim.m
-	mv gompertz_sim cgi/matlab/simulators/gompertz.cgi
-
-# Baranyi (SBT2)
-#############################
-
-baranyi: baranyi_est baranyi_sim
-
-baranyi_est: toolbox/estimators/baranyi_est.m
-	$(MCC) $(MFLAGS) toolbox/estimators/baranyi_est.m
-	mv baranyi_est cgi/matlab/estimators/baranyi.cgi
-
-baranyi_sim: toolbox/simulators/baranyi_sim.m
-	$(MCC) $(MFLAGS) toolbox/simulators/baranyi_sim.m
-	mv baranyi_sim cgi/matlab/simulators/baranyi.cgi
 
 # Gompertz (analytical)
 ############################

@@ -21,23 +21,19 @@ function [output_string,output] = monomero_est(test_data, draw_plot, debug)
     %  from the environment variable "QUERY_STRING", which is used in cgi
     %  script.
     % Otherwise, it should get from test_query or from the argument itself
+    if ~exist('test_data','var'), test_data = 0; end
     input = get_inputs( nargin, test_data, 'estimator', 'monomero');
     
     %% define model
-    model = @monomero;
-    flag = 0;
-    if nargin > 1 && draw_plot
-        flag = 1;
-    end
-    debug_flag = 0;
-    if nargin > 2 && debug
-        debug_flag = 1;
-    end
+    model = @monomero; 
+    flag = 0; if nargin > 1 && draw_plot, flag = 1; end
+    debug_flag = 0; if nargin > 2 && debug, debug_flag = 1; end
     %% Options for estimation
     % options retrieved from build estimation
     options.TolFun = 1e-7; % becomes too slow with default value
-    options.TolX = 1e-7; % becomes too slow with default value
+    options.TolX   = 1e-7; % becomes too slow with default value
     %% perform parameter estimation
     [output,output_string] = analytical_estimator(input, model, options, flag, debug_flag);
-
+    fprintf(1, printHeader(0));
+    fprintf(1,output_string);
 end
