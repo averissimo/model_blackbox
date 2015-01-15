@@ -8,6 +8,8 @@ function [ new_input, y_0, x_0 ] = convert_zwietering( input )
     % extract time and values
     % convert values
     % write back to input form
+    y_0 = [];
+    x_0 = [];
     [time,values_aux] = extract_time_values(new_input);
     y_0 = values_aux(1);
     x_0 = time(1);
