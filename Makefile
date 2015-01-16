@@ -41,7 +41,7 @@ clean:
 
 gompertza: gompertza_est gompertza_sim
 
-logistica: logistica_est logistica_sim
+logisticsa: logisticsa_est logisticsa_sim
 
 baranyia: baranyia_est baranyia_sim
 
@@ -49,7 +49,7 @@ hyperbolastica: hyperbolastica_est hyperbolastica_sim
 
 reversible_hills_equationa: reversible_hills_equationa_est reversible_hills_equationa_sim
 
-richards: richards_est richards_sim
+richardsa: richardsa_est richardsa_sim
 
 schnutea: schnutea_est schnutea_sim
 

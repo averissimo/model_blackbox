@@ -21,6 +21,7 @@ function [output_string,output] = live_cello_est( test_data, draw_plot, debug )
     %  from the environment variable "QUERY_STRING", which is used in cgi
     %  script.
     % Otherwise, it should get from test_query or from the argument itself
+    if ~exist('test_data','var'), test_data = 0; end
     input = get_inputs( nargin, test_data, 'estimator', 'live cell');
 
     %% define model

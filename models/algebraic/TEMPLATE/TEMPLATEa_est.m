@@ -21,6 +21,7 @@ function [output_string,output] = TEMPLATEa_est(test_data, draw_plot) % << chang
     %  from the environment variable "QUERY_STRING", which is used in cgi
     %  script.
     % Otherwise, it should get from test_query or from the argument itself
+    if ~exist('test_data','var'), test_data = 0; end
     input = get_inputs( nargin, test_data, 'estimator', '<name that is defined in test_query.m>'); % << change
 
     %% define model

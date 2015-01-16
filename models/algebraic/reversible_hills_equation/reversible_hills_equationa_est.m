@@ -21,6 +21,7 @@ function [output_string,output] = reversible_hills_equationa_est(test_data, draw
     %  from the environment variable "QUERY_STRING", which is used in cgi
     %  script.
     % Otherwise, it should get from test_query or from the argument itself
+    if ~exist('test_data','var'), test_data = 0; end
     input = get_inputs( nargin, test_data, 'estimator', 'reversible hills equation');
 
     %% define model
