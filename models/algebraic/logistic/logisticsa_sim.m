@@ -49,6 +49,6 @@ function [ string_output,output ] = logisticsa_sim( test_data , draw_plot ) % <<
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
         string_output = msg;
-	end
+    end
 
 end
