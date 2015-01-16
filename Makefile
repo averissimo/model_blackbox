@@ -3,6 +3,7 @@ MCC = /opt/MATLAB/R2013a/bin/mcc
 
 MODELS_ODE = models/differential
 MODELS_ALG = models/algebraic
+INC = $(subst models,-I models,$(wildcard $(MODELS_ODE)/*)) $(subst models,-I models,$(wildcard $(MODELS_ALG)/*))
 LIB = toolbox/src
 
 ZWIET = toolbox/src/zwietering
@@ -11,7 +12,7 @@ ESTS_PATH = cgi/matlab/estimators
 SIMS_PATH = cgi/matlab/simulators
 
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
-MFLAGS = -m -I $(LIB) -I $(ZWIET) -I $(MODELS_ODE) -I $(MODELS_ALG) -R -nodisplay -R -nojvm
+MFLAGS = -m -I $(LIB) -I $(ZWIET) $(INC) -R -nodisplay -R -nojvm
 
 RUBY = ruby
 
@@ -30,6 +31,7 @@ wrapper_temp:
 	echo "fprintf(1,printHeader(0));" >> wrapper_temp.m
 	echo "fprintf(1,str);" >> wrapper_temp.m
 	$(MCC) $(MFLAGS) wrapper_temp.m
+	chmod +x wrapper_temp
 
 clean:
 	rm -f wrapper_temp.m *.log *.c *.sh *.prj readme.txt
