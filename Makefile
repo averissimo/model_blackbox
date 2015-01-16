@@ -6,11 +6,13 @@ MODELS_ALG_PATH = models/algebraic
 LIBRARY = toolbox/lib
 AUXILIARY = toolbox/src
 
+ZWIET = toolbox/src/zwietering
+
 ESTS_PATH = cgi/matlab/estimators
 SIMS_PATH = cgi/matlab/simulators
 
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
-MFLAGS =  -m -I $(AUXILIARY) -I $(MODELS_ODE_PATH) -I $(MODELS_ALG_PATH) -I $(LIBRARY) -R -nodisplay -R -nojvm
+MFLAGS =  -m -I $(AUXILIARY) -I $(ZWIET) -I $(MODELS_ODE_PATH) -I $(MODELS_ALG_PATH) -I $(LIBRARY) -R -nodisplay -R -nojvm
 
 RUBY = ruby
 
