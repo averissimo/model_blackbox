@@ -38,4 +38,8 @@ function [output_string,output] = logisticsa_est(test_data, draw_plot, debug)
     
     % adds x_0 and y_0 to output variables
     output_string = add_zwietering(output, output_string, y_0, x_0);
+    
+    if ~exist('OCTAVE_VERSION', 'builtin')
+        fprintf(1, output_string);
+    end
 end
