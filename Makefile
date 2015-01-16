@@ -61,12 +61,14 @@ monomoreo: monomoreo_est monomoreo_sim
 # Pattern rules
 #
 
-%_est: wrapper_cp
+%_est:
+	make wrapper_cp
 	echo "str = $@();" >> wrapper_temp.m
 	make wrapper_temp
 	mv wrapper_temp $(ESTS_PATH)/$(subst _est,,$@).cgi
 
-%_sim: wrapper_cp
+%_sim:
+	make wrapper_cp
 	echo "str = $@();" >> wrapper_temp.m
 	make wrapper_temp
 	mv wrapper_temp $(SIMS_PATH)/$(subst _sim,,$@).cgi
