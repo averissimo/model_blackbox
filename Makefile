@@ -1,10 +1,9 @@
 # mcc file location
 MCC = /opt/MATLAB/R2013a/bin/mcc
 
-MODELS_ODE_PATH = models/differential
-MODELS_ALG_PATH = models/algebraic
-LIBRARY = toolbox/lib
-AUXILIARY = toolbox/src
+MODELS_ODE = models/differential
+MODELS_ALG = models/algebraic
+LIB = toolbox/src
 
 ZWIET = toolbox/src/zwietering
 
@@ -12,7 +11,7 @@ ESTS_PATH = cgi/matlab/estimators
 SIMS_PATH = cgi/matlab/simulators
 
 # toolboxes /path/to/SBPD/SBT2/and/jsonlab
-MFLAGS =  -m -I $(AUXILIARY) -I $(ZWIET) -I $(MODELS_ODE_PATH) -I $(MODELS_ALG_PATH) -I $(LIBRARY) -R -nodisplay -R -nojvm
+MFLAGS = -m -I $(LIB) -I $(ZWIET) -I $(MODELS_ODE) -I $(MODELS_ALG) -R -nodisplay -R -nojvm
 
 RUBY = ruby
 
