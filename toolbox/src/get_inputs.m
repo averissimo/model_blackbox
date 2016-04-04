@@ -12,7 +12,25 @@ function [ output_args ] = get_inputs( nargs, test_data, type, name )
         if test_data == 1
           s = test_query( type, name);
         elseif test_data == 0
-          s = getenv('QUERY_STRING');
+          %% check if it is a POST or GET method
+          method = getenv('REQUEST_METHOD');
+          if length(getenv('QUERY_STRING')) <= 0 && strcmp(method,'POST')
+              post = '';
+              fid = fopen('/dev/fd/0');
+              eof = 1;
+              while eof == 1
+                  post_tmp = fgets(fid,3000);
+                  if post_tmp == -1
+                      eof = 0;
+                  else
+                      post = strcat(post,post_tmp);
+                  end
+              end
+              s = post;
+              fclose(fid);
+          else
+              s = getenv('QUERY_STRING');
+          end
         else      
           s = test_data;
         end

@@ -27,23 +27,6 @@ COUNT_TEST = 5;
         warning('off', 'all');
     end
     try
-        %% check if it is a POST or GET method
-        method = getenv('REQUEST_METHOD');
-        if length(getenv('QUERY_STRING')) <= 0 && strcmp(method,'POST')
-            post = '';
-            fid = fopen('/dev/fd/0');
-            eof = 1;
-            while eof == 1
-                post_tmp = fgets(fid,3000);
-                if post_tmp == -1
-                    eof = 0;
-                else
-                    post = strcat(post,post_tmp);
-                end
-            end
-            input = qs2struct(post);
-            fclose(fid);
-        end
         string_output = '';
         params = NaN;
         residuals = NaN;
