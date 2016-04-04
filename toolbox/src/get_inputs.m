@@ -31,7 +31,7 @@ function [ output_args ] = get_inputs( nargs, test_data, type, name )
           else
               s = getenv('QUERY_STRING');
           end
-        else      
+        else
           s = test_data;
         end
         output_args = qs2struct(s);
@@ -39,5 +39,19 @@ function [ output_args ] = get_inputs( nargs, test_data, type, name )
         output_args = qs2struct(getenv('QUERY_STRING'));
     end
 
-end
+    output_args = escape_uri( output_args );
 
+    ffid = fopen('/tmp/veri_test.txt','a');
+    fwrite(ffid, '-------------------------');
+    fwrite(ffid, 10);
+    fwrite(ffid, evalc(['disp(output_args)']));
+    fwrite(ffid, 10);
+    fwrite(ffid, output_args.querystring);
+    fwrite(ffid, 10);
+    fwrite(ffid, output_args.time);
+    fwrite(ffid, 10);
+    fwrite(ffid, output_args.values);
+    fwrite(ffid, 10);
+    fclose(ffid);
+
+end

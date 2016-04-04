@@ -32,19 +32,6 @@ COUNT_TEST = 5;
         residuals = NaN;
         fid = 1;
         %
-        input = escape_uri( input );
-	ffid = fopen('/tmp/veri_test.txt','a');
-	fwrite(ffid, '-------------------------');
-	fwrite(ffid, 10);
-	fwrite(ffid, evalc(['disp(input)']));
-	fwrite(ffid, 10);
-	fwrite(ffid, input.querystring);
-	fwrite(ffid, 10);
-	fwrite(ffid, input.time);
-	fwrite(ffid, 10);
-	fwrite(ffid, input.values);
-	fwrite(ffid, 10);
-	fclose(ffid);
 
         %% builds time (x) and values (y) matrices
         time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
@@ -201,7 +188,7 @@ COUNT_TEST = 5;
            string_output = strcat(string_output,sprintf(',\n'));
         end
         string_output = strcat(string_output,sprintf('\t"o": %.14f\n' , sum(resnorm)));
-        
+
         %
         % if plot argument is true
         if draw_plot
