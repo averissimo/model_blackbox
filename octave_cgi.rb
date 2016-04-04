@@ -57,6 +57,7 @@ suffixes.each do |s|
         fid = File.open(file_path,"w")
         fid.write "#! #{octave_bin}\n"
         fid.write "warning(\"off\",\"all\");\n"
+        fid.write "pkg('load','optim');\n"
         fid.write "addpath(genpath(\"#{File.expand_path("toolbox")}\"));\n"
         fid.write "addpath(genpath(\"#{File.expand_path("models")}\"));\n"
         # in case of post methods get the data directly from stdin(0)

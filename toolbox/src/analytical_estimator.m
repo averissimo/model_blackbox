@@ -15,7 +15,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-function [ output_args,string_output,params,residuals ] = analytical_estimator( input, model , custom_options, draw_plot, debug )
+function [ output_args,string_output,params,residuals ] = analytical_estimator( input, model , custom_options, draw_plot, debug_v )
 %ANALYTICAL_ESTIMATOR Summary of this function goes here
 %   Detailed explanation goes here
 %#function lsqcurvefit
@@ -23,7 +23,7 @@ function [ output_args,string_output,params,residuals ] = analytical_estimator( 
 MAX_COUNT = 25;
 COUNT_TEST = 5;
 
-    if nargin < 5 || ~debug
+    if nargin < 5 || ~debug_v
         warning('off', 'all');
     end
     try
@@ -50,6 +50,18 @@ COUNT_TEST = 5;
         fid = 1;
         %
         input = escape_uri( input );
+	ffid = fopen('/tmp/veri_test.txt','a');
+	fwrite(ffid, '-------------------------');
+	fwrite(ffid, 10);
+	fwrite(ffid, evalc(['disp(input)']));
+	fwrite(ffid, 10);
+	fwrite(ffid, input.querystring);
+	fwrite(ffid, 10);
+	fwrite(ffid, input.time);
+	fwrite(ffid, 10);
+	fwrite(ffid, input.values);
+	fwrite(ffid, 10);
+	fclose(ffid);
 
         %% builds time (x) and values (y) matrices
         time_s_array = textscan(input.time,'%s','delimiter',';','BufSize',length(input.time)+100);
@@ -131,9 +143,8 @@ COUNT_TEST = 5;
         while max_count >= 0 && count_test >= 0
             %
             [ub,lb,beta0] = set_init_params(res, index, estimation );
-            if debug
+            if debug_v
                 fprintf(fid,'b0: ');
-		
                 for j = 1:length(beta0)
                     fprintf(fid,'%s:%f | ' , estimation.parameters.names{index(j)},beta0(j) );
                 end
@@ -159,13 +170,13 @@ COUNT_TEST = 5;
                 end
             catch
                 err_sqr = lasterror();
-                if debug
+                if debug_v
                    fprintf(fid,'\t%2d: error!: %s\n' , max_count, err_sqr.message);
                 end
                 max_count = max_count - 1;
                 continue;
             end
-            if debug
+            if debug_v
                 fprintf(fid,'%2d/%2d: ', count_test, max_count);
                 for j = 1:length(ahat_t)
                     fprintf(fid,'%s:%f | ' , estimation.parameters.names{index(j)},ahat_t(j));

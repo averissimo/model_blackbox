@@ -1,5 +1,5 @@
 # mcc file location
-MCC = /opt/MATLAB/R2013a/bin/mcc
+MCC = /opt/MATLAB/R2012a/bin/mcc -Y /home/averissimo/r2012a.lic
 
 MODELS_ODE = models/differential
 MODELS_ALG = models/algebraic
