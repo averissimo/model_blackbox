@@ -10,7 +10,8 @@ remote_gompertz
 *.mexglx
 *.mexa64
 /bin
-
+wrapper_temp.m
+readme.txt
 /cgi/matlab/.htaccess
 /estimators
 /simulators
