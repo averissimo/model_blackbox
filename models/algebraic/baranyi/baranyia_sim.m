@@ -48,6 +48,6 @@ function [ string_output,output ] = baranyia_sim( test_data , draw_plot )
     catch
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);
-        string_output = msg
+        string_output = msg;
     end
 end

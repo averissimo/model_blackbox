@@ -44,8 +44,8 @@ function [ string_output,output ] = monomero_sim( test_data , draw_plot )
             scatter(TimeEnd,values);
         end
         string_output = printJson(output);
-        fprintf(1,printHeader(0));
-        fprintf(1,string_output);
+        %fprintf(1,printHeader(0));
+        %fprintf(1,string_output);
     catch
         err = lasterror();
         msg = sprintf('{ "error": "%s" }\n',err.message);

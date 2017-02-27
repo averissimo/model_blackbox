@@ -57,7 +57,7 @@ schnutea: schnutea_est schnutea_sim
 
 live_cello: live_cello_est live_cello_sim
 
-monomoreo: monomoreo_est monomoreo_sim
+monomero: monomero_est monomero_sim
 
 #
 # Pattern rules
